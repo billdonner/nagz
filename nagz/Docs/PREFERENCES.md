@@ -9,9 +9,9 @@
 - Keep schema evolvable with explicit migrations.
 
 ## 2. Resolution Order
-Effective preferences resolve from lowest to highest precedence:
+Effective configuration resolves from lowest to highest precedence:
 1. App defaults
-2. Family defaults
+2. Family policy defaults
 3. User preferences
 4. Session overrides (local only, not persisted)
 
@@ -60,9 +60,8 @@ The server stores one canonical preference document per `user_id` and `family_id
       "show_leaderboard": false,
       "show_badges": true
     },
-    "consent_controls": {
+    "interaction_controls": {
       "allow_snooze": true,
-      "max_snooze_minutes": 30,
       "mute_until": null
     },
     "ui": {
@@ -77,27 +76,37 @@ The server stores one canonical preference document per `user_id` and `family_id
 ## 4. Policy vs Preference Boundary
 - Policy is server-authoritative and not patchable by end users.
 - Preferences are user-scoped and patchable within server rules.
-- Examples of policy-only fields:
+- Policy-only examples:
   - role/relationship permissions
   - guardian-only report access
   - global hard-stop limits
+  - `daily_nag_cap`
+  - `max_snooze_minutes`
   - gamification scoring multiplier (`points_multiplier`)
+  - AI push-back attempt/cooldown bounds
 
 ## 5. Key Constraints
-- `schema_version`: `1` for this release.
-- `role`: `guardian` or `child`, required.
+- `schema_version`: `1`.
+- `role`: `guardian` or `child` (derived from family membership; read-only).
 - `default_strategy`: V1.0 supports only `friendly_reminder`.
 - `priority_channels`: subset of `["push", "sms"]`.
 - Delivery resolution for `priority_channels`: evaluate in order and skip channels that are disabled or currently non-compliant (for example, SMS unsubscribed).
 - `ai_mediation.tone`: `neutral`, `supportive`, or `firm`.
 - `ai_mediation.pushback_mode`: `off` or `bounded`.
+- `interaction_controls.allow_snooze`: patchable boolean, constrained by policy.
+- `interaction_controls.mute_until`: RFC3339 timestamp or `null`.
 - `points_multiplier`: policy-controlled decimal `0.1..3.0` and read-only in user preference patch APIs.
-- `mute_until`: RFC3339 timestamp or `null`.
 
-## 6. Minimal Sync API
+## 6. Cross-Spec Linkage
+- AI fields map to `AI_BEHAVIOR.md`.
+- Incentive preference toggles map to `INCENTIVES.md`.
+- Gamification preference toggles map to `GAMIFICATION.md`.
+- Hard-stop and consent constraints map to `SAFETY_AND_COMPLIANCE.md`.
+
+## 7. Minimal Sync API
 Base path: `/api/v1`
 
-### 6.1 Get Effective Configuration
+### 7.1 Get Effective Configuration
 `GET /api/v1/preferences?family_id={familyId}`
 
 Response headers:
@@ -144,19 +153,26 @@ Response body includes effective user prefs and read-only policy:
         "enabled": true,
         "show_leaderboard": false,
         "show_badges": true
+      },
+      "interaction_controls": {
+        "allow_snooze": true,
+        "mute_until": null
       }
     },
     "policy": {
       "report_visibility": "guardian_only",
       "daily_nag_cap": 8,
+      "max_snooze_minutes": 30,
       "child_can_nag_guardian": false,
-      "gamification_points_multiplier": 1.0
+      "gamification_points_multiplier": 1.0,
+      "ai_pushback_max_attempts_per_window": 2,
+      "ai_pushback_cooldown_minutes": 60
     }
   }
 }
 ```
 
-### 6.2 Patch User Preferences
+### 7.2 Patch User Preferences
 `PATCH /api/v1/preferences?family_id={familyId}`
 
 Request headers:
@@ -173,7 +189,7 @@ Request body:
     "prefs.notifications.sms_enabled": true
   },
   "unset": [
-    "prefs.consent_controls.mute_until"
+    "prefs.interaction_controls.mute_until"
   ]
 }
 ```
@@ -181,17 +197,17 @@ Request body:
 Responses:
 - `200 OK` with updated effective configuration and new `etag`.
 - `412 Precondition Failed` if `If-Match` is stale.
-- `422 Unprocessable Entity` for invalid keys or policy-violating values.
-- `403 Forbidden` for role/authorization or policy-scope violations.
+- `422 Unprocessable Entity` for invalid keys or invalid values.
+- `403 Forbidden` for authorization or disallowed policy scope.
 - `429 Too Many Requests` for rate limiting.
 
-### 6.3 Error Envelope
+### 7.3 Error Envelope
 All non-2xx API responses use this envelope:
 
 ```json
 {
   "error": {
-    "code": "POLICY_VIOLATION",
+    "code": "POLICY_FORBIDDEN",
     "message": "Field is read-only for this role.",
     "request_id": "req_abc123",
     "details": {
@@ -204,30 +220,38 @@ All non-2xx API responses use this envelope:
 Canonical V1 codes:
 - `AUTHZ_DENIED` -> `403`
 - `VALIDATION_ERROR` -> `422`
-- `POLICY_VIOLATION` -> `403` or `422`
+- `POLICY_FORBIDDEN` -> `403`
+- `POLICY_INVALID_VALUE` -> `422`
 - `PRECONDITION_FAILED` -> `412`
 - `RATE_LIMITED` -> `429`
 - `NOT_FOUND` -> `404`
 
-## 7. Merge and Conflict Behavior
+## 8. Merge and Conflict Behavior
 - Partial patch updates only specified keys.
 - Unspecified keys are unchanged.
 - `unset` removes user override and falls back to lower precedence.
 - Optimistic locking via `ETag` and `If-Match`.
 - Retry flow on `412`: `GET` latest -> reapply intent -> `PATCH`.
 
-## 8. Offline and Caching
+## 9. Offline and Caching
 - Cache last successful effective configuration with `etag`.
 - Keep session overrides in-memory only.
 - Queue patches offline and replay in order.
 - Drop queued patch if schema/policy changed and request is invalid.
 
-## 9. Migration Strategy
+## 10. Snooze Semantics (Normative)
+- `snooze` defers next eligible reminder delivery only; it does not mark completion.
+- Snooze does not cancel the nag.
+- Snooze cannot extend beyond `max_snooze_minutes` policy bound.
+- A snooze during overdue phases delays the next reminder but does not reset miss history.
+- If quiet hours begin during a snooze, delivery waits until both snooze and quiet-hour constraints are cleared.
+
+## 11. Migration Strategy
 - Maintain server migrations forward from schema `1` for future releases.
 - Run migration before merge/resolution.
 - Return latest schema in API responses.
 
-## 10. Security and Audit
+## 12. Security and Audit
 - Do not store secrets in preferences.
 - Emit audit events for preference changes.
 - Redact sensitive preference values in logs.

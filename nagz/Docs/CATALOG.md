@@ -3,11 +3,15 @@
 Documentation for product behavior, architecture, and policy.
 
 ## Core
+- `CATALOG.md`
+- `README.md`
 - `REQUIREMENTS.md`
 - `ARCHITECTURE.md`
 - `PREFERENCES.md`
 - `POLICY_MATRIX.md`
 - `SAFETY_AND_COMPLIANCE.md`
+- `GLOSSARY.md`
+- `API_SURFACE.md`
 - `SPEC_BASELINE_CHANGELOG.md`
 
 ## Guides

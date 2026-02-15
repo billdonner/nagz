@@ -5,12 +5,13 @@ Defines how the AI intermediary communicates, summarizes excuses, and applies bo
 
 Authorization boundary:
 - Role and relationship authorization is enforced upstream by policy services per `POLICY_MATRIX.md`.
-- AI behavior operates only on policy-authorized requests.
+- AI behavior configuration values are sourced from effective preferences in `PREFERENCES.md`.
+- Unauthorized requests are rejected fail-closed and no AI output is generated.
 
 ## 2. Allowed AI Actions
-- Send reminder messages according to configured strategy.
+- Send reminder messages according to configured `strategy_template` and current `escalation_phase`.
 - Collect and structure recipient excuses/status updates.
-- Provide concise summaries to assigners.
+- Provide concise summaries to creators.
 - Offer practical completion tips and motivational prompts.
 - Issue bounded push-back when miss patterns trigger policy.
 
@@ -29,10 +30,13 @@ Authorization boundary:
 ## 5. Push-Back Policy
 - Modes: `off` or `bounded`.
 - In bounded mode:
-  - max push-back attempts per task window
-  - cooldown between push-back messages
+  - max push-back attempts per task window (default `2`, policy range `0..3`)
+  - cooldown between push-back messages (default `60` minutes, policy range `15..240`)
   - no push-back during quiet hours
 - Guardian can disable push-back per relationship.
+- Configuration source:
+  - user preference: `prefs.ai_mediation.pushback_mode`
+  - policy bounds: effective policy values in `PREFERENCES.md`
 
 ## 6. Excuse Handling
 - AI captures excuse text and optional category.
@@ -43,7 +47,7 @@ Authorization boundary:
   - lacking_resources
   - refused
   - other
-- AI sends summary digest to assigner at configured cadence.
+- AI sends summary digest to creator at configured cadence.
 
 ## 7. Explainability and Audit
 Every AI action logs:

@@ -33,12 +33,13 @@ Pure P2P is insufficient for V1.0 because:
 
 4. AI Mediation Service
 - Excuse intake and normalization
-- Recipient-to-assigner summaries
+- Recipient-to-creator summaries
 - Bounded push-back prompts and tone controls
+- Fail-closed reject behavior for unauthorized requests
 
 5. Escalation Engine
 - Time-based and behavior-based trigger evaluation
-- Strategy execution (`friendly_reminder` in V1.0) where escalation is parameterized behavior, not a separate strategy family
+- `friendly_reminder` phase execution
 
 6. Incentives Engine
 - Reward/consequence rule evaluation
@@ -94,7 +95,7 @@ Conflict rules:
 - Client retries on conflict with latest snapshot.
 
 ## 7. Task and AI Flow
-1. Nag created with due time, strategy, and typed `done_definition`.
+1. Nag created with due time, strategy template, and typed `done_definition`.
 2. Recipient updates status or submits excuse through AI mediation.
 3. AI summarizes and records attributable mediation events.
 4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy inside `friendly_reminder` phases.
@@ -103,25 +104,25 @@ Conflict rules:
 7. Completion cancels pending escalation intents.
 
 ## 8. Core Data Model
-- `users` (id, role)
-- `family_memberships` (user_id, family_id, role)
+- `users` (id, created_at, status)
+- `families` (id, name, created_by, created_at, status)
+- `family_memberships` (user_id, family_id, role, status, joined_at, left_at)
 - `relationships` (party_a, party_b, status)
-- `nag_policies` (id, owners, strategy, constraints)
-- `nags` (id, creator_id, recipient_id, due_at, done_definition)
+- `nag_policies` (id, family_id, owners, strategy_template, constraints, status)
+- `nags` (id, family_id, policy_id, creator_id, recipient_id, due_at, category, done_definition)
 - `nag_events` (id, nag_id, event_type, actor_id, at, payload)
 - `ai_mediation_events` (id, nag_id, prompt_type, tone, summary, at)
 - `deliveries` (id, nag_event_id, channel, status, provider_ref)
+- `incentive_rules` (id, family_id, version, condition, action, approval_mode, status)
 - `incentive_events` (id, nag_id, rule_id, action_type, approved_by, at)
+- `gamification_events` (id, family_id, user_id, event_type, delta_points, streak_delta, at)
+- `gamification_snapshots` (family_id, period_start, leaderboard_json)
 - `abuse_reports` (id, reporter_id, target_id, reason, status)
 - `blocks` (id, actor_id, target_id, state)
-- `consents` (id, user_id, consent_type, granted_at, revoked_at)
+- `consents` (id, user_id, family_id, consent_type, granted_at, revoked_at)
 - `reports_snapshots` (family_id, period_start, metrics_json)
 
-Consent types in V1.0:
-- `child_account_creation`
-- `sms_opt_in`
-- `ai_mediation`
-- `gamification_participation`
+Consent type values are authoritative in `SAFETY_AND_COMPLIANCE.md`.
 
 ## 9. API Error Contract
 All API errors use a shared envelope with:
@@ -130,37 +131,41 @@ All API errors use a shared envelope with:
 - `request_id`
 - optional `details`
 
-Canonical V1 codes:
-- `AUTHZ_DENIED`
-- `VALIDATION_ERROR`
-- `POLICY_VIOLATION`
-- `PRECONDITION_FAILED`
-- `RATE_LIMITED`
-- `NOT_FOUND`
+Canonical V1 codes and HTTP mappings:
+- `AUTHZ_DENIED` -> `403`
+- `VALIDATION_ERROR` -> `422`
+- `POLICY_FORBIDDEN` -> `403`
+- `POLICY_INVALID_VALUE` -> `422`
+- `PRECONDITION_FAILED` -> `412`
+- `RATE_LIMITED` -> `429`
+- `NOT_FOUND` -> `404`
 
-## 10. Reliability and Safety Controls
+## 10. API Surface Coverage
+Minimum endpoint coverage is defined in `API_SURFACE.md`.
+
+## 11. Reliability and Safety Controls
 - Idempotent write APIs
 - Retry with exponential backoff for provider failures
 - Dead-letter handling for repeated send failures
 - Policy-based throttles per actor, relationship, and channel
 - Auditability for all user-visible state transitions
 
-## 11. Deployment Pattern
+## 12. Deployment Pattern
 - Start as centralized multi-tenant deployment.
 - Use managed queue/scheduler for escalation work.
 - Keep service boundaries clean for scale-out.
 
-## 12. V1.0 vs Later
+## 13. V1.0 vs Later
 Implement in V1.0:
 - Central backend authority
 - Local-first client sync queue
 - Push + SMS channels (US-only for SMS in V1.0)
-- Friendly reminder strategy
+- `friendly_reminder` strategy template with defined phases
 - AI mediation with bounded behavior controls
 - Minimum hard-stop and safety controls
 
 Defer:
 - Full P2P state synchronization
 - Additional delivery channels
-- Rich strategy marketplace
+- Additional strategy templates beyond `friendly_reminder`
 - Full end-to-end encrypted payload model

@@ -7,6 +7,7 @@ Define minimum safety, privacy, and compliance requirements needed for implement
 - Launch geography: United States only.
 - SMS launch jurisdictions: United States only.
 - Child-account handling is implemented for United States launch requirements only in V1.0.
+- COPPA (Children's Online Privacy Protection Act) is in scope for US child-account handling.
 
 ## 3. Anti-Abuse Controls (V1.0)
 Required user controls:
@@ -17,8 +18,11 @@ Required user controls:
 Required server controls:
 - Per-actor and per-relationship rate limits
 - Quiet-hour enforcement
-- Daily Nag cap enforcement
+- Daily nag cap enforcement
 - Audit logging for abuse-relevant actions
+
+Hard-stop defaults:
+- `daily_nag_cap`: default 8 per creator per family per local day (configurable guardian policy range `1..8`).
 
 ## 4. Moderation Workflow and SLA (V1.0)
 - Abuse reports create tracked moderation records.
@@ -37,15 +41,24 @@ SLA targets:
 - Child-to-guardian nagging is blocked by policy.
 - Child account creation requires guardian-mediated consent flow.
 - Child data collection must be minimized to what is operationally necessary.
-- V1.0 age thresholds and region logic are limited to United States launch requirements.
+- US age-gate behavior in V1.0:
+  - collect date of birth at account creation.
+  - treat users under 13 as child accounts requiring guardian-mediated consent.
+  - block child account activation until required consent is recorded.
 
-V1.0 consent types and behavior:
+V1.0 consent types (authoritative list):
 - `child_account_creation`
 - `sms_opt_in`
 - `ai_mediation`
 - `gamification_participation`
+
+Consent behavior:
 - Consent records store `granted_at` and optional `revoked_at`.
 - Revoked consent immediately blocks new actions that require that consent.
+- In-flight behavior on revocation:
+  - queued AI messages are canceled on `ai_mediation` revocation.
+  - queued SMS deliveries are canceled on `sms_opt_in` revocation.
+  - gamification snapshots remain historical; new point/streak updates stop on `gamification_participation` revocation.
 
 ## 6. SMS Compliance Baseline
 - Explicit SMS opt-in required before first SMS delivery.
@@ -59,8 +72,9 @@ Data classes and retention:
 - Notification metadata: retain 12 months.
 - User-generated content (nag text, notes, excuses): retain until account deletion request or 24 months of inactivity.
 - Audit/moderation records: retain 36 months.
-- Gamification events (points/streak/badge changes): operational events retention (24 months).
-- Gamification leaderboard/snapshot aggregates: notification/report snapshot retention (12 months).
+- `gamification_events`: retain 24 months.
+- `gamification_snapshots`: retain 12 months.
+- `reports_snapshots`: retain 12 months.
 
 Deleted account handling:
 - Purge or anonymize deleted account data within 30 days, except required audit/legal records.
@@ -70,10 +84,21 @@ Baseline handling:
 - Keep sensitive content out of logs.
 - Support user account deletion requests with policy-aware deletion/anonymization.
 
-## 8. App Store Readiness Checklist
+## 8. Breach Response
+- Maintain incident severity classification and on-call escalation.
+- Contain and assess scope before restoring affected flows.
+- Notify impacted users and guardians per applicable US legal timelines.
+- Preserve forensic audit evidence and document remediation actions.
+
+## 9. Medical/Medication Scope Disclaimer
+- `meds` category is a reminder taxonomy label only.
+- V1.0 does not provide diagnosis, dosing advice, clinical decision support, or medical-device functionality.
+
+## 10. App Store Readiness Checklist
 Before submission, verify:
 - Block/report/mute flows are user-visible and functional.
-- Child safeguards are implemented and test-covered.
+- Child safeguards and age-gate behavior are implemented and test-covered.
 - Account deletion flow is implemented in-app.
 - Privacy disclosures match actual data usage.
 - SMS opt-in and unsubscribe behavior are implemented and tested.
+- COPPA-facing disclosures and guardian consent flows are present.

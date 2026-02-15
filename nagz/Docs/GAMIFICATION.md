@@ -13,19 +13,18 @@ Increase consistency and motivation through simple, transparent game mechanics.
 - On-time completion: +10 points
 - Late completion: +4 points
 - Missed task: 0 points
-- Miss streak penalty and bonuses are policy-driven.
+- Miss streak penalties and bonuses are policy-driven by guardian-managed rules.
 
-## 4. Participation and Consent
-- Gamification can be enabled/disabled per user.
-- Leaderboard visibility is optional.
-- Guardians can require non-public mode for child accounts.
+## 4. Policy and Preference Linkage
 - Participation is gated by `gamification_participation` consent state.
+- User toggles and visibility preferences are defined in `PREFERENCES.md`.
+- `points_multiplier` is guardian-controlled family policy (`0.1..3.0`) and is not user-patchable.
+- Role/visibility constraints are enforced per `POLICY_MATRIX.md`.
 
 ## 5. Anti-Gaming Controls
 - Only canonical server events can change score.
 - Duplicate/offline replay protection via idempotency keys.
 - Suspicious activity flagged for guardian review.
-- `points_multiplier` is guardian-controlled policy (range `0.1..3.0`) and not user-patchable.
 
 ## 6. Reporting Outputs
 - Weekly score delta
@@ -33,8 +32,11 @@ Increase consistency and motivation through simple, transparent game mechanics.
 - Badge progress
 - Correlation between gamification and completion rate
 
-## 7. V1.0 Constraints
+## 7. Data and Retention
+- Event storage is modeled as `gamification_events` and `gamification_snapshots` in `ARCHITECTURE.md`.
+- Retention policy is authoritative in `SAFETY_AND_COMPLIANCE.md`.
+
+## 8. V1.0 Constraints
 - Keep formulas explainable and deterministic.
 - Avoid hidden multipliers.
 - No cross-family global leaderboard.
-- Retention: score/streak/badge events retain 24 months; leaderboard/snapshot aggregates retain 12 months.

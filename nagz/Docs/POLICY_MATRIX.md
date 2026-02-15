@@ -1,7 +1,7 @@
 # Nagz Policy Matrix (V1.0)
 
 ## 1. Scope
-This document defines the authoritative allow/deny rules for who can create Nags for whom in V1.0.
+This document defines the authoritative allow/deny rules for who can create nags for whom in V1.0.
 
 ## 2. Role Pair Permissions
 | Creator Role | Recipient Role | Allowed | Notes |
@@ -11,10 +11,17 @@ This document defines the authoritative allow/deny rules for who can create Nags
 | child | guardian | No | Explicitly denied in V1.0. |
 | child | child | No | Denied in V1.0 to reduce abuse and moderation risk. |
 
-## 3. Relationship State Requirements
-- Nag creation requires an active bilateral relationship record.
-- Suspended or revoked relationships cannot create or receive Nags.
-- A co-owned Nag policy is valid only when both guardian owners have active status.
+Self-nag rules:
+- guardian -> guardian (self): allowed.
+- child -> child (self): denied in V1.0.
+
+Role cardinality rule:
+- A user can hold only one role in a given family membership in V1.0.
+
+## 3. Relationship and Co-Owner Requirements
+- nag creation requires an active bilateral relationship record.
+- Suspended or revoked relationships cannot create or receive nags.
+- A co-owned nag policy is valid only when both guardian owners have active status.
 - Co-owned policy edits require both guardian owners to approve.
 - On co-owner disagreement, keep the current active policy and deny consequence-expanding changes.
 
@@ -27,8 +34,8 @@ This document defines the authoritative allow/deny rules for who can create Nags
 ## 5. Enforcement Rules
 - Server enforces all matrix rules on every write request.
 - Client UI may hide disallowed actions, but server enforcement is authoritative.
-- Violating requests return authorization error and are audit-logged.
-- Errors follow shared API codes (for example `AUTHZ_DENIED`, `POLICY_VIOLATION`).
+- Violating requests return authorization/policy errors and are audit-logged.
+- Errors follow shared API codes from `ARCHITECTURE.md` and `PREFERENCES.md`.
 
 ## 6. Policy Change Governance
 - Any future change to role pair permissions requires:

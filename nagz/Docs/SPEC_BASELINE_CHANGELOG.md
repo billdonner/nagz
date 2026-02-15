@@ -45,3 +45,47 @@ Baseline: V1.0 spec alignment pass
 
 ## Notes
 - This changelog reflects spec decisions only; no product implementation changes are included.
+
+---
+
+Date: 2026-02-15
+Baseline: V1.0 spec remediation pass (review-driven)
+
+## Summary
+- Normalized naming and cross-doc references.
+- Completed missing data model and API surface definitions.
+- Added explicit escalation, snooze, consent-revocation, and compliance behavior.
+
+## Changes
+- Added `GLOSSARY.md` as canonical terminology and role semantics source.
+- Added `API_SURFACE.md` to cover non-preferences endpoint scope.
+- Updated `REQUIREMENTS.md` with:
+  - canonical naming rules (`creator`, `strategy_template`, `done_definition`)
+  - explicit escalation phases
+  - explicit daily cap default/range
+  - lifecycle edge handling rules
+  - expanded linked-spec list
+- Updated `ARCHITECTURE.md` with:
+  - complete core data model (`families`, `incentive_rules`, `policy_id` linkage, `gamification_events`, `gamification_snapshots`)
+  - API error code split (`POLICY_FORBIDDEN` vs `POLICY_INVALID_VALUE`)
+  - API surface linkage
+- Updated `PREFERENCES.md` with:
+  - renamed `consent_controls` -> `interaction_controls`
+  - explicit policy bounds (`max_snooze_minutes`, push-back bounds)
+  - unambiguous error code mapping
+  - normative snooze semantics
+  - explicit links to AI/incentives/gamification specs
+- Updated `AI_BEHAVIOR.md` with:
+  - configuration source reference to preferences
+  - fail-closed unauthorized behavior
+  - concrete push-back defaults/ranges
+- Updated `INCENTIVES.md` and `GAMIFICATION.md` with explicit preference/policy linkage.
+- Updated `POLICY_MATRIX.md` with self-nag and single-role-per-family rules.
+- Updated `SAFETY_AND_COMPLIANCE.md` with:
+  - explicit COPPA reference
+  - age-gate behavior
+  - consent revocation in-flight handling
+  - breach response requirements
+  - explicit snapshot/event retention entries by table class
+- Updated `PARENT_GUARDIAN_USER_MANUAL.md` for terminology and phase/snooze clarity.
+- Updated `CATALOG.md` and root `README.md` to include new docs.
