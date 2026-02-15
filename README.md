@@ -1,11 +1,14 @@
 # nagz
 
-Nagz is a family-oriented nagging/reminder iOS app.
+Nagz is a family-oriented AI-mediated nagging/reminder iOS app.
 
 ## Documentation
 - `nagz/Docs/REQUIREMENTS.md`
-- `nagz/Docs/PREFERENCES.md`
 - `nagz/Docs/ARCHITECTURE.md`
+- `nagz/Docs/PREFERENCES.md`
+- `nagz/Docs/AI_BEHAVIOR.md`
+- `nagz/Docs/INCENTIVES.md`
+- `nagz/Docs/GAMIFICATION.md`
 
 ## Xcode
 Open `nagz.xcodeproj`.

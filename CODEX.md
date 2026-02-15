@@ -20,8 +20,11 @@ Before implementing changes, read all markdown docs under `nagz/Docs/` and `READ
 
 Required docs:
 - `nagz/Docs/REQUIREMENTS.md`
-- `nagz/Docs/PREFERENCES.md`
 - `nagz/Docs/ARCHITECTURE.md`
+- `nagz/Docs/PREFERENCES.md`
+- `nagz/Docs/AI_BEHAVIOR.md`
+- `nagz/Docs/INCENTIVES.md`
+- `nagz/Docs/GAMIFICATION.md`
 - `README.md`
 
 ## 4. Xcode Text File Visibility Rule

@@ -1,7 +1,13 @@
 # Nagz Docs
 
-This folder contains product and technical documentation for the Nagz app.
+Documentation for product behavior, architecture, and policy.
 
+## Core
 - `REQUIREMENTS.md`
-- `PREFERENCES.md`
 - `ARCHITECTURE.md`
+- `PREFERENCES.md`
+
+## V0.5 Feature Specs
+- `AI_BEHAVIOR.md`
+- `INCENTIVES.md`
+- `GAMIFICATION.md`
