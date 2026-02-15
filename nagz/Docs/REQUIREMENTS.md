@@ -4,78 +4,105 @@
 Build a family-oriented nagging system where an intermediary AI reduces partner-to-partner emotional load while improving follow-through, transparency, and safety.
 
 ## 2. Product Positioning for V0.5
-- AI acts as the communication intermediary for reminders and follow-ups.
-- Task assigners define goals, rewards, and consequences within guardrails.
-- Task recipients can provide updates and excuses to the AI instead of directly negotiating in the moment.
-- Guardians retain final authority over rules, reporting, and consequences.
+- AI acts as a communication intermediary for reminders and follow-ups.
+- Task assigners define goals, rewards, and consequences inside policy guardrails.
+- Task recipients can provide updates/excuses to AI rather than direct conflict-first negotiation.
+- Guardians retain final authority over rules, reports, and consequence templates.
 
 ## 3. Roles and Relationship Rules
-- Supports bilateral relationships between two people.
-- Parents/guardians can nag each other.
-- Children cannot nag parents/guardians.
-- Only guardians can view family-level reports and configure consequence templates.
-- A nag policy can be co-owned by two guardians.
+- Supported roles: `guardian`, `child`.
+- The app supports bilateral relationships between two members.
+- Guardians can nag guardians and guardians can nag children.
+- Children cannot nag guardians.
+- Two guardians can co-own a Nag policy.
+- Only guardians can view family-level reports and history.
+- The authoritative allow/deny matrix is defined in `POLICY_MATRIX.md`.
 
 ## 4. Core Task Model
-- A Nag has creator, recipient, due time, done criteria, and category.
-- Done criteria are nag-specific.
-- Each Nag can attach a reward policy and consequence policy.
-- V0.5 supports one default strategy template: `friendly_reminder`.
+- A Nag has `creator`, `recipient`, `due_at`, `category`, `strategy`, and typed `done_definition`.
+- `done_definition` is Nag-specific.
+- V0.5 completion types:
+  - `ack_only`
+  - `binary_check`
+  - `binary_with_note`
+- V0.5 default strategy template: `friendly_reminder`.
+- Each Nag can attach reward and consequence policy references.
 
 ## 5. AI Mediation Requirements
-- AI collects excuses/status updates from recipients.
+- AI collects recipient excuses/status updates.
 - AI summarizes recipient responses for assigners.
 - AI can issue bounded push-back prompts when tasks are repeatedly missed.
-- AI tone options: neutral, supportive, firm.
+- AI tone options: `neutral`, `supportive`, `firm`.
 - All AI actions must be auditable and attributable.
 
 ## 6. Escalation and Notifications
-- Time-based triggers (after due time).
-- Behavior-based triggers (miss streaks, repeated delays).
+- Time-based escalation triggers.
+- Behavior-based escalation triggers.
 - V0.5 channels: push notifications and SMS.
-- Hard-stop and anti-spam controls:
+- V0.5 includes mandatory hard-stop enforcement:
   - quiet hours
-  - daily contact limits
-  - per-user throttles
+  - daily Nag/contact limits
+  - per-user/per-relationship throttles
 
 ## 7. Incentives and Consequences
 - Reward and consequence catalogs are guardian-configurable.
 - Rules can map task outcomes to rewards/consequences.
 - Consequences must respect safety policy and role constraints.
-- The system logs when and why incentives are applied.
+- The system logs when and why incentives/consequences are applied.
 
 ## 8. Gamification
 - Points and streak tracking.
 - Weekly score summaries.
 - Optional badges and family leaderboard.
-- Gamification participation can be opt-in per user.
+- Participation can be opt-in per user.
 
 ## 9. Reporting and Metrics
 Guardian-visible reporting includes:
 - Completion rate
 - Median response time
 - Missed count
+- Category performance (chores, meds, homework, appointments)
 - Excuse categories and frequency
-- Incentive effectiveness over time
+- Incentive/consequence effectiveness over time
 - Strategy effectiveness over time
 - Weekly family trends
 
+Metric definitions:
+- Completion rate denominator is all Nags due in period.
+- Missed count includes unresolved Nags past final escalation window.
+- Response time is from first delivery to completion event.
+
 ## 10. Safety and Trust
-- Consent-aware controls: mute, snooze, limits.
-- Anti-abuse guardrails and escalation caps.
-- Explainability log for AI decisions and policy actions.
-- Audit trail for assignments, reminders, excuses, and outcomes.
-- Guardian review path for disputed consequences.
+- Provide block, mute/snooze, and report-abuse controls.
+- Enforce anti-harassment limits server-side.
+- Keep immutable audit trail for create/edit/escalate/deliver/AI-action/complete events.
+- Guardian review path exists for disputed consequences.
 
-## 11. Linked Specifications
-- Preferences and sync API: `PREFERENCES.md`
-- Architecture: `ARCHITECTURE.md`
-- AI behavior policy: `AI_BEHAVIOR.md`
-- Incentive model: `INCENTIVES.md`
-- Gamification model: `GAMIFICATION.md`
+## 11. Compliance and Privacy
+- Child-account safeguards and guardian consent model are required.
+- SMS opt-in and unsubscribe semantics are required.
+- Sensitive data in logs/notifications must be minimized.
+- Retention/deletion behavior is policy-driven and auditable.
+- Detailed requirements are defined in `SAFETY_AND_COMPLIANCE.md`.
 
-## 12. Out of Scope for V0.5
-- Voice or email escalation channels
-- Open-ended AI autonomy without policy boundaries
-- Fully automated punishment without guardian-defined templates
-- Full negotiation workflow for changing done criteria
+## 12. Account Lifecycle
+- Account creation and role assignment must be explicit and auditable.
+- Account deletion requests must be supported.
+- Family leave/removal flows must be supported.
+- Required audit records are retained per policy.
+
+## 13. Linked Specifications
+- `PREFERENCES.md`
+- `ARCHITECTURE.md`
+- `POLICY_MATRIX.md`
+- `SAFETY_AND_COMPLIANCE.md`
+- `AI_BEHAVIOR.md`
+- `INCENTIVES.md`
+- `GAMIFICATION.md`
+
+## 14. Out of Scope for V0.5
+- Additional delivery channels beyond push/SMS
+- Full peer-to-peer synchronization as primary transport
+- Unbounded AI autonomy without policy constraints
+- Fully automated consequences without guardian-defined templates
+- Negotiated done-definition workflow

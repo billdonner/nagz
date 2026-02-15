@@ -2,112 +2,142 @@
 
 ## 1. Decision Summary
 Nagz uses a hybrid architecture:
-- Central backend as source of truth for policy, authorization, AI mediation, escalation, notifications, incentives, and reporting.
-- Local-first clients for responsiveness and offline operation.
-- Optional future peer-to-peer assist for low-latency state fanout between guardians, with server reconciliation.
+- Central backend is source of truth for authorization, policy, AI mediation, escalation, notifications, incentives, and reporting.
+- Local-first clients provide responsive UX and offline operation.
+- Optional peer-assisted sync may be added later, with server reconciliation.
 
 ## 2. Why Central Authority Is Required
-Pure peer-to-peer is insufficient for V0.5 requirements:
-- Push/SMS delivery requires server/provider integrations.
+Pure P2P is insufficient for V0.5 because:
+- Push and SMS require provider-backed server integrations.
 - Guardian-only reporting and consequence controls need centralized authorization.
-- AI mediation and auditability require durable shared history.
-- Abuse controls and throttles are safer with centralized enforcement.
+- AI mediation and auditability need durable shared history.
+- Abuse controls are safest when enforced centrally.
 
-## 3. High-Level Components
+## 3. Core Components
 1. Client apps (iOS/Android/Web)
-- Local encrypted store for tasks, events, and preference cache.
-- Local scheduler for non-authoritative reminders.
-- Offline mutation queue.
+- Local encrypted cache for nags/events/preferences
+- Offline mutation queue
+- Non-authoritative local reminder scheduler
 
 2. API Gateway
-- AuthN/AuthZ, request validation, rate limiting.
-- Versioned REST API.
+- AuthN/AuthZ
+- Validation and rate limiting
+- Versioned API surface
 
-3. Nag Policy Service
-- Task definitions, done criteria, role enforcement.
-- Relationship and ownership validation.
+3. Policy Service
+- Role and relationship enforcement
+- Co-owner guardian policy rules
+- Hard-stop policy enforcement (quiet hours, caps, throttles)
 
 4. AI Mediation Service
-- Excuse intake and normalization.
-- Recipient-to-assigner summaries.
-- Bounded push-back according to policy.
-- Tone and coaching behavior from preferences.
+- Excuse intake and normalization
+- Recipient-to-assigner summaries
+- Bounded push-back prompts and tone controls
 
 5. Escalation Engine
-- Time and behavior trigger evaluation.
-- Strategy application (`friendly_reminder` in V0.5).
+- Time-based and behavior-based trigger evaluation
+- Strategy execution (`friendly_reminder` in V0.5)
 
 6. Incentives Engine
-- Reward/consequence rule evaluation.
-- Application events with guardian-approval checks.
+- Reward/consequence rule evaluation
+- Guardian-policy checks before consequence application
 
 7. Notification Service
-- Push and SMS provider integrations.
-- Delivery retries and fallback.
+- Push and SMS dispatch
+- Retry/backoff and provider error handling
 
 8. Reporting Service
-- Completion, response-time, excuse, and effectiveness metrics.
-- Weekly family summaries and gamification rollups.
+- Completion, response-time, excuse, and effectiveness metrics
+- Weekly family and gamification summaries
 
-9. Event Store + OLTP DB
-- Append-only event log for auditability and model input.
-- Operational store for current state.
+9. Safety Service
+- Abuse reporting intake and tracking
+- Blocking/muting state and enforcement
 
-## 4. Authoritative Data Ownership
+10. Event Store + OLTP DB
+- Immutable event log for audit and analytics
+- Canonical operational state
+
+## 4. Authoritative Ownership
 Server-authoritative:
-- Users, roles, relationships
-- Task policies and assignments
+- User roles and relationships
+- Policy and hard-stop constraints
 - AI mediation actions and summaries
-- Escalation outcomes and deliveries
-- Incentive applications
-- Family-level reports and audit logs
+- Escalation state and delivery outcomes
+- Incentive/consequence applications
+- Reporting and audit records
 
-Client-temporary:
-- Draft tasks not yet submitted
-- Session overrides
-- Offline updates pending sync
+Client-local:
+- Draft nags not yet submitted
+- Session-only UI overrides
+- Offline actions pending sync
 
-## 5. Safety Boundaries
+## 5. Security and Trust Boundaries
 - Clients are untrusted for policy enforcement.
-- Server validates all mutations against role and safety constraints.
-- Consequence application requires policy checks and optional guardian confirmation.
-- AI responses are constrained by behavior policy and logging.
+- Server validates every mutation against policy.
+- TLS in transit and encryption at rest are required.
+- Notification payloads and logs should avoid sensitive details.
+- Optional future E2EE may encrypt message bodies while keeping routing metadata server-readable.
 
-## 6. Sync Model
-1. Client writes mutation to local queue.
+## 6. Sync and Conflict Model
+1. Client enqueues mutation locally.
 2. Client sends mutation with idempotency key.
-3. Server validates and commits canonical event.
-4. Server broadcasts updated state to related devices.
-5. Client reconciles optimistic local state with canonical state.
+3. Server validates and writes canonical event.
+4. Server pushes updates to related clients.
+5. Clients reconcile optimistic state with canonical state.
 
-Conflict strategy:
-- Optimistic concurrency (`etag`/version).
-- Server is final arbiter of ordering and policy validity.
+Conflict rules:
+- Use optimistic concurrency (`etag`/version).
+- Server resolves canonical order.
+- Client retries on conflict with latest snapshot.
 
-## 7. AI and Incentive Flow
-1. Task assigned with due time and optional reward/consequence policy.
-2. Recipient sends progress or excuse to AI mediator.
-3. AI mediator classifies and summarizes status.
-4. Escalation engine evaluates missed conditions.
-5. Incentives engine applies earned rewards or policy-approved consequences.
-6. Reporting service updates performance and effectiveness metrics.
+## 7. Task and AI Flow
+1. Nag created with due time, strategy, and typed `done_definition`.
+2. Recipient updates status or submits excuse through AI mediation.
+3. AI summarizes and records attributable mediation events.
+4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy.
+5. Notification intents emit to push/SMS channels.
+6. Incentives engine applies reward/consequence events under policy.
+7. Completion cancels pending escalation intents.
 
-## 8. Reliability Controls
-- Idempotent write APIs.
-- Retry with backoff for provider failures.
-- Dead-letter queue for persistent delivery failures.
-- Quiet-hour and daily-contact caps.
-- Per-user/relationship abuse throttles.
+## 8. Core Data Model
+- `users` (id, role)
+- `family_memberships` (user_id, family_id, role)
+- `relationships` (party_a, party_b, status)
+- `nag_policies` (id, owners, strategy, constraints)
+- `nags` (id, creator_id, recipient_id, due_at, done_definition)
+- `nag_events` (id, nag_id, event_type, actor_id, at, payload)
+- `ai_mediation_events` (id, nag_id, prompt_type, tone, summary, at)
+- `deliveries` (id, nag_event_id, channel, status, provider_ref)
+- `incentive_events` (id, nag_id, rule_id, action_type, approved_by, at)
+- `abuse_reports` (id, reporter_id, target_id, reason, status)
+- `blocks` (id, actor_id, target_id, state)
+- `consents` (id, user_id, consent_type, granted_at, revoked_at)
+- `reports_snapshots` (family_id, period_start, metrics_json)
 
-## 9. V0.5 Delivery Recommendation
-Implement now:
-- Central backend policy + AI mediation + escalation + incentives + reporting
-- Local-first clients with offline queue
-- Push and SMS channels
-- Friendly reminder strategy template
+## 9. Reliability and Safety Controls
+- Idempotent write APIs
+- Retry with exponential backoff for provider failures
+- Dead-letter handling for repeated send failures
+- Policy-based throttles per actor, relationship, and channel
+- Auditability for all user-visible state transitions
+
+## 10. Deployment Pattern
+- Start as centralized multi-tenant deployment.
+- Use managed queue/scheduler for escalation work.
+- Keep service boundaries clean for scale-out.
+
+## 11. V0.5 vs Later
+Implement in V0.5:
+- Central backend authority
+- Local-first client sync queue
+- Push + SMS channels
+- Friendly reminder strategy
+- AI mediation with bounded behavior controls
+- Minimum hard-stop and safety controls
 
 Defer:
-- Full P2P synchronization
-- Additional delivery channels beyond push/SMS
-- Unbounded autonomous AI decisioning
-- Fully automated consequences without policy controls
+- Full P2P state synchronization
+- Additional delivery channels
+- Rich strategy marketplace
+- Full end-to-end encrypted payload model
