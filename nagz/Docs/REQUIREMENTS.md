@@ -1,9 +1,9 @@
-# Nagz Requirements (V0.5)
+# Nagz Requirements (V1)
 
 ## 1. Purpose
 Build a family-oriented nagging system where an intermediary AI reduces partner-to-partner emotional load while improving follow-through, transparency, and safety.
 
-## 2. Product Positioning for V0.5
+## 2. Product Positioning for V1
 - AI acts as a communication intermediary for reminders and follow-ups.
 - Task assigners define goals, rewards, and consequences inside policy guardrails.
 - Task recipients can provide updates/excuses to AI rather than direct conflict-first negotiation.
@@ -21,11 +21,11 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 ## 4. Core Task Model
 - A Nag has `creator`, `recipient`, `due_at`, `category`, `strategy`, and typed `done_definition`.
 - `done_definition` is Nag-specific.
-- V0.5 completion types:
+- V1 completion types:
   - `ack_only`
   - `binary_check`
   - `binary_with_note`
-- V0.5 default strategy template: `friendly_reminder`.
+- V1 default strategy template: `friendly_reminder`.
 - Each Nag can attach reward and consequence policy references.
 
 ## 5. AI Mediation Requirements
@@ -38,8 +38,8 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 ## 6. Escalation and Notifications
 - Time-based escalation triggers.
 - Behavior-based escalation triggers.
-- V0.5 channels: push notifications and SMS.
-- V0.5 includes mandatory hard-stop enforcement:
+- V1 channels: push notifications and SMS.
+- V1 includes mandatory hard-stop enforcement:
   - quiet hours
   - daily Nag/contact limits
   - per-user/per-relationship throttles
@@ -79,8 +79,8 @@ Metric definitions:
 - Guardian review path exists for disputed consequences.
 
 ## 11. Compliance and Privacy
-- Child-account safeguards and guardian consent model are required (US launch scope for V0.5).
-- SMS opt-in and unsubscribe semantics are required (US-only launch jurisdiction in V0.5).
+- Child-account safeguards and guardian consent model are required (US launch scope for V1).
+- SMS opt-in and unsubscribe semantics are required (US-only launch jurisdiction in V1).
 - Sensitive data in logs/notifications must be minimized.
 - Retention/deletion behavior is policy-driven and auditable.
 - Detailed requirements are defined in `SAFETY_AND_COMPLIANCE.md`.
@@ -100,7 +100,7 @@ Metric definitions:
 - `INCENTIVES.md`
 - `GAMIFICATION.md`
 
-## 14. Out of Scope for V0.5
+## 14. Out of Scope for V1
 - Additional delivery channels beyond push/SMS
 - Full peer-to-peer synchronization as primary transport
 - Unbounded AI autonomy without policy constraints

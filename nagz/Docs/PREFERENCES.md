@@ -1,4 +1,4 @@
-# Nagz Preferences and Sync API (V0.5)
+# Nagz Preferences and Sync API (V1)
 
 ## 1. Goals
 - Persist user-level settings across devices.
@@ -20,7 +20,7 @@ The server stores one canonical preference document per `user_id` and `family_id
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 1,
   "user_id": "usr_123",
   "family_id": "fam_abc",
   "role": "guardian",
@@ -84,9 +84,9 @@ The server stores one canonical preference document per `user_id` and `family_id
   - global hard-stop limits
 
 ## 5. Key Constraints
-- `schema_version`: integer, required.
+- `schema_version`: `"0.5"` for this release.
 - `role`: `guardian` or `child`, required.
-- `default_strategy`: V0.5 supports only `friendly_reminder`.
+- `default_strategy`: V1 supports only `friendly_reminder`.
 - `priority_channels`: subset of `["push", "sms"]`.
 - `ai_mediation.tone`: `neutral`, `supportive`, or `firm`.
 - `ai_mediation.pushback_mode`: `off` or `bounded`.
@@ -100,14 +100,14 @@ Base path: `/api/v1`
 `GET /api/v1/preferences?family_id={familyId}`
 
 Response headers:
-- `ETag: "pref_v2_usr_123_18"`
+- `ETag: "pref_v1_usr_123_18"`
 
 Response body includes effective user prefs and read-only policy:
 
 ```json
 {
-  "schema_version": 2,
-  "etag": "pref_v2_usr_123_18",
+  "schema_version": 1,
+  "etag": "pref_v1_usr_123_18",
   "effective": {
     "prefs": {
       "notifications": {
@@ -159,13 +159,13 @@ Response body includes effective user prefs and read-only policy:
 `PATCH /api/v1/preferences?family_id={familyId}`
 
 Request headers:
-- `If-Match: "pref_v2_usr_123_18"` (required)
+- `If-Match: "pref_v1_usr_123_18"` (required)
 
 Request body:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 1,
   "set": {
     "prefs.ai_mediation.tone": "firm",
     "prefs.gamification.enabled": true,
@@ -196,7 +196,7 @@ Responses:
 - Drop queued patch if schema/policy changed and request is invalid.
 
 ## 9. Migration Strategy
-- Maintain server migrations from schema `N` to `N+1`.
+- Maintain server migrations forward from schema `1` for future releases.
 - Run migration before merge/resolution.
 - Return latest schema in API responses.
 

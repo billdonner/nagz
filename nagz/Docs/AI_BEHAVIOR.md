@@ -1,4 +1,4 @@
-# AI Behavior Policy (V0.5)
+# AI Behavior Policy (V1)
 
 ## 1. Scope
 Defines how the AI intermediary communicates, summarizes excuses, and applies bounded push-back.
