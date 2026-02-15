@@ -6,6 +6,8 @@
 - `assigner` is an allowed synonym in user-facing copy, but backend and specs should use `creator`.
 - Canonical completion field: `done_definition`.
 - `completion type` refers to the enum value stored in `done_definition`.
+- Canonical strategy field name is `strategy_template`.
+- Preferences compatibility alias: `default_strategy` is a legacy key alias for `default_strategy_template`.
 
 ## 2. Core Domain Terms
 - `nag`: A reminder task from a `creator` to a `recipient`.

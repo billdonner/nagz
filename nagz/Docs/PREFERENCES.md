@@ -38,7 +38,7 @@ The server stores one canonical preference document per `user_id` and `family_id
       "priority_channels": ["push", "sms"]
     },
     "nag_defaults": {
-      "default_strategy": "friendly_reminder",
+      "default_strategy_template": "friendly_reminder",
       "default_due_offset_minutes": 60,
       "allow_behavior_escalation": true,
       "allow_time_escalation": true
@@ -88,7 +88,8 @@ The server stores one canonical preference document per `user_id` and `family_id
 ## 5. Key Constraints
 - `schema_version`: `1`.
 - `role`: `guardian` or `child` (derived from family membership; read-only).
-- `default_strategy`: V1.0 supports only `friendly_reminder`.
+- `default_strategy_template`: V1.0 supports only `friendly_reminder`.
+- Legacy alias `default_strategy` may be accepted for backward compatibility, but responses use `default_strategy_template`.
 - `priority_channels`: subset of `["push", "sms"]`.
 - Delivery resolution for `priority_channels`: evaluate in order and skip channels that are disabled or currently non-compliant (for example, SMS unsubscribed).
 - `ai_mediation.tone`: `neutral`, `supportive`, or `firm`.
@@ -132,7 +133,7 @@ Response body includes effective user prefs and read-only policy:
         "priority_channels": ["push", "sms"]
       },
       "nag_defaults": {
-        "default_strategy": "friendly_reminder",
+        "default_strategy_template": "friendly_reminder",
         "default_due_offset_minutes": 60,
         "allow_behavior_escalation": true,
         "allow_time_escalation": true
@@ -217,14 +218,7 @@ All non-2xx API responses use this envelope:
 }
 ```
 
-Canonical V1 codes:
-- `AUTHZ_DENIED` -> `403`
-- `VALIDATION_ERROR` -> `422`
-- `POLICY_FORBIDDEN` -> `403`
-- `POLICY_INVALID_VALUE` -> `422`
-- `PRECONDITION_FAILED` -> `412`
-- `RATE_LIMITED` -> `429`
-- `NOT_FOUND` -> `404`
+Canonical error codes are authoritative in `ARCHITECTURE.md` section 9.
 
 ## 8. Merge and Conflict Behavior
 - Partial patch updates only specified keys.
@@ -242,6 +236,7 @@ Canonical V1 codes:
 ## 10. Snooze Semantics (Normative)
 - `snooze` defers next eligible reminder delivery only; it does not mark completion.
 - Snooze does not cancel the nag.
+- Default `max_snooze_minutes` is `30`, configurable guardian policy range `5..120`.
 - Snooze cannot extend beyond `max_snooze_minutes` policy bound.
 - A snooze during overdue phases delays the next reminder but does not reset miss history.
 - If quiet hours begin during a snooze, delivery waits until both snooze and quiet-hour constraints are cleared.

@@ -89,3 +89,39 @@ Baseline: V1.0 spec remediation pass (review-driven)
   - explicit snapshot/event retention entries by table class
 - Updated `PARENT_GUARDIAN_USER_MANUAL.md` for terminology and phase/snooze clarity.
 - Updated `CATALOG.md` and root `README.md` to include new docs.
+
+---
+
+Date: 2026-02-15
+Baseline: V2 consistency remediation pass
+
+## Summary
+- Addressed second-round cross-reference, model, API, and compliance consistency issues.
+
+## Changes
+- `PREFERENCES.md`
+  - Renamed canonical prefs key to `default_strategy_template` with legacy alias note for `default_strategy`.
+  - Added normative `max_snooze_minutes` default/range in snooze semantics.
+  - Converted error-code section to reference `ARCHITECTURE.md` as authoritative source.
+- `ARCHITECTURE.md`
+  - Added explicit cross-reference to phase definitions in `REQUIREMENTS.md` section 6.
+  - Added `strategy_template` and `status` to `nags` model plus status materialization note.
+  - Clarified consent scope with `family_id_nullable` and user-vs-family scoped consent handling.
+  - Added default API throttle profile.
+  - Updated V1.0/later section to cite normative phase source.
+- `API_SURFACE.md`
+  - Declared `ARCHITECTURE.md` as single source for error codes.
+  - Added family creation/join endpoints.
+  - Added endpoint-level authorization/consent annotations.
+  - Added minimal request semantics for `/status` vs `/excuses`.
+- `PARENT_GUARDIAN_USER_MANUAL.md`
+  - Normalized `nag` capitalization and heading language.
+  - Added user-facing phase behavior summaries and transitions.
+  - Restored retention summary while keeping compliance doc authoritative.
+- `SAFETY_AND_COMPLIANCE.md`
+  - Added explicit default API rate-limit values.
+  - Added legal-review language for state breach laws and COPPA/FTC implications.
+  - Added third-party processor obligations and sub-processor controls.
+  - Clarified `sms_opt_in` as user-scoped consent.
+- `GLOSSARY.md`
+  - Added strategy key naming and legacy alias definition.

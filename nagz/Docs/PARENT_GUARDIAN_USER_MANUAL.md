@@ -9,7 +9,7 @@ This manual is for guardians who create, monitor, and adjust nags for family mem
 - Child accounts must be linked to a guardian-managed family.
 
 ## 3. Core Terms
-- Nag: A reminder task sent from one member (`creator`) to another (`recipient`).
+- nag: A reminder task sent from one member (`creator`) to another (`recipient`).
 - Strategy template: How reminders escalate over time. In V1.0 this is `friendly_reminder` with time-based and behavior-based phases.
 - Done definition: How completion is recorded (`ack_only`, `binary_check`, `binary_with_note`).
 - Incentive: Reward or consequence tied to outcome.
@@ -23,8 +23,8 @@ This manual is for guardians who create, monitor, and adjust nags for family mem
 5. Configure notification preferences (push/SMS).
 6. Set quiet hours and daily limits.
 
-## 5. Creating a Nag
-1. Open `New Nag`.
+## 5. Creating a nag
+1. Open `New nag`.
 2. Choose recipient.
 3. Enter task name and optional details.
 4. Set due date/time.
@@ -34,13 +34,13 @@ This manual is for guardians who create, monitor, and adjust nags for family mem
 8. Optionally attach reward/consequence policy.
 9. Review and send.
 
-## 6. Escalation Phases
+## 6. Escalation phases
 `friendly_reminder` uses these phases:
-- `phase_0_initial`
-- `phase_1_due_soon`
-- `phase_2_overdue_soft`
-- `phase_3_overdue_bounded_pushback`
-- `phase_4_guardian_review`
+- `phase_0_initial`: first delivery, supportive tone, recipient notified.
+- `phase_1_due_soon`: reminder before due time, recipient notified.
+- `phase_2_overdue_soft`: first overdue follow-up, recipient notified with concise urgency.
+- `phase_3_overdue_bounded_pushback`: limited push-back attempts using policy cooldown/attempt caps.
+- `phase_4_guardian_review`: unresolved miss routed for guardian action/approval flows.
 
 ## 7. Monitoring Progress
 - Use dashboard to view:
@@ -96,7 +96,8 @@ Guardian reports include:
 
 ## 14. Privacy, Retention, and Deletion
 - Data is encrypted in transit and at rest.
-- Retention windows are defined in `SAFETY_AND_COMPLIANCE.md`.
+- Summary: operational data is retained up to 24 months, with shorter windows for some metadata/snapshots.
+- Full retention schedule is authoritative in `SAFETY_AND_COMPLIANCE.md`.
 - Deleted accounts are purged/anonymized within 30 days, except required audit/legal records.
 
 ## 15. Common Guardian Workflows

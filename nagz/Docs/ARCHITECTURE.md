@@ -39,7 +39,7 @@ Pure P2P is insufficient for V1.0 because:
 
 5. Escalation Engine
 - Time-based and behavior-based trigger evaluation
-- `friendly_reminder` phase execution
+- `friendly_reminder` phase execution (normative phase definitions in `REQUIREMENTS.md` section 6)
 
 6. Incentives Engine
 - Reward/consequence rule evaluation
@@ -98,7 +98,7 @@ Conflict rules:
 1. Nag created with due time, strategy template, and typed `done_definition`.
 2. Recipient updates status or submits excuse through AI mediation.
 3. AI summarizes and records attributable mediation events.
-4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy inside `friendly_reminder` phases.
+4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy inside `friendly_reminder` phases defined in `REQUIREMENTS.md` section 6.
 5. Notification intents emit to push/SMS channels.
 6. Incentives engine applies reward/consequence events under policy.
 7. Completion cancels pending escalation intents.
@@ -109,7 +109,7 @@ Conflict rules:
 - `family_memberships` (user_id, family_id, role, status, joined_at, left_at)
 - `relationships` (party_a, party_b, status)
 - `nag_policies` (id, family_id, owners, strategy_template, constraints, status)
-- `nags` (id, family_id, policy_id, creator_id, recipient_id, due_at, category, done_definition)
+- `nags` (id, family_id, policy_id, strategy_template, creator_id, recipient_id, due_at, category, done_definition, status)
 - `nag_events` (id, nag_id, event_type, actor_id, at, payload)
 - `ai_mediation_events` (id, nag_id, prompt_type, tone, summary, at)
 - `deliveries` (id, nag_event_id, channel, status, provider_ref)
@@ -119,10 +119,17 @@ Conflict rules:
 - `gamification_snapshots` (family_id, period_start, leaderboard_json)
 - `abuse_reports` (id, reporter_id, target_id, reason, status)
 - `blocks` (id, actor_id, target_id, state)
-- `consents` (id, user_id, family_id, consent_type, granted_at, revoked_at)
+- `consents` (id, user_id, family_id_nullable, consent_type, granted_at, revoked_at)
 - `reports_snapshots` (family_id, period_start, metrics_json)
 
 Consent type values are authoritative in `SAFETY_AND_COMPLIANCE.md`.
+Consent scope:
+- user-level consents (for example `sms_opt_in`) use `family_id_nullable = null`.
+- family-scoped consents (for example `child_account_creation`, `ai_mediation`, `gamification_participation`) use a concrete `family_id`.
+
+nag `status` semantics:
+- status is a materialized read-model value derived from canonical `nag_events`.
+- allowed status values in V1.0: `open`, `completed`, `missed`, `cancelled_relationship_change`.
 
 ## 9. API Error Contract
 All API errors use a shared envelope with:
@@ -131,7 +138,7 @@ All API errors use a shared envelope with:
 - `request_id`
 - optional `details`
 
-Canonical V1 codes and HTTP mappings:
+Canonical V1 codes and HTTP mappings (authoritative list):
 - `AUTHZ_DENIED` -> `403`
 - `VALIDATION_ERROR` -> `422`
 - `POLICY_FORBIDDEN` -> `403`
@@ -149,6 +156,11 @@ Minimum endpoint coverage is defined in `API_SURFACE.md`.
 - Dead-letter handling for repeated send failures
 - Policy-based throttles per actor, relationship, and channel
 - Auditability for all user-visible state transitions
+- Default API throttle profile:
+  - authenticated read requests: 120 requests/minute per user
+  - authenticated write requests: 60 requests/minute per user
+  - nag status/excuse writes: 30 requests/minute per user
+  - abuse report submissions: 10 requests/hour per user
 
 ## 12. Deployment Pattern
 - Start as centralized multi-tenant deployment.
@@ -160,7 +172,7 @@ Implement in V1.0:
 - Central backend authority
 - Local-first client sync queue
 - Push + SMS channels (US-only for SMS in V1.0)
-- `friendly_reminder` strategy template with defined phases
+- `friendly_reminder` strategy template with phases defined in `REQUIREMENTS.md` section 6
 - AI mediation with bounded behavior controls
 - Minimum hard-stop and safety controls
 

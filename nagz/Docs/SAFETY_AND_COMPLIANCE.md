@@ -21,6 +21,12 @@ Required server controls:
 - Daily nag cap enforcement
 - Audit logging for abuse-relevant actions
 
+Default API rate-limit profile:
+- authenticated read requests: 120 requests/minute per user.
+- authenticated write requests: 60 requests/minute per user.
+- nag status/excuse writes: 30 requests/minute per user.
+- abuse report submissions: 10 requests/hour per user.
+
 Hard-stop defaults:
 - `daily_nag_cap`: default 8 per creator per family per local day (configurable guardian policy range `1..8`).
 
@@ -54,6 +60,7 @@ V1.0 consent types (authoritative list):
 
 Consent behavior:
 - Consent records store `granted_at` and optional `revoked_at`.
+- `sms_opt_in` is user-scoped consent; other V1 consent types are family-scoped.
 - Revoked consent immediately blocks new actions that require that consent.
 - In-flight behavior on revocation:
   - queued AI messages are canceled on `ai_mediation` revocation.
@@ -87,14 +94,23 @@ Baseline handling:
 ## 8. Breach Response
 - Maintain incident severity classification and on-call escalation.
 - Contain and assess scope before restoring affected flows.
-- Notify impacted users and guardians per applicable US legal timelines.
+- Notify impacted users and guardians per applicable US state breach-notification laws and contractual obligations.
+- COPPA/FTC implications for child data incidents require legal review and documented decision records.
 - Preserve forensic audit evidence and document remediation actions.
 
-## 9. Medical/Medication Scope Disclaimer
+## 9. Third-Party Processors
+- Notification delivery uses third-party processors (for example APNs/FCM and SMS providers).
+- Processor usage must follow data-minimization principles and contract controls.
+- Required controls:
+  - documented data-processing terms
+  - sub-processor inventory and review
+  - least-data payload design for push/SMS providers
+
+## 10. Medical/Medication Scope Disclaimer
 - `meds` category is a reminder taxonomy label only.
 - V1.0 does not provide diagnosis, dosing advice, clinical decision support, or medical-device functionality.
 
-## 10. App Store Readiness Checklist
+## 11. App Store Readiness Checklist
 Before submission, verify:
 - Block/report/mute flows are user-visible and functional.
 - Child safeguards and age-gate behavior are implemented and test-covered.
