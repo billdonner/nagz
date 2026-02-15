@@ -11,6 +11,7 @@ Documentation for product behavior, architecture, and policy.
 
 ## Guides
 - `PARENT_GUARDIAN_USER_MANUAL.md`
+- `web-samples/parent-guardian-manual.html`
 - `web-samples/guardian-portal.html`
 
 ## V1.0 Feature Specs

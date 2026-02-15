@@ -12,6 +12,7 @@ Nagz is a family-oriented AI-mediated nagging/reminder iOS app.
 - `nagz/Docs/INCENTIVES.md`
 - `nagz/Docs/GAMIFICATION.md`
 - `nagz/Docs/PARENT_GUARDIAN_USER_MANUAL.md`
+- `nagz/Docs/web-samples/parent-guardian-manual.html`
 - `nagz/Docs/web-samples/guardian-portal.html`
 
 ## Xcode
