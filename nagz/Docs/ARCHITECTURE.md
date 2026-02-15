@@ -1,4 +1,4 @@
-# Nagz Hybrid Architecture (V1)
+# Nagz Hybrid Architecture (V1.0)
 
 ## 1. Decision Summary
 Nagz uses a hybrid architecture:
@@ -7,7 +7,7 @@ Nagz uses a hybrid architecture:
 - Optional peer-assisted sync may be added later, with server reconciliation.
 
 ## 2. Why Central Authority Is Required
-Pure P2P is insufficient for V1 because:
+Pure P2P is insufficient for V1.0 because:
 - Push and SMS require provider-backed server integrations.
 - Guardian-only reporting and consequence controls need centralized authorization.
 - AI mediation and auditability need durable shared history.
@@ -36,7 +36,7 @@ Pure P2P is insufficient for V1 because:
 
 5. Escalation Engine
 - Time-based and behavior-based trigger evaluation
-- Strategy execution (`friendly_reminder` in V1)
+- Strategy execution (`friendly_reminder` in V1.0)
 
 6. Incentives Engine
 - Reward/consequence rule evaluation
@@ -127,11 +127,11 @@ Conflict rules:
 - Use managed queue/scheduler for escalation work.
 - Keep service boundaries clean for scale-out.
 
-## 11. V1 vs Later
-Implement in V1:
+## 11. V1.0 vs Later
+Implement in V1.0:
 - Central backend authority
 - Local-first client sync queue
-- Push + SMS channels (US-only for SMS in V1)
+- Push + SMS channels (US-only for SMS in V1.0)
 - Friendly reminder strategy
 - AI mediation with bounded behavior controls
 - Minimum hard-stop and safety controls

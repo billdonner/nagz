@@ -13,7 +13,7 @@ Documentation for product behavior, architecture, and policy.
 - `PARENT_GUARDIAN_USER_MANUAL.md`
 - `web-samples/guardian-portal.html`
 
-## V0.5 Feature Specs
+## V1.0 Feature Specs
 - `AI_BEHAVIOR.md`
 - `INCENTIVES.md`
 - `GAMIFICATION.md`

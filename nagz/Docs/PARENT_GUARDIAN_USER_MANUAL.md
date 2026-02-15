@@ -1,11 +1,11 @@
-# Nagz Parent and Guardian User Manual (V0.5)
+# Nagz Parent and Guardian User Manual (V1.0)
 
 ## 1. Who This Is For
 This manual is for guardians who create, monitor, and adjust Nagz reminders for family members.
 
 ## 2. Before You Start
-- Launch region for V0.5 is United States.
-- SMS reminders are US-only in V0.5.
+- Launch region for V1.0 is United States.
+- SMS reminders are US-only in V1.0.
 - Child accounts must be linked to a guardian-managed family.
 
 ## 3. Core Terms

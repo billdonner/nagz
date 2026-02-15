@@ -1,4 +1,4 @@
-# Incentives and Consequences Spec (V1)
+# Incentives and Consequences Spec (V1.0)
 
 ## 1. Purpose
 Define how rewards and consequences are configured, evaluated, and applied to task outcomes.
@@ -28,18 +28,18 @@ Record:
 - approval source (auto vs guardian-confirmed)
 - timestamp
 
-## 6. Initial V1 Reward Types
+## 6. Initial V1.0 Reward Types
 - points
 - streak bonus
 - badge progress
 - optional privilege unlock marker
 
-## 7. Initial V1 Consequence Types
+## 7. Initial V1.0 Consequence Types
 - point deduction
 - streak reset
 - require guardian review message
 
-## 8. Out of Scope for V1
+## 8. Out of Scope for V1.0
 - Monetary transfers
 - Fully automatic real-world punishments
 - Cross-family public ranking consequences

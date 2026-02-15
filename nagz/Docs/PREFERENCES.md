@@ -1,4 +1,4 @@
-# Nagz Preferences and Sync API (V1)
+# Nagz Preferences and Sync API (V1.0)
 
 ## 1. Goals
 - Persist user-level settings across devices.
@@ -86,7 +86,7 @@ The server stores one canonical preference document per `user_id` and `family_id
 ## 5. Key Constraints
 - `schema_version`: `"0.5"` for this release.
 - `role`: `guardian` or `child`, required.
-- `default_strategy`: V1 supports only `friendly_reminder`.
+- `default_strategy`: V1.0 supports only `friendly_reminder`.
 - `priority_channels`: subset of `["push", "sms"]`.
 - `ai_mediation.tone`: `neutral`, `supportive`, or `firm`.
 - `ai_mediation.pushback_mode`: `off` or `bounded`.

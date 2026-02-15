@@ -1,15 +1,15 @@
-# Nagz Policy Matrix (V1)
+# Nagz Policy Matrix (V1.0)
 
 ## 1. Scope
-This document defines the authoritative allow/deny rules for who can create Nags for whom in V1.
+This document defines the authoritative allow/deny rules for who can create Nags for whom in V1.0.
 
 ## 2. Role Pair Permissions
 | Creator Role | Recipient Role | Allowed | Notes |
 |---|---|---|---|
 | guardian | guardian | Yes | Includes bilateral nagging between guardians. |
 | guardian | child | Yes | Guardian-to-child allowed when relationship is active. |
-| child | guardian | No | Explicitly denied in V1. |
-| child | child | No | Denied in V1 to reduce abuse and moderation risk. |
+| child | guardian | No | Explicitly denied in V1.0. |
+| child | child | No | Denied in V1.0 to reduce abuse and moderation risk. |
 
 ## 3. Relationship State Requirements
 - Nag creation requires an active bilateral relationship record.

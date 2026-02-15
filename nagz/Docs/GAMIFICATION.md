@@ -1,4 +1,4 @@
-# Gamification Spec (V1)
+# Gamification Spec (V1.0)
 
 ## 1. Purpose
 Increase consistency and motivation through simple, transparent game mechanics.
@@ -31,7 +31,7 @@ Increase consistency and motivation through simple, transparent game mechanics.
 - Badge progress
 - Correlation between gamification and completion rate
 
-## 7. V1 Constraints
+## 7. V1.0 Constraints
 - Keep formulas explainable and deterministic.
 - Avoid hidden multipliers.
 - No cross-family global leaderboard.

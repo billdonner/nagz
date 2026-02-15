@@ -1,4 +1,4 @@
-# Nagz Safety and Compliance (V1)
+# Nagz Safety and Compliance (V1.0)
 
 ## 1. Purpose
 Define minimum safety, privacy, and compliance requirements needed for implementation and App Store readiness.
@@ -6,9 +6,9 @@ Define minimum safety, privacy, and compliance requirements needed for implement
 ## 2. Launch Compliance Scope
 - Launch geography: United States only.
 - SMS launch jurisdictions: United States only.
-- Child-account handling is implemented for United States launch requirements only in V1.
+- Child-account handling is implemented for United States launch requirements only in V1.0.
 
-## 3. Anti-Abuse Controls (V1)
+## 3. Anti-Abuse Controls (V1.0)
 Required user controls:
 - Block user
 - Mute/snooze reminders
@@ -20,7 +20,7 @@ Required server controls:
 - Daily Nag cap enforcement
 - Audit logging for abuse-relevant actions
 
-## 4. Moderation Workflow and SLA (V1)
+## 4. Moderation Workflow and SLA (V1.0)
 - Abuse reports create tracked moderation records.
 - Each report has status: `open`, `investigating`, `resolved`, `dismissed`.
 - Enforcement actions include warning, temporary restriction, and relationship suspension.
@@ -37,7 +37,7 @@ SLA targets:
 - Child-to-guardian nagging is blocked by policy.
 - Child account creation requires guardian-mediated consent flow.
 - Child data collection must be minimized to what is operationally necessary.
-- V1 age thresholds and region logic are limited to United States launch requirements.
+- V1.0 age thresholds and region logic are limited to United States launch requirements.
 
 ## 6. SMS Compliance Baseline
 - Explicit SMS opt-in required before first SMS delivery.
