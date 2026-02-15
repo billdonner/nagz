@@ -39,6 +39,14 @@ SLA targets:
 - Child data collection must be minimized to what is operationally necessary.
 - V1.0 age thresholds and region logic are limited to United States launch requirements.
 
+V1.0 consent types and behavior:
+- `child_account_creation`
+- `sms_opt_in`
+- `ai_mediation`
+- `gamification_participation`
+- Consent records store `granted_at` and optional `revoked_at`.
+- Revoked consent immediately blocks new actions that require that consent.
+
 ## 6. SMS Compliance Baseline
 - Explicit SMS opt-in required before first SMS delivery.
 - Clear in-app disclosure of SMS purpose and frequency characteristics.
@@ -51,6 +59,8 @@ Data classes and retention:
 - Notification metadata: retain 12 months.
 - User-generated content (nag text, notes, excuses): retain until account deletion request or 24 months of inactivity.
 - Audit/moderation records: retain 36 months.
+- Gamification events (points/streak/badge changes): operational events retention (24 months).
+- Gamification leaderboard/snapshot aggregates: notification/report snapshot retention (12 months).
 
 Deleted account handling:
 - Purge or anonymize deleted account data within 30 days, except required audit/legal records.

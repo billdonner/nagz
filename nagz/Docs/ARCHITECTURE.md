@@ -23,11 +23,13 @@ Pure P2P is insufficient for V1.0 because:
 - AuthN/AuthZ
 - Validation and rate limiting
 - Versioned API surface
+- Common error envelope and canonical error codes
 
 3. Policy Service
 - Role and relationship enforcement
 - Co-owner guardian policy rules
 - Hard-stop policy enforcement (quiet hours, caps, throttles)
+- Dual-approval evaluation for co-owned policy changes
 
 4. AI Mediation Service
 - Excuse intake and normalization
@@ -36,7 +38,7 @@ Pure P2P is insufficient for V1.0 because:
 
 5. Escalation Engine
 - Time-based and behavior-based trigger evaluation
-- Strategy execution (`friendly_reminder` in V1.0)
+- Strategy execution (`friendly_reminder` in V1.0) where escalation is parameterized behavior, not a separate strategy family
 
 6. Incentives Engine
 - Reward/consequence rule evaluation
@@ -95,7 +97,7 @@ Conflict rules:
 1. Nag created with due time, strategy, and typed `done_definition`.
 2. Recipient updates status or submits excuse through AI mediation.
 3. AI summarizes and records attributable mediation events.
-4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy.
+4. Escalation checkpoints evaluate completion status, behavior signals, and hard-stop policy inside `friendly_reminder` phases.
 5. Notification intents emit to push/SMS channels.
 6. Incentives engine applies reward/consequence events under policy.
 7. Completion cancels pending escalation intents.
@@ -115,19 +117,40 @@ Conflict rules:
 - `consents` (id, user_id, consent_type, granted_at, revoked_at)
 - `reports_snapshots` (family_id, period_start, metrics_json)
 
-## 9. Reliability and Safety Controls
+Consent types in V1.0:
+- `child_account_creation`
+- `sms_opt_in`
+- `ai_mediation`
+- `gamification_participation`
+
+## 9. API Error Contract
+All API errors use a shared envelope with:
+- `code`
+- `message`
+- `request_id`
+- optional `details`
+
+Canonical V1 codes:
+- `AUTHZ_DENIED`
+- `VALIDATION_ERROR`
+- `POLICY_VIOLATION`
+- `PRECONDITION_FAILED`
+- `RATE_LIMITED`
+- `NOT_FOUND`
+
+## 10. Reliability and Safety Controls
 - Idempotent write APIs
 - Retry with exponential backoff for provider failures
 - Dead-letter handling for repeated send failures
 - Policy-based throttles per actor, relationship, and channel
 - Auditability for all user-visible state transitions
 
-## 10. Deployment Pattern
+## 11. Deployment Pattern
 - Start as centralized multi-tenant deployment.
 - Use managed queue/scheduler for escalation work.
 - Keep service boundaries clean for scale-out.
 
-## 11. V1.0 vs Later
+## 12. V1.0 vs Later
 Implement in V1.0:
 - Central backend authority
 - Local-first client sync queue

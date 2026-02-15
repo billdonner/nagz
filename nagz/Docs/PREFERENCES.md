@@ -58,8 +58,7 @@ The server stores one canonical preference document per `user_id` and `family_id
     "gamification": {
       "enabled": true,
       "show_leaderboard": false,
-      "show_badges": true,
-      "points_multiplier": 1.0
+      "show_badges": true
     },
     "consent_controls": {
       "allow_snooze": true,
@@ -82,15 +81,17 @@ The server stores one canonical preference document per `user_id` and `family_id
   - role/relationship permissions
   - guardian-only report access
   - global hard-stop limits
+  - gamification scoring multiplier (`points_multiplier`)
 
 ## 5. Key Constraints
-- `schema_version`: `"0.5"` for this release.
+- `schema_version`: `1` for this release.
 - `role`: `guardian` or `child`, required.
 - `default_strategy`: V1.0 supports only `friendly_reminder`.
 - `priority_channels`: subset of `["push", "sms"]`.
+- Delivery resolution for `priority_channels`: evaluate in order and skip channels that are disabled or currently non-compliant (for example, SMS unsubscribed).
 - `ai_mediation.tone`: `neutral`, `supportive`, or `firm`.
 - `ai_mediation.pushback_mode`: `off` or `bounded`.
-- `gamification.points_multiplier`: decimal `0.1..3.0`.
+- `points_multiplier`: policy-controlled decimal `0.1..3.0` and read-only in user preference patch APIs.
 - `mute_until`: RFC3339 timestamp or `null`.
 
 ## 6. Minimal Sync API
@@ -142,14 +143,14 @@ Response body includes effective user prefs and read-only policy:
       "gamification": {
         "enabled": true,
         "show_leaderboard": false,
-        "show_badges": true,
-        "points_multiplier": 1.0
+        "show_badges": true
       }
     },
     "policy": {
       "report_visibility": "guardian_only",
       "daily_nag_cap": 8,
-      "child_can_nag_guardian": false
+      "child_can_nag_guardian": false,
+      "gamification_points_multiplier": 1.0
     }
   }
 }
@@ -181,6 +182,32 @@ Responses:
 - `200 OK` with updated effective configuration and new `etag`.
 - `412 Precondition Failed` if `If-Match` is stale.
 - `422 Unprocessable Entity` for invalid keys or policy-violating values.
+- `403 Forbidden` for role/authorization or policy-scope violations.
+- `429 Too Many Requests` for rate limiting.
+
+### 6.3 Error Envelope
+All non-2xx API responses use this envelope:
+
+```json
+{
+  "error": {
+    "code": "POLICY_VIOLATION",
+    "message": "Field is read-only for this role.",
+    "request_id": "req_abc123",
+    "details": {
+      "field": "prefs.gamification.points_multiplier"
+    }
+  }
+}
+```
+
+Canonical V1 codes:
+- `AUTHZ_DENIED` -> `403`
+- `VALIDATION_ERROR` -> `422`
+- `POLICY_VIOLATION` -> `403` or `422`
+- `PRECONDITION_FAILED` -> `412`
+- `RATE_LIMITED` -> `429`
+- `NOT_FOUND` -> `404`
 
 ## 7. Merge and Conflict Behavior
 - Partial patch updates only specified keys.

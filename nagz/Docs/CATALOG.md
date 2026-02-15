@@ -8,6 +8,7 @@ Documentation for product behavior, architecture, and policy.
 - `PREFERENCES.md`
 - `POLICY_MATRIX.md`
 - `SAFETY_AND_COMPLIANCE.md`
+- `SPEC_BASELINE_CHANGELOG.md`
 
 ## Guides
 - `PARENT_GUARDIAN_USER_MANUAL.md`

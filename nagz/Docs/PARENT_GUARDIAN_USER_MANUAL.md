@@ -10,7 +10,7 @@ This manual is for guardians who create, monitor, and adjust Nagz reminders for 
 
 ## 3. Core Terms
 - Nag: A reminder task sent from one member to another.
-- Strategy: How reminders escalate over time.
+- Strategy: How reminders escalate over time. In V1.0 this is `friendly_reminder` with time-based and behavior-based phases.
 - Done definition: How completion is recorded (`ack_only`, `binary_check`, `binary_with_note`).
 - Incentive: Reward or consequence tied to outcome.
 - AI mediation: AI-assisted status/excuse handling and summaries.
@@ -30,7 +30,7 @@ This manual is for guardians who create, monitor, and adjust Nagz reminders for 
 4. Set due date/time.
 5. Select `friendly_reminder` strategy.
 6. Select done definition type.
-7. Assign optional category (chores, meds, homework, appointments).
+7. Assign optional category (`chores`, `meds`, `homework`, `appointments`, `other`).
 8. Optionally attach reward/consequence policy.
 9. Review and send.
 
@@ -94,7 +94,8 @@ Guardian reports include:
 ### A. Co-own a policy with another guardian
 1. Open policy settings.
 2. Add guardian co-owner.
-3. Confirm ownership and approval behavior.
+3. Confirm dual-approval behavior for co-owned policy changes.
+4. If co-owners disagree on a change, current policy remains active.
 
 ### B. Respond to repeated misses
 1. Open recipient trend view.

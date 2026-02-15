@@ -15,17 +15,19 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - Guardians can nag guardians and guardians can nag children.
 - Children cannot nag guardians.
 - Two guardians can co-own a Nag policy.
+- Co-owned policy changes require dual guardian approval; if co-owners disagree, current active policy remains.
 - Only guardians can view family-level reports and history.
 - The authoritative allow/deny matrix is defined in `POLICY_MATRIX.md`.
 
 ## 4. Core Task Model
 - A Nag has `creator`, `recipient`, `due_at`, `category`, `strategy`, and typed `done_definition`.
-- `done_definition` is Nag-specific.
+- `done_definition` is selected per Nag from the V1.0 completion enum.
 - V1.0 completion types:
   - `ack_only`
   - `binary_check`
   - `binary_with_note`
 - V1.0 default strategy template: `friendly_reminder`.
+- V1.0 `category` is a closed enum: `chores`, `meds`, `homework`, `appointments`, `other`.
 - Each Nag can attach reward and consequence policy references.
 
 ## 5. AI Mediation Requirements
@@ -36,8 +38,8 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - All AI actions must be auditable and attributable.
 
 ## 6. Escalation and Notifications
-- Time-based escalation triggers.
-- Behavior-based escalation triggers.
+- Time-based escalation triggers are phase transitions within `friendly_reminder`.
+- Behavior-based escalation triggers are bounded push-back and cadence adjustments within `friendly_reminder`.
 - V1.0 channels: push notifications and SMS.
 - V1.0 includes mandatory hard-stop enforcement:
   - quiet hours

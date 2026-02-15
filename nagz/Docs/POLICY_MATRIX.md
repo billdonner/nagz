@@ -15,6 +15,8 @@ This document defines the authoritative allow/deny rules for who can create Nags
 - Nag creation requires an active bilateral relationship record.
 - Suspended or revoked relationships cannot create or receive Nags.
 - A co-owned Nag policy is valid only when both guardian owners have active status.
+- Co-owned policy edits require both guardian owners to approve.
+- On co-owner disagreement, keep the current active policy and deny consequence-expanding changes.
 
 ## 4. Report and History Visibility
 | Viewer Role | Access |
@@ -26,6 +28,7 @@ This document defines the authoritative allow/deny rules for who can create Nags
 - Server enforces all matrix rules on every write request.
 - Client UI may hide disallowed actions, but server enforcement is authoritative.
 - Violating requests return authorization error and are audit-logged.
+- Errors follow shared API codes (for example `AUTHZ_DENIED`, `POLICY_VIOLATION`).
 
 ## 6. Policy Change Governance
 - Any future change to role pair permissions requires:

@@ -19,11 +19,13 @@ Increase consistency and motivation through simple, transparent game mechanics.
 - Gamification can be enabled/disabled per user.
 - Leaderboard visibility is optional.
 - Guardians can require non-public mode for child accounts.
+- Participation is gated by `gamification_participation` consent state.
 
 ## 5. Anti-Gaming Controls
 - Only canonical server events can change score.
 - Duplicate/offline replay protection via idempotency keys.
 - Suspicious activity flagged for guardian review.
+- `points_multiplier` is guardian-controlled policy (range `0.1..3.0`) and not user-patchable.
 
 ## 6. Reporting Outputs
 - Weekly score delta
@@ -35,3 +37,4 @@ Increase consistency and motivation through simple, transparent game mechanics.
 - Keep formulas explainable and deterministic.
 - Avoid hidden multipliers.
 - No cross-family global leaderboard.
+- Retention: score/streak/badge events retain 24 months; leaderboard/snapshot aggregates retain 12 months.

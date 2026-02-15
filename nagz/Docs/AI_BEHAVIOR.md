@@ -3,6 +3,10 @@
 ## 1. Scope
 Defines how the AI intermediary communicates, summarizes excuses, and applies bounded push-back.
 
+Authorization boundary:
+- Role and relationship authorization is enforced upstream by policy services per `POLICY_MATRIX.md`.
+- AI behavior operates only on policy-authorized requests.
+
 ## 2. Allowed AI Actions
 - Send reminder messages according to configured strategy.
 - Collect and structure recipient excuses/status updates.
