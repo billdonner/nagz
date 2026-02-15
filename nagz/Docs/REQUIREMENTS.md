@@ -79,8 +79,8 @@ Metric definitions:
 - Guardian review path exists for disputed consequences.
 
 ## 11. Compliance and Privacy
-- Child-account safeguards and guardian consent model are required.
-- SMS opt-in and unsubscribe semantics are required.
+- Child-account safeguards and guardian consent model are required (US launch scope for V0.5).
+- SMS opt-in and unsubscribe semantics are required (US-only launch jurisdiction in V0.5).
 - Sensitive data in logs/notifications must be minimized.
 - Retention/deletion behavior is policy-driven and auditable.
 - Detailed requirements are defined in `SAFETY_AND_COMPLIANCE.md`.

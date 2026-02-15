@@ -131,7 +131,7 @@ Conflict rules:
 Implement in V0.5:
 - Central backend authority
 - Local-first client sync queue
-- Push + SMS channels
+- Push + SMS channels (US-only for SMS in V0.5)
 - Friendly reminder strategy
 - AI mediation with bounded behavior controls
 - Minimum hard-stop and safety controls

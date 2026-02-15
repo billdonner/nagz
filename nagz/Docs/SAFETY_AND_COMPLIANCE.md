@@ -1,9 +1,14 @@
-# Nagz Safety and Compliance (V1)
+# Nagz Safety and Compliance (V0.5)
 
 ## 1. Purpose
 Define minimum safety, privacy, and compliance requirements needed for implementation and App Store readiness.
 
-## 2. Anti-Abuse Controls (V1)
+## 2. Launch Compliance Scope
+- Launch geography: United States only.
+- SMS launch jurisdictions: United States only.
+- Child-account handling is implemented for United States launch requirements only in V0.5.
+
+## 3. Anti-Abuse Controls (V0.5)
 Required user controls:
 - Block user
 - Mute/snooze reminders
@@ -15,48 +20,50 @@ Required server controls:
 - Daily Nag cap enforcement
 - Audit logging for abuse-relevant actions
 
-## 3. Moderation Workflow (V1)
+## 4. Moderation Workflow and SLA (V0.5)
 - Abuse reports create tracked moderation records.
 - Each report has status: `open`, `investigating`, `resolved`, `dismissed`.
 - Enforcement actions include warning, temporary restriction, and relationship suspension.
 - Moderator actions are audit logged.
 
-## 4. Child and Guardian Compliance
+SLA targets:
+- Critical safety reports: first review within 4 hours.
+- Standard abuse reports: first review within 24 hours.
+- Low-severity complaints: first review within 72 hours.
+- User receives immediate in-app acknowledgment on report submission.
+
+## 5. Child and Guardian Compliance
 - Child accounts must be attached to a guardian-managed family.
 - Child-to-guardian nagging is blocked by policy.
 - Child account creation requires guardian-mediated consent flow.
 - Child data collection must be minimized to what is operationally necessary.
+- V0.5 age thresholds and region logic are limited to United States launch requirements.
 
-## 5. SMS Compliance Baseline
+## 6. SMS Compliance Baseline
 - Explicit SMS opt-in required before first SMS delivery.
 - Clear in-app disclosure of SMS purpose and frequency characteristics.
 - STOP/HELP semantics supported at provider integration layer.
 - Unsubscribed recipients must not receive further SMS until re-opt-in.
 
-## 6. Data Handling and Retention
-Data classes:
-- Operational events
-- Notification metadata
-- User-generated content (nag text, optional notes)
-- Audit/moderation records
+## 7. Data Handling and Retention
+Data classes and retention:
+- Operational events: retain 24 months.
+- Notification metadata: retain 12 months.
+- User-generated content (nag text, notes, excuses): retain until account deletion request or 24 months of inactivity.
+- Audit/moderation records: retain 36 months.
+
+Deleted account handling:
+- Purge or anonymize deleted account data within 30 days, except required audit/legal records.
 
 Baseline handling:
 - Encrypt in transit and at rest.
 - Keep sensitive content out of logs.
-- Define retention windows per data class.
 - Support user account deletion requests with policy-aware deletion/anonymization.
 
-## 7. App Store Readiness Checklist
+## 8. App Store Readiness Checklist
 Before submission, verify:
 - Block/report/mute flows are user-visible and functional.
 - Child safeguards are implemented and test-covered.
 - Account deletion flow is implemented in-app.
 - Privacy disclosures match actual data usage.
 - SMS opt-in and unsubscribe behavior are implemented and tested.
-
-## 8. Open Compliance Decisions to Confirm
-These need explicit product/legal confirmation before production launch:
-1. Exact age thresholds and region handling for child accounts.
-2. Retention durations per data class.
-3. Moderation response-time targets.
-4. Jurisdictions supported for SMS at launch.
