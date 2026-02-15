@@ -50,3 +50,6 @@ Support guardian-visible reports including:
 - Full negotiation workflow for "Done" criteria
 - Additional escalation channels beyond Push/SMS
 - Full hard-stop policy engine
+
+## 9. Preferences and Sync (V1)
+Detailed schema, precedence, and API contract are defined in `PREFERENCES.md`.
