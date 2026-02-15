@@ -9,7 +9,11 @@ Documentation for product behavior, architecture, and policy.
 - `POLICY_MATRIX.md`
 - `SAFETY_AND_COMPLIANCE.md`
 
-## V1 Feature Specs
+## Guides
+- `PARENT_GUARDIAN_USER_MANUAL.md`
+- `web-samples/guardian-portal.html`
+
+## V0.5 Feature Specs
 - `AI_BEHAVIOR.md`
 - `INCENTIVES.md`
 - `GAMIFICATION.md`

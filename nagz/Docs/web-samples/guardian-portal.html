@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nagz Guardian Portal - Sample Screens</title>
+  <style>
+    :root {
+      --bg0: #f5f7ef;
+      --bg1: #dfecd9;
+      --ink: #1f2b1c;
+      --ink-soft: #3c4e36;
+      --card: #ffffff;
+      --line: #c8d5bd;
+      --accent: #0e7a4b;
+      --warn: #a65a19;
+      --danger: #8f2b2b;
+      --shadow: 0 10px 28px rgba(20, 35, 18, 0.12);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+      background: radial-gradient(circle at 12% 10%, var(--bg1) 0%, var(--bg0) 45%, #eef3e5 100%);
+      line-height: 1.4;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .masthead {
+      background: linear-gradient(120deg, #193726, #255f45);
+      color: #f2f8ef;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .masthead h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .screen {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: translateY(12px);
+      opacity: 0;
+      animation: rise 500ms ease forwards;
+    }
+
+    .screen:nth-child(2) { animation-delay: 70ms; }
+    .screen:nth-child(3) { animation-delay: 140ms; }
+    .screen:nth-child(4) { animation-delay: 210ms; }
+    .screen:nth-child(5) { animation-delay: 280ms; }
+
+    @keyframes rise {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .screen header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #f7fbf4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .screen h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.74rem;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: #fefefe;
+    }
+
+    .body { padding: 12px 14px 14px; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      background: #fcfffa;
+    }
+
+    .kpi b { font-size: 1rem; display: block; }
+    .kpi span { font-size: 0.78rem; color: var(--ink-soft); }
+
+    .list { margin: 0; padding: 0; list-style: none; }
+    .list li {
+      border-top: 1px dashed var(--line);
+      padding: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.84rem;
+    }
+    .list li:first-child { border-top: 0; }
+
+    .bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #e7efe1;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #1f8a56, #49a86f);
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .input {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 0.82rem;
+      background: #fbfef9;
+    }
+
+    .btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 7px 10px;
+      font-size: 0.79rem;
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .btn.warn { background: var(--warn); }
+    .btn.danger { background: var(--danger); }
+
+    .note {
+      margin-top: 8px;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+    }
+
+    @media (max-width: 640px) {
+      .masthead { flex-direction: column; align-items: flex-start; }
+      .kpis { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="masthead">
+      <h1>Nagz Guardian Portal: V0.5 Sample Screens</h1>
+      <span class="tag">US Launch Scope</span>
+    </section>
+
+    <section class="screen-grid">
+      <article class="screen">
+        <header>
+          <h2>Dashboard</h2>
+          <span class="pill">Guardian View</span>
+        </header>
+        <div class="body">
+          <div class="kpis">
+            <div class="kpi"><b>89%</b><span>Completion Rate</span></div>
+            <div class="kpi"><b>22m</b><span>Median Response</span></div>
+            <div class="kpi"><b>4</b><span>Overdue Today</span></div>
+            <div class="kpi"><b>2</b><span>Miss Streak Alerts</span></div>
+          </div>
+          <ul class="list">
+            <li><span>Homework Check-in (Eli)</span><span class="pill">Due 6:30 PM</span></li>
+            <li><span>Medication Reminder (Sam)</span><span class="pill">Overdue +15m</span></li>
+            <li><span>Trash Day Prep (Co-Guardian)</span><span class="pill">Done</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="screen">
+        <header>
+          <h2>Create Nag</h2>
+          <span class="pill">Friendly Reminder</span>
+        </header>
+        <div class="body">
+          <div class="row">
+            <div class="input">Recipient: Eli (Child)</div>
+            <div class="input">Task: Start math homework</div>
+            <div class="input">Due: Today 6:30 PM</div>
+            <div class="input">Done Type: binary_with_note</div>
+            <div class="input">Reward/Consequence Policy: Homework Weekday</div>
+          </div>
+          <div class="btns">
+            <button class="btn">Send Nag</button>
+            <button class="btn warn">Save Draft</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen">
+        <header>
+          <h2>Review Queue</h2>
+          <span class="pill">Guardian Approval</span>
+        </header>
+        <div class="body">
+          <ul class="list">
+            <li><span>Consequence proposal: screen-time -15m</span><button class="btn warn">Review</button></li>
+            <li><span>Dispute: “Done but not counted”</span><button class="btn">Open</button></li>
+            <li><span>AI summary needs guardian acknowledgment</span><button class="btn">Approve</button></li>
+          </ul>
+          <p class="note">High-impact consequences require guardian confirmation.</p>
+        </div>
+      </article>
+
+      <article class="screen">
+        <header>
+          <h2>Reports</h2>
+          <span class="pill">Weekly Trends</span>
+        </header>
+        <div class="body">
+          <div class="kpi"><b>Chores: 81%</b><span>Up 6% week-over-week</span><div class="bar"><i style="width:81%"></i></div></div>
+          <div class="kpi"><b>Homework: 93%</b><span>Stable</span><div class="bar"><i style="width:93%"></i></div></div>
+          <div class="kpi"><b>Meds: 97%</b><span>Up 2% week-over-week</span><div class="bar"><i style="width:97%"></i></div></div>
+          <p class="note">Reports are visible to guardians only.</p>
+        </div>
+      </article>
+
+      <article class="screen">
+        <header>
+          <h2>Safety Center</h2>
+          <span class="pill">Moderation</span>
+        </header>
+        <div class="body">
+          <ul class="list">
+            <li><span>Block member interaction</span><button class="btn danger">Block</button></li>
+            <li><span>Mute reminders (2 hours)</span><button class="btn warn">Mute</button></li>
+            <li><span>Report abuse</span><button class="btn danger">Report</button></li>
+          </ul>
+          <p class="note">SLA targets: critical 4h, standard 24h, low 72h.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
