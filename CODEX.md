@@ -16,7 +16,7 @@ If these do not match the expected repository, stop and switch to the correct cl
 - If duplicates exist, either archive/remove extras or make one clearly read-only.
 
 ## 3. Documentation Loading
-Before implementing changes, read all markdown docs under `nagz/Docs/` and `README.md`.
+Before implementing changes, read all markdown docs under `nagz/Docs/` and `README.md`. Start with `nagz/Docs/CATALOG.md`.
 
 Required docs:
 - `nagz/Docs/REQUIREMENTS.md`

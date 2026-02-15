@@ -19,3 +19,5 @@ Nagz is a family-oriented AI-mediated nagging/reminder iOS app.
 Open `nagz.xcodeproj`.
 
 The `nagz/` group is filesystem-synchronized, so docs in `nagz/Docs/` are visible in the Xcode project navigator.
+
+Docs index: `nagz/Docs/CATALOG.md` (with `nagz/Docs/README.md` as shim).

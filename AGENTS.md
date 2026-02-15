@@ -1,6 +1,6 @@
 # Agent Initialization
 
-When working in this repository, load and follow all markdown docs in `nagz/Docs/` before making changes:
+When working in this repository, load and follow all markdown docs in `nagz/Docs/` before making changes. Start with `nagz/Docs/CATALOG.md`.
 - `nagz/Docs/REQUIREMENTS.md`
 - `nagz/Docs/ARCHITECTURE.md`
 - `nagz/Docs/PREFERENCES.md`
