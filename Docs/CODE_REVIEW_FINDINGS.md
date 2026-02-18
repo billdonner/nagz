@@ -47,40 +47,40 @@ Comprehensive review across all 3 Nagz repos using the [Code Review Plan](CODE_R
 
 ### nagzerver (9)
 
-| # | File | Issue |
-|---|------|-------|
-| S6 | `services/nags.py:82` | Daily nag cap uses UTC midnight, not user's local day |
-| S7 | `services/nags.py:54-126` | No validation that `due_at` is in the future |
-| S8 | `services/nags.py:54-126` | No check preventing self-nagging (`creator_id == recipient_id`) |
-| S9 | `routers/preferences.py:29,61` | `db.commit()` on GET endpoints (side effect on read) |
-| S10 | `routers/sync.py:51` | N+1 subquery pattern in sync endpoint |
-| S11 | `routers/accounts.py:38-46` | `POST /accounts/export` should be GET (pure read) |
-| S12 | `routers/ai.py:43,63,83` | Calls private `ai_svc._get_nag()` instead of `nag_svc.get_nag()` |
-| S13 | `services/scheduler.py:68-85` | Quiet hours check uses UTC, not user timezone |
-| S14 | `schemas/families.py:9` | No length validation on free-text fields (name, reason, description) |
+| # | File | Issue | Status |
+|---|------|-------|--------|
+| S6 | `services/nags.py:82` | Daily nag cap uses UTC midnight, not user's local day | FIXED (documented) |
+| S7 | `services/nags.py:54-126` | No validation that `due_at` is in the future | FIXED |
+| S8 | `services/nags.py:54-126` | No check preventing self-nagging (`creator_id == recipient_id`) | FIXED |
+| S9 | `routers/preferences.py:29,61` | `db.commit()` on GET endpoints (side effect on read) | FIXED |
+| S10 | `routers/sync.py:51` | N+1 subquery pattern in sync endpoint | FIXED |
+| S11 | `routers/accounts.py:38-46` | `POST /accounts/export` should be GET (pure read) | FIXED |
+| S12 | `routers/ai.py:43,63,83` | Calls private `ai_svc._get_nag()` instead of `nag_svc.get_nag()` | FIXED |
+| S13 | `services/scheduler.py:68-85` | Quiet hours check uses UTC, not user timezone | FIXED (documented) |
+| S14 | `schemas/families.py:9` | No length validation on free-text fields (name, reason, description) | FIXED |
 
 ### nagz-web (6)
 
-| # | File | Issue |
-|---|------|-------|
-| W4 | `axios-instance.ts:52-59` | Deprecated `CancelToken` API (use `AbortController`) |
-| W5 | Multiple components | `useEffect` hooks with missing dependency arrays / stale closures |
-| W6 | All data-fetching components | No cleanup / abort on unmount in async useEffects |
-| W7 | 10 components | Non-null assertion (`!`) on `userId` throughout codebase |
-| W8 | 10 components | `familyId` read from localStorage on every render, not in React state |
-| W9 | `api/endpoints/*` | Generated API endpoint functions are never used (all calls are manual) |
+| # | File | Issue | Status |
+|---|------|-------|--------|
+| W4 | `axios-instance.ts:52-59` | Deprecated `CancelToken` API (use `AbortController`) | FIXED |
+| W5 | Multiple components | `useEffect` hooks with missing dependency arrays / stale closures | FIXED (no issues found) |
+| W6 | All data-fetching components | No cleanup / abort on unmount in async useEffects | FIXED |
+| W7 | 10 components | Non-null assertion (`!`) on `userId` throughout codebase | FIXED |
+| W8 | 10 components | `familyId` read from localStorage on every render, not in React state | Deferred (architectural) |
+| W9 | `api/endpoints/*` | Generated API endpoint functions are never used (all calls are manual) | Deferred (auto-generated) |
 
 ### nagz-ios (7)
 
-| # | File | Issue |
-|---|------|-------|
-| I4 | `AuthManager.swift:56` | Force-unwrap after TOCTOU nil check across `await` boundary |
-| I5 | `APIClient.swift:203-217` | `CacheEntry.data: Any` is not Sendable |
-| I6 | `NagCategoryAppEnum.swift:23` | Force-unwrap in `nagCategory` computed property |
-| I7 | `AuthenticatedTabView.swift:19-21` | `UUID()` fallback for nil `currentUser` generates random ID |
-| I8 | SyncService + NagzApp | GRDB sync never started; AI service created but unused |
-| I9 | `PushNotificationService.swift:34-39` | Device token registration errors silently swallowed |
-| I10 | `PolicyModels.swift:11-15` | Custom CodingKeys with `convertFromSnakeCase` is confusing |
+| # | File | Issue | Status |
+|---|------|-------|--------|
+| I4 | `AuthManager.swift:56` | Force-unwrap after TOCTOU nil check across `await` boundary | FIXED |
+| I5 | `APIClient.swift:203-217` | `CacheEntry.data: Any` is not Sendable | FIXED |
+| I6 | `NagCategoryAppEnum.swift:23` | Force-unwrap in `nagCategory` computed property | FIXED |
+| I7 | `AuthenticatedTabView.swift:19-21` | `UUID()` fallback for nil `currentUser` generates random ID | FIXED |
+| I8 | SyncService + NagzApp | GRDB sync never started; AI service created but unused | FIXED |
+| I9 | `PushNotificationService.swift:34-39` | Device token registration errors silently swallowed | FIXED |
+| I10 | `PolicyModels.swift:11-15` | Custom CodingKeys with `convertFromSnakeCase` is confusing | Deferred (minor) |
 
 ---
 
