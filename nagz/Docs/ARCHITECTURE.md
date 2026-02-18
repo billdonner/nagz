@@ -14,7 +14,7 @@ Pure P2P is insufficient for V1.0 because:
 - Abuse controls are safest when enforced centrally.
 
 ## 3. Core Components
-1. Client apps (iOS/Android/Web)
+1. Client apps (iOS, web; Android deferred post-V1.0)
 - Local encrypted cache for nags/events/preferences
 - Offline mutation queue
 - Non-authoritative local reminder scheduler
@@ -104,12 +104,12 @@ Conflict rules:
 7. Completion cancels pending escalation intents.
 
 ## 8. Core Data Model
-- `users` (id, created_at, status)
-- `families` (id, name, created_by, created_at, status)
+- `users` (id, email, password_hash, display_name, date_of_birth, created_at, status)
+- `families` (id, name, created_by, invite_code, created_at, status)
 - `family_memberships` (user_id, family_id, role, status, joined_at, left_at)
 - `relationships` (party_a, party_b, status)
 - `nag_policies` (id, family_id, owners, strategy_template, constraints, status)
-- `nags` (id, family_id, policy_id, strategy_template, creator_id, recipient_id, due_at, category, done_definition, status)
+- `nags` (id, family_id, policy_id, strategy_template, creator_id, recipient_id, due_at, category, done_definition, description, recurrence, parent_nag_id, last_notified_phase, status, created_at)
 - `nag_events` (id, nag_id, event_type, actor_id, at, payload)
 - `ai_mediation_events` (id, nag_id, prompt_type, tone, summary, at)
 - `deliveries` (id, nag_event_id, channel, status, provider_ref)
@@ -121,6 +121,10 @@ Conflict rules:
 - `blocks` (id, actor_id, target_id, state)
 - `consents` (id, user_id, family_id_nullable, consent_type, granted_at, revoked_at)
 - `reports_snapshots` (family_id, period_start, metrics_json)
+- `audit_events` (id, event_type, actor_id, resource_type, resource_id, payload, request_id, at)
+- `user_preferences` (id, user_id, family_id, prefs_json, schema_version, etag, updated_at)
+- `device_tokens` (id, user_id, token, platform, created_at)
+- `policy_approvals` (id, policy_id, approver_id, approved_at)
 
 Consent type values are authoritative in `SAFETY_AND_COMPLIANCE.md`.
 Consent scope:
@@ -146,6 +150,7 @@ Canonical V1 codes and HTTP mappings (authoritative list):
 - `PRECONDITION_FAILED` -> `412`
 - `RATE_LIMITED` -> `429`
 - `NOT_FOUND` -> `404`
+- `INTERNAL_ERROR` -> `500`
 
 ## 10. API Surface Coverage
 Minimum endpoint coverage is defined in `API_SURFACE.md`.
@@ -156,11 +161,13 @@ Minimum endpoint coverage is defined in `API_SURFACE.md`.
 - Dead-letter handling for repeated send failures
 - Policy-based throttles per actor, relationship, and channel
 - Auditability for all user-visible state transitions
-- Default API throttle profile:
-  - authenticated read requests: 120 requests/minute per user
-  - authenticated write requests: 60 requests/minute per user
-  - nag status/excuse writes: 30 requests/minute per user
-  - abuse report submissions: 10 requests/hour per user
+- Default API throttle profile (differentiated by endpoint tier):
+  - authenticated read requests (GET): 120 requests/minute per user
+  - authenticated write requests (POST/PATCH/DELETE): 60 requests/minute per user
+  - nag status/excuse/escalation-recompute writes: 30 requests/minute per user
+  - abuse report submissions (POST /abuse-reports): 10 requests/hour per user
+- Rate limit response headers on every response: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
+- Rate limited responses include `Retry-After` header.
 
 ## 12. Deployment Pattern
 - Start as centralized multi-tenant deployment.

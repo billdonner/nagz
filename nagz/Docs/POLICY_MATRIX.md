@@ -7,12 +7,18 @@ This document defines the authoritative allow/deny rules for who can create nags
 | Creator Role | Recipient Role | Allowed | Notes |
 |---|---|---|---|
 | guardian | guardian | Yes | Includes bilateral nagging between guardians. |
+| guardian | participant | Yes | Guardian-to-participant allowed when relationship is active. |
 | guardian | child | Yes | Guardian-to-child allowed when relationship is active. |
+| participant | child | Yes | Participant-to-child allowed when relationship is active. |
+| participant | guardian | Yes | Participant-to-guardian allowed when relationship is active. |
+| participant | participant | Yes | Participant-to-participant allowed when relationship is active. |
 | child | guardian | No | Explicitly denied in V1.0. |
+| child | participant | No | Denied in V1.0. |
 | child | child | No | Denied in V1.0 to reduce abuse and moderation risk. |
 
 Self-nag rules:
 - guardian -> guardian (self): allowed.
+- participant -> participant (self): allowed.
 - child -> child (self): denied in V1.0.
 
 Role cardinality rule:
@@ -29,6 +35,7 @@ Role cardinality rule:
 | Viewer Role | Access |
 |---|---|
 | guardian | Full family history/reports for authorized family scope |
+| participant | No access to family reports/history |
 | child | No access to family reports/history |
 
 ## 5. Enforcement Rules

@@ -16,10 +16,11 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - V1.0 uses `strategy_template` with runtime `escalation_phase` values.
 
 ## 4. Roles and Relationship Rules
-- Supported roles: `guardian`, `child`.
+- Supported roles: `guardian`, `participant`, `child`.
 - Roles are family-scoped.
 - The app supports bilateral relationships between two members.
-- Guardians can create nags for guardians and children.
+- Guardians can create nags for guardians, participants, and children.
+- Participants can create nags for guardians, participants, and children.
 - Children cannot create nags for guardians.
 - Children cannot create nags for children in V1.0.
 - Self-nags are allowed only for guardians in V1.0.
@@ -29,8 +30,10 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - The authoritative allow/deny matrix is defined in `POLICY_MATRIX.md`.
 
 ## 5. Core Nag Model
-- A nag has `creator`, `recipient`, `due_at`, `category`, `strategy_template`, and typed `done_definition`.
+- A nag has `creator`, `recipient`, `due_at`, `category`, `strategy_template`, typed `done_definition`, optional `description`, and optional `recurrence`.
 - `done_definition` is selected per nag from the V1.0 completion enum.
+- V1.0 recurrence values: `daily`, `weekly`, `monthly` (or none for one-off nags).
+- Recurring nags create child nag instances linked via `parent_nag_id`.
 - V1.0 completion types:
   - `ack_only`
   - `binary_check`

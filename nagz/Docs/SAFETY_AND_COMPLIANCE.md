@@ -24,7 +24,7 @@ Required server controls:
 Default API rate-limit profile:
 - authenticated read requests: 120 requests/minute per user.
 - authenticated write requests: 60 requests/minute per user.
-- nag status/excuse writes: 30 requests/minute per user.
+- nag status/excuse/escalation-recompute writes: 30 requests/minute per user.
 - abuse report submissions: 10 requests/hour per user.
 
 Hard-stop defaults:
@@ -111,10 +111,38 @@ Baseline handling:
 - V1.0 does not provide diagnosis, dosing advice, clinical decision support, or medical-device functionality.
 
 ## 11. App Store Readiness Checklist
-Before submission, verify:
+
+### Server-Side Requirements (all implemented)
+
+| Requirement | Status | Endpoint/Feature |
+|---|---|---|
+| Block user | Done | `POST /blocks`, `GET /blocks`, `PATCH /blocks/{id}` |
+| Report abuse | Done | `POST /abuse-reports`, `GET /abuse-reports/{id}` |
+| Mute/snooze | Done | `PATCH /preferences` (interaction_controls.mute_until) |
+| Account deletion | Done | `DELETE /accounts/{userId}` (soft-delete) |
+| Data export | Done | `POST /accounts/export` (GDPR/CCPA) |
+| Privacy policy | Done | `GET /legal/privacy-policy` (no auth) |
+| Terms of service | Done | `GET /legal/terms-of-service` (no auth) |
+| Age gate (COPPA) | Done | DOB at signup, under-13 → pending_guardian_consent |
+| Guardian consent | Done | `POST /consents` (child_account_creation type) |
+| SMS opt-in | Done | `POST /consents` (sms_opt_in type), revocable |
+| Consent management | Done | 4 consent types: child_account, sms, ai_mediation, gamification |
+| Audit trail | Done | Immutable audit_events table, all mutations logged |
+| Rate limiting | Done | 4-tier differentiated limits |
+| Quiet hours | Done | Via preferences, enforced by scheduler |
+| Relationship suspension | Done | `POST /relationships/{id}/suspend` |
+
+### Client-Side Requirements (verify before submission)
 - Block/report/mute flows are user-visible and functional.
-- Child safeguards and age-gate behavior are implemented and test-covered.
-- Account deletion flow is implemented in-app.
-- Privacy disclosures match actual data usage.
-- SMS opt-in and unsubscribe behavior are implemented and tested.
-- COPPA-facing disclosures and guardian consent flows are present.
+- Account deletion is accessible in-app settings.
+- Privacy policy and TOS are displayed during signup and accessible from settings.
+- Age gate collects date of birth before account creation.
+- Guardian consent UI is presented for child accounts.
+- SMS opt-in disclosure is shown before enabling SMS.
+- Push notification permission is requested with clear purpose string.
+
+### App Store Review Notes
+- The "meds" category is a reminder label only; no medical advice is provided.
+- AI mediation is bounded by guardian policy and does not make autonomous decisions.
+- All safety controls are enforced server-side; client UI hides disallowed actions as convenience only.
+- COPPA compliance: child accounts require verifiable guardian consent before activation.

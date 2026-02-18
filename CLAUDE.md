@@ -44,11 +44,12 @@ After any API or model change in nagzerver:
 
 ## Test Suites
 
-| Repo | Command |
-|------|---------|
-| nagzerver | `cd ~/nagzerver && uv run pytest` |
-| nagz-web | `cd ~/nagz-web && npx vitest run` |
-| nagz-ios | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
+| Repo | Tests | Command |
+|------|-------|---------|
+| nagzerver | 175 | `cd ~/nagzerver && uv run pytest` |
+| nagz-web | 105 | `cd ~/nagz-web && npx vitest run` |
+| nagz-ios | 166 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
+| **Total** | **446** | |
 
 ## GitHub
 

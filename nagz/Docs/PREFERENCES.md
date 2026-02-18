@@ -86,8 +86,8 @@ The server stores one canonical preference document per `user_id` and `family_id
   - AI push-back attempt/cooldown bounds
 
 ## 5. Key Constraints
-- `schema_version`: `1`.
-- `role`: `guardian` or `child` (derived from family membership; read-only).
+- `schema_version`: `2` (current).
+- `role`: `guardian`, `participant`, or `child` (derived from family membership; read-only).
 - `default_strategy_template`: V1.0 supports only `friendly_reminder`.
 - Legacy alias `default_strategy` may be accepted for backward compatibility, but responses use `default_strategy_template`.
 - `priority_channels`: subset of `["push", "sms"]`.
@@ -97,6 +97,16 @@ The server stores one canonical preference document per `user_id` and `family_id
 - `interaction_controls.allow_snooze`: patchable boolean, constrained by policy.
 - `interaction_controls.mute_until`: RFC3339 timestamp or `null`.
 - `points_multiplier`: policy-controlled decimal `0.1..3.0` and read-only in user preference patch APIs.
+
+## 5b. AI Opt-Out Preferences
+Two top-level boolean keys in `prefs_json` control AI features independently:
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `ai_server_enabled` | `true` | Enables server-side AI heuristic endpoints (summarize, tone, coaching, etc.) |
+| `ai_on_device_enabled` | `true` | Enables on-device AI features (iOS Apple Intelligence) |
+
+Both sit under the existing `ai_mediation` consent gate. Guardians can set these for children via `PATCH /preferences/{userId}`. The server AI endpoints check both the consent and the `ai_server_enabled` preference — if either is missing, 403 `AUTHZ_DENIED`.
 
 ## 6. Cross-Spec Linkage
 - AI fields map to `AI_BEHAVIOR.md`.
@@ -176,31 +186,27 @@ Response body includes effective user prefs and read-only policy:
 ### 7.2 Patch User Preferences
 `PATCH /api/v1/preferences?family_id={familyId}`
 
-Request headers:
-- `If-Match: "pref_v1_usr_123_18"` (required)
-
-Request body:
+V1.0 implementation uses a simplified patch format:
 
 ```json
 {
-  "schema_version": 1,
-  "set": {
-    "prefs.ai_mediation.tone": "firm",
-    "prefs.gamification.enabled": true,
-    "prefs.notifications.sms_enabled": true
-  },
-  "unset": [
-    "prefs.interaction_controls.mute_until"
-  ]
+  "prefs_json": {
+    "tone": "firm",
+    "gamification_enabled": true,
+    "notification_frequency": "always"
+  }
 }
 ```
 
+The `prefs_json` dict is shallow-merged with existing preferences. Keys present in the request overwrite existing values; keys not present are unchanged.
+
 Responses:
-- `200 OK` with updated effective configuration and new `etag`.
-- `412 Precondition Failed` if `If-Match` is stale.
-- `422 Unprocessable Entity` for invalid keys or invalid values.
+- `200 OK` with updated preferences, `schema_version`, and `etag`.
+- `422 Unprocessable Entity` for invalid values.
 - `403 Forbidden` for authorization or disallowed policy scope.
 - `429 Too Many Requests` for rate limiting.
+
+Future versions may add `set`/`unset` semantics and `If-Match`/`ETag` optimistic concurrency (412 Precondition Failed).
 
 ### 7.3 Error Envelope
 All non-2xx API responses use this envelope:

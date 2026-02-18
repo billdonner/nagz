@@ -21,10 +21,10 @@ Nagz is a family-oriented AI-mediated nagging/reminder app.
 
 ## Ecosystem
 
-| Repo | Description |
-|------|-------------|
-| [nagzerver](https://github.com/billdonner/nagzerver) | Python API server (source of truth) |
-| [nagz-ios](https://github.com/billdonner/nagz-ios) | SwiftUI iOS client |
-| [nagz-web](https://github.com/billdonner/nagz-web) | React/TypeScript web client |
+| Repo | Description | Tests |
+|------|-------------|-------|
+| [nagzerver](https://github.com/billdonner/nagzerver) | Python API server (source of truth) | 175 |
+| [nagz-ios](https://github.com/billdonner/nagz-ios) | SwiftUI iOS client | 166 |
+| [nagz-web](https://github.com/billdonner/nagz-web) | React/TypeScript web client | 105 |
 
 Docs index: `nagz/Docs/CATALOG.md` (with `nagz/Docs/README.md` as shim).
