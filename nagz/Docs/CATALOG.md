@@ -21,5 +21,6 @@ Documentation for product behavior, architecture, and policy.
 
 ## V1.0 Feature Specs
 - `AI_BEHAVIOR.md`
+- `AI_ARCHITECTURE.md`
 - `INCENTIVES.md`
 - `GAMIFICATION.md`

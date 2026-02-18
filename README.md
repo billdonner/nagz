@@ -11,6 +11,7 @@ Nagz is a family-oriented AI-mediated nagging/reminder app.
 - `nagz/Docs/GLOSSARY.md`
 - `nagz/Docs/API_SURFACE.md`
 - `nagz/Docs/AI_BEHAVIOR.md`
+- `nagz/Docs/AI_ARCHITECTURE.md`
 - `nagz/Docs/INCENTIVES.md`
 - `nagz/Docs/GAMIFICATION.md`
 - `nagz/Docs/PARENT_GUARDIAN_USER_MANUAL.md`
