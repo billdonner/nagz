@@ -27,3 +27,8 @@ Documentation for product behavior, architecture, and policy.
 
 ## V2.0 Feature Specs
 - `SIRI_SHORTCUTS.md`
+
+## Release & Review
+- `TESTFLIGHT_TEST_PLAN.md` — Beta tester instructions
+- `APP_REVIEW_GUIDE.md` — Detailed walkthrough for Apple App Review
+- `APP_STORE_SUBMISSION.md` — Full submission checklist and timeline
