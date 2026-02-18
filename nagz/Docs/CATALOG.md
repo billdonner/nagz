@@ -24,3 +24,6 @@ Documentation for product behavior, architecture, and policy.
 - `AI_BEHAVIOR.md`
 - `INCENTIVES.md`
 - `GAMIFICATION.md`
+
+## V2.0 Feature Specs
+- `SIRI_SHORTCUTS.md`
