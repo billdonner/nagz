@@ -51,6 +51,37 @@ After any API or model change in nagzerver:
 | nagz-ios | 179 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
 | **Total** | **459** | |
 
+## Custom Skills (Slash Commands)
+
+Available when working from `~/nagz`:
+
+| Skill | What it does |
+|-------|-------------|
+| `/test-all` | Run all 3 test suites in parallel, report results table |
+| `/sync-api` | Regenerate openapi.json → TS client, check iOS model drift |
+| `/gap-check` | Compare specs in `Docs/` vs implementations across all repos |
+| `/ship` | Test all → commit dirty repos → push everything |
+
+Skills live in `~/nagz/.claude/commands/`.
+
+## Release & Review Docs
+
+| Document | Path | Purpose |
+|----------|------|---------|
+| TestFlight Test Plan | `Docs/TESTFLIGHT_TEST_PLAN.md` | Beta tester walkthrough |
+| App Review Guide | `Docs/APP_REVIEW_GUIDE.md` | Detailed Apple reviewer guide (15 sections) |
+| App Store Submission | `Docs/APP_STORE_SUBMISSION.md` | Full submission checklist (6 phases) |
+
+## Key Architecture Notes
+
+- **iOS services are actors** (KeychainService, APIClient, SyncService, DatabaseManager) — Sendable by default
+- **AuthManager** is `@Observable @MainActor` — never use from App Intents
+- **IntentServiceContainer** provides shared lazy services for Siri intents
+- **User/family IDs** persisted to UserDefaults (nagz_user_id, nagz_family_id) for intent access
+- **AppEntity.defaultQuery** must be computed property (not stored var) for Swift 6
+- **Swift Testing `@Suite(.serialized)`** needed when tests share UserDefaults state
+- **xcodegen generate** required after adding/removing any Swift file
+
 ## GitHub
 
 - Username: billdonner
