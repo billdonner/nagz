@@ -13,7 +13,7 @@ Nagz uses a split AI architecture: on-device intelligence for privacy-sensitive,
 
 ## 3. AI Service Interface
 
-All AI features are defined as operations on this shared interface. Each operation has an on-device implementation (iOS 18.1+) and a server implementation (web + fallback).
+All AI features are defined as operations on this shared interface. Each operation has an on-device implementation (iOS 26+) and a server implementation (web + fallback).
 
 | Operation | Input | Output |
 |-----------|-------|--------|
@@ -35,25 +35,25 @@ All AI features are defined as operations on this shared interface. Each operati
          │                         │
   ┌──────┴───────┐         ┌──────┴──────┐
   │  On-Device   │         │   Server    │
-  │  (iOS 18.1+) │         │  (all clients) │
+  │  (iOS 26+)   │         │  (all clients) │
   │              │         │              │
   │  Foundation  │         │  Heuristic   │
   │  Models      │         │  engine      │
-  │  + SwiftData │         │  (upgradable │
+  │  + GRDB      │         │  (upgradable │
   │  event cache │         │   to LLM)   │
   └──────────────┘         └──────────────┘
 ```
 
 ### 4.1 iOS path (on-device preferred)
 
-1. Device maintains a local event cache in SwiftData, synced from server via `GET /events?since=<timestamp>`.
-2. AI operations run against the local cache using Apple Foundation Models framework.
+1. Device maintains a local event cache in GRDB (SQLite), synced from server via `GET /api/v1/sync/events?family_id=&since=`.
+2. AI operations run against the local GRDB cache using heuristic logic (upgradable to Apple Foundation Models).
 3. Results are used locally for UX (tone, coaching, pattern alerts).
 4. Structured outcomes (excuse category, completion status) are sent to server as canonical events.
 5. Falls back to server AI endpoints when:
-   - Device is pre-iOS 18.1
-   - Foundation Models are unavailable (unsupported hardware)
-   - Device is offline and cache is stale beyond threshold
+   - GRDB cache is stale (>24 hours since last sync)
+   - Data for the requested nag/user is unavailable locally
+   - Complex operations that need full family data (digest, push-back)
 
 ### 4.2 Web path (server always)
 
@@ -62,21 +62,23 @@ All AI features are defined as operations on this shared interface. Each operati
 3. Server returns the result; web client displays it.
 4. No local model, no local event cache beyond session state.
 
-### 4.3 Fallback path (iOS without Apple Intelligence)
+### 4.3 Fallback path
 
-Same as web path. The iOS `AIService` protocol detects availability at runtime:
+The `OnDeviceAIService` automatically falls back to `ServerAIService` when the local GRDB cache is stale or data is unavailable. The iOS `AIService` protocol:
 
 ```swift
-protocol AIService {
-    func summarizeExcuse(_ text: String, context: NagContext) async -> ExcuseSummary
-    func selectTone(for nag: Nag, history: [NagEvent]) async -> ToneMode
-    func detectPatterns(userId: String, events: [NagEvent]) async -> [Insight]
-    func generateCoaching(for nag: Nag, history: [NagEvent]) async -> String
-    func evaluatePushBack(for nag: Nag, history: [NagEvent], policy: Policy) async -> PushBackDecision
+protocol AIService: Sendable {
+    func summarizeExcuse(_ text: String, nagId: UUID) async throws -> ExcuseSummaryResponse
+    func selectTone(nagId: UUID) async throws -> ToneSelectResponse
+    func coaching(nagId: UUID) async throws -> CoachingResponse
+    func patterns(userId: UUID, familyId: UUID) async throws -> PatternsResponse
+    func digest(familyId: UUID) async throws -> DigestResponse
+    func predictCompletion(nagId: UUID) async throws -> PredictCompletionResponse
+    func pushBack(nagId: UUID) async throws -> PushBackResponse
 }
 
 // Two implementations:
-// - OnDeviceAIService (Foundation Models + SwiftData)
+// - OnDeviceAIService (heuristics against GRDB cache, falls back to server)
 // - ServerAIService (calls /api/v1/ai/* endpoints)
 ```
 
@@ -110,17 +112,19 @@ All endpoints require authentication. Policy and consent checks apply (see `AI_B
 
 ### 6.2 Sync protocol
 
-1. Device stores a `last_sync_at` timestamp per entity type.
-2. On app foreground / every 5 minutes while active, device calls `GET /api/v1/events?since=<last_sync_at>&types=nag_event,mediation,gamification`.
-3. Server returns new events in chronological order.
-4. Device appends to SwiftData and updates `last_sync_at`.
+1. Device stores a `last_sync_at` timestamp in the `sync_metadata` GRDB table.
+2. On app foreground / every 5 minutes while active, `SyncService` calls `GET /api/v1/sync/events?family_id=<id>&since=<last_sync_at>`.
+3. Server returns new nags, nag_events, ai_mediation_events, and gamification_events (max 500 per entity per request).
+4. Device upserts into GRDB and updates `last_sync_at` in the `sync_metadata` table.
 5. If `last_sync_at` is older than 24 hours, device marks cache as stale and falls back to server AI until re-synced.
 
 ### 6.3 Storage
 
-- SwiftData with on-device encryption (iOS Data Protection).
+- GRDB (SQLite via `DatabasePool`) with iOS Data Protection (file-level encryption).
+- Database location: `Application Support/NagzCache/cache.sqlite`.
+- WAL mode enabled by default for concurrent reads/writes.
 - Estimated size: ~50KB per user per month of active use.
-- Cache is deleted on logout and account deletion.
+- Cache is deleted on logout (`DatabaseManager.clearAll()`) and account deletion.
 
 ## 7. Heuristic Engine (Server v1)
 
@@ -233,10 +237,11 @@ All AI features require the `ai_mediation` consent (see `SAFETY_AND_COMPLIANCE.m
 
 ## 12. Implementation Order
 
-1. **Server heuristic engine** — implement tone selection, excuse categorization, pattern detection as pure functions.
-2. **Server AI endpoints** — expose heuristics via `/api/v1/ai/*` endpoints.
-3. **Web integration** — call server AI endpoints from nagz-web components.
-4. **iOS AIService protocol** — define the shared interface with `ServerAIService` calling the endpoints.
-5. **iOS event cache** — SwiftData sync for local event history.
-6. **iOS OnDeviceAIService** — Foundation Models implementation behind `@available(iOS 18.1, *)`.
-7. **LLM upgrade** — swap heuristics for real model when ready.
+1. ~~**Server heuristic engine** — implement tone selection, excuse categorization, pattern detection as pure functions.~~ DONE
+2. ~~**Server AI endpoints** — expose heuristics via `/api/v1/ai/*` endpoints (7 endpoints, 29 tests).~~ DONE
+3. ~~**Server sync endpoint** — `GET /api/v1/sync/events` for incremental iOS cache sync (4 tests).~~ DONE
+4. **Web integration** — call server AI endpoints from nagz-web components (TS client generated).
+5. ~~**iOS AIService protocol** — `AIService` protocol with `ServerAIService` and `OnDeviceAIService`.~~ DONE
+6. ~~**iOS GRDB cache** — `DatabaseManager` with 6 tables, `SyncService` polling every 5 min.~~ DONE
+7. ~~**iOS OnDeviceAIService** — heuristic logic against GRDB cache with server fallback.~~ DONE
+8. **LLM upgrade** — swap heuristics for Apple Foundation Models (iOS 26+) or server LLM when ready.
