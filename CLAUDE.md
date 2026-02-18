@@ -48,9 +48,9 @@ After any API or model change in nagzerver:
 | Repo | Tests | Command |
 |------|-------|---------|
 | nagzerver | 175 | `cd ~/nagzerver && uv run pytest` |
-| nagz-web | 105 | `cd ~/nagz-web && npx vitest run` |
+| nagz-web | 106 | `cd ~/nagz-web && npx vitest run` |
 | nagz-ios | 181 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
-| **Total** | **461** | |
+| **Total** | **462** | |
 
 ## Custom Skills (Slash Commands)
 

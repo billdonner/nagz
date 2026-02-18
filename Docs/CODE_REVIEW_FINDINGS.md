@@ -19,27 +19,27 @@ Comprehensive review across all 3 Nagz repos using the [Code Review Plan](CODE_R
 
 | # | File | Issue | Status |
 |---|------|-------|--------|
-| S1 | `services/nags.py:77-79` | Participant can nag guardians — role check missing | |
-| S2 | `core/config.py:15` | JWT secret defaults to `"change-me-in-production"` — no startup guard | |
-| S3 | `services/apns.py:47` | Synchronous `open()` blocks event loop in async APNS path | |
-| S4 | `schemas/auth.py:12-16` | No email format validation on signup/login | |
-| S5 | `schemas/auth.py:14` | No password strength validation — empty passwords allowed | |
+| S1 | `services/nags.py:77-79` | Participant can nag guardians — role check missing | FIXED |
+| S2 | `core/config.py:15` | JWT secret defaults to `"change-me-in-production"` — no startup guard | FIXED |
+| S3 | `services/apns.py:47` | Synchronous `open()` blocks event loop in async APNS path | FIXED |
+| S4 | `schemas/auth.py:12-16` | No email format validation on signup/login | FIXED |
+| S5 | `schemas/auth.py:14` | No password strength validation — empty passwords allowed | FIXED |
 
 ### nagz-web
 
 | # | File | Issue | Status |
 |---|------|-------|--------|
-| W1 | `components/Login.tsx:3-11` | Hardcoded dev credentials and family ID shipped to browser | |
-| W2 | `auth.tsx:19,25` + `axios-instance.ts:9` | Auth token in localStorage — XSS exfiltration risk | |
-| W3 | `axios-instance.ts:17-26` | 401 interceptor bypasses React state, causes full page reload | |
+| W1 | `components/Login.tsx:3-11` | Hardcoded dev credentials and family ID shipped to browser | FIXED |
+| W2 | `auth.tsx:19,25` + `axios-instance.ts:9` | Auth token in localStorage — XSS exfiltration risk | FIXED |
+| W3 | `axios-instance.ts:17-26` | 401 interceptor bypasses React state, causes full page reload | FIXED |
 
 ### nagz-ios
 
 | # | File | Issue | Status |
 |---|------|-------|--------|
-| I1 | `NagzApp.swift:25` | `try!` on DatabaseManager init — crashes on failure | |
-| I2 | `Models/ReportModels.swift:9-19` | `ReportMetrics` CodingKeys conflict with `convertFromSnakeCase` — production decode failure | |
-| I3 | `Models/AIModels.swift:44` | `ToneSelectResponse.missCount7d` mismatches `convertFromSnakeCase` → `missCount7D` | |
+| I1 | `NagzApp.swift:25` | `try!` on DatabaseManager init — crashes on failure | FIXED |
+| I2 | `Models/ReportModels.swift:9-19` | `ReportMetrics` CodingKeys conflict with `convertFromSnakeCase` — production decode failure | FIXED |
+| I3 | `Models/AIModels.swift:44` | `ToneSelectResponse.missCount7d` mismatches `convertFromSnakeCase` → `missCount7D` | FIXED |
 
 ---
 
