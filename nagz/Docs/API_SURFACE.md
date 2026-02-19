@@ -145,3 +145,9 @@ All AI endpoints require `requires_consent(ai_mediation)` and the `ai_server_ena
 
 ## 19. Sync
 - `GET /sync/events?family_id={familyId}&since={timestamp}` (`member`, paginated) — incremental sync of events since a given timestamp.
+
+## 20. Metrics
+- `GET /metrics` (unauthenticated) — operational metrics for monitoring dashboards.
+  - Response: `{ "metrics": [{ "key", "label", "value", "unit", "warn_above?", "warn_below?", "sparkline_history?" }] }`
+  - System metrics: uptime, requests/sec, memory (RSS/VMS), CPU usage.
+  - App metrics: users, families, active memberships, nags by status, acknowledgement rate, nag events, deliveries by channel, failed deliveries, AI mediation events, gamification events, open abuse reports, active blocks.
