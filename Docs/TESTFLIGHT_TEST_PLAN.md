@@ -114,7 +114,7 @@ Also test in Shortcuts app:
 |------|----------|
 | Kill app and relaunch | Session restored, family auto-loaded |
 | Lose network mid-action | Error banner with retry option |
-| Create nag with past due date | Should still allow (becomes immediately overdue) |
+| Create nag with past due date | Should be rejected with validation error (due date must be in the future) |
 | Very long description text | Text wraps properly, no truncation |
 | Logout and login as different user | Clean state, different family |
 | Rapid tap "Complete" multiple times | Only processes once, no double-completion |

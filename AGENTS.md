@@ -52,7 +52,7 @@ The server exposes a RESTful JSON API at `/api/v1/`. Routers:
 
 ### Key Concepts
 
-- **Roles**: guardian, participant, child (participant can only nag children)
+- **Roles**: guardian, participant, child (guardian and participant can nag anyone; children cannot create nags)
 - **Auth**: JWT access + refresh tokens; dev tokens use format `dev:<user-uuid>`
 - **Rate limiting**: Redis-backed sliding window (reads 120/min, writes 60/min)
 - **Daily nag cap**: 8 per creator per family per local day

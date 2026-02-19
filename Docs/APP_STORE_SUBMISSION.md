@@ -130,7 +130,7 @@ family,reminders,chores,tasks,kids,parenting,nag,homework,meds,streaks
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Privacy policy URL | TODO | Must be publicly accessible |
+| Privacy policy URL | TODO | Must be publicly accessible (server endpoint `GET /legal/privacy-policy` exists; needs public hosting URL) |
 | Data types collected documented | TODO | Email, DOB, device tokens, task data |
 | Data sharing disclosed | TODO | No third-party sharing |
 | Data retention periods stated | TODO | 24 months operational, 36 months audit |
@@ -142,7 +142,7 @@ family,reminders,chores,tasks,kids,parenting,nag,homework,meds,streaks
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Terms of Service URL | TODO | Must be publicly accessible |
+| Terms of Service URL | TODO | Must be publicly accessible (server endpoint `GET /legal/terms-of-service` exists; needs public hosting URL) |
 | Acceptable use policy | TODO | No harassment, abuse |
 | Content moderation policy | TODO | 4h critical, 24h standard SLA |
 | Age requirements stated | TODO | 13+ or guardian consent |
