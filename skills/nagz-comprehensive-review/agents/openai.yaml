@@ -1,0 +1,7 @@
+interface:
+  display_name: "Nagz Comprehensive Review"
+  short_description: "Comprehensive Nagz docs + code review"
+  default_prompt: "Use $nagz-comprehensive-review to review Nagz docs and code for gaps and edge cases."
+
+policy:
+  allow_implicit_invocation: true
