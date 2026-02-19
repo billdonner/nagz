@@ -1,34 +1,49 @@
-# Claude Code Progress Log
+# Nagz — Claude Code Progress Log
 
-Auto-updated by Claude Code sessions working across repos.
+Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
+`https://github.com/billdonner/nagz/blob/main/PROGRESS.md`
 
 ---
 
-## 2026-02-19 — Alities: TestFlight & Server Deployment
+## 2026-02-19 — Session 2 (continued)
 
-### Engine (alities-engine) — commit `93ce3ad`
-- Added configurable `--host` bind address to ControlServer
-- Added `GET /health` endpoint for container health probes
-- Added `GET /gamedata` endpoint (full GameDataOutput from SQLite)
-- Added Bearer token auth on destructive POST endpoints (`CONTROL_API_KEY`)
-- Added CORS headers + OPTIONS preflight on all responses
-- Created `Dockerfile` (multi-stage swift:5.9-jammy → ubuntu:22.04)
-- Created `docker-compose.yml` (engine + postgres:16)
-- Created `fly.toml` (Fly.io config with auto-TLS, persistent volumes)
-- Tests: 101/101 passed
+### Doc Consistency Audit & Fixes
+- **Audited** all docs across 4 repos for consistency (17 inconsistencies found)
+- **Fixed test counts**: nagzerver 183→190, total 518→525 in CLAUDE.md, AGENTS.md
+- **Fixed port references**: dev server 8001→9800 in AGENTS.md, nagz-ios/CLAUDE.md
+- **Fixed schema_version**: PREFERENCES.md examples updated from 1→2
+- **Added default join role**: `participant` documented in REQUIREMENTS.md (both repos)
+- **Updated APP_STORE_SUBMISSION.md**: privacy/TOS URLs reference server endpoints
+- **Updated CATALOG.md**: added DEPLOYMENT_PLAN.md and CODE_REVIEW entries
+- **Updated AGENTS.md**: fixed stale CODE_REVIEW_FINDINGS.md → CODE_REVIEW_2026-02-19.md
+- **Fixed iOS CLAUDE.md**: `@unchecked Sendable` → `@MainActor` for AppDelegate
+- **Committed and pushed** all 3 repos (nagz, nagzerver, nagz-ios)
 
-### Mobile (alities-mobile) — commit `5c59a3c`
-- Created `project.yml` (xcodegen spec for iOS 17 app target)
-- Added conditional `#if APP_TARGET @main` for dual SPM/Xcode build paths
-- Added debug/release server URL switching in GameService
-- Added `fetchGameData()` method for `/gamedata` endpoint
-- Created `Assets.xcassets` with 1024x1024 placeholder app icon
-- Created `PrivacyInfo.xcprivacy` (iOS 17+ privacy manifest)
-- Added `*.xcodeproj` to `.gitignore`
-- Tests: 19/19 passed
-- Xcode build: **SUCCEEDED** (iPhone 16 Pro Max Simulator)
+### Deployment Plan
+- **Created** `Docs/DEPLOYMENT_PLAN.md` — comprehensive 7-phase plan
+- Covers: Fly.io server, Vercel web, Apple Developer, TestFlight, App Store metadata, App Review, post-launch
+- Timeline: 5 weeks, cost: ~$22-32/month
+- **Committed and pushed** to nagz
 
-### Remaining Manual Steps
-- Phase C: Deploy engine to Fly.io (`flyctl auth login` → `flyctl deploy`)
-- Phase D: Xcode Archive → TestFlight upload
-- Phase E: App Store metadata (screenshots, privacy policy, description)
+## 2026-02-19 — Session 1
+
+### Comprehensive Code Review Fixes (101 findings)
+- **Top 5 critical fixes** applied across all 3 repos:
+  1. Port alignment 8001→9800 (iOS + web)
+  2. GuardianRoute auth bypass fix (web)
+  3. Logout cleanup — family_id leak (web + iOS)
+  4. Password max_length=128 bcrypt DoS prevention (server)
+  5. Rate limit TOCTOU race condition — atomic ZADD pattern (server)
+
+- **Remaining 17 nagzerver fixes**: JWT secret warning, joiner default role, block enforcement, UUID consistency, enum validation, badge logic, streak reset, 8 database indexes, unused imports, explicit updated_at
+
+- **5 nagz-web fixes**: dev credential tree-shaking, dead code removal, snooze from current time, axios import fix
+
+- **7 nagz-ios fixes**: force-unwrap elimination, `@MainActor` AppDelegate, cached ISO8601DateFormatter, snooze from current time, intent error messages
+
+- **All tests passing**: 190 (server) + 126 (web) + 209 (iOS) = 525
+- **Committed and pushed** all repos
+
+---
+
+*Last updated: 2026-02-19T21:00Z*

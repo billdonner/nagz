@@ -85,6 +85,13 @@ Skills live in `~/nagz/.claude/commands/`.
 - **Swift Testing `@Suite(.serialized)`** needed when tests share UserDefaults state
 - **xcodegen generate** required after adding/removing any Swift file
 
+## Progress Log
+
+**`PROGRESS.md`** in this repo tracks what Claude Code does across all Nagz repos.
+- **Update it** at the end of each session (or after significant milestones) with a summary of work done.
+- **Push frequently** so the user can monitor progress remotely via GitHub.
+- Format: reverse-chronological entries with date, section headers, and bullet points.
+
 ## GitHub
 
 - Username: billdonner
