@@ -2,28 +2,17 @@ Show ecosystem stats: working directory, lines of code, test counts, and git sta
 
 ## Instructions
 
-1. **Print current working directory** and its purpose:
-   - Run `pwd` to get the current directory
-   - Show: `**Working directory:** /path/to/dir`
-   - Show the current git branch if in a git repo
+1. **Run a single Bash command** that gathers all stats at once:
 
-2. **Count lines of code** in parallel across all 3 repos:
-   - nagzerver source: `find ~/nagzerver/src -name '*.py' | xargs wc -l | tail -1`
-   - nagzerver tests: `find ~/nagzerver/tests -name '*.py' | xargs wc -l | tail -1`
-   - nagz-web source (non-test): `find ~/nagz-web/src -name '*.ts' -o -name '*.tsx' | grep -v __tests__ | xargs wc -l | tail -1`
-   - nagz-web tests: `find ~/nagz-web/src/__tests__ -name '*.ts' -o -name '*.tsx' | xargs wc -l | tail -1`
-   - nagz-ios source: `find ~/nagz-ios/Nagz -name '*.swift' | xargs wc -l | tail -1`
-   - nagz-ios tests: `find ~/nagz-ios/NagzTests -name '*.swift' | xargs wc -l | tail -1`
+```bash
+echo "CWD:$(pwd):$(git branch --show-current 2>/dev/null || echo 'no-git')" && echo "SRC_SERVER:$(find ~/nagzerver/src -name '*.py' | xargs wc -l | tail -1 | awk '{print $1}')" && echo "TST_SERVER:$(find ~/nagzerver/tests -name '*.py' | xargs wc -l | tail -1 | awk '{print $1}')" && echo "SRC_WEB:$(find ~/nagz-web/src \( -name '*.ts' -o -name '*.tsx' \) ! -path '*__tests__*' | xargs wc -l | tail -1 | awk '{print $1}')" && echo "TST_WEB:$(find ~/nagz-web/src/__tests__ \( -name '*.ts' -o -name '*.tsx' \) | xargs wc -l | tail -1 | awk '{print $1}')" && echo "SRC_IOS:$(find ~/nagz-ios/Nagz -name '*.swift' | xargs wc -l | tail -1 | awk '{print $1}')" && echo "TST_IOS:$(find ~/nagz-ios/NagzTests -name '*.swift' | xargs wc -l | tail -1 | awk '{print $1}')" && echo "GIT_HUB:$(cd ~/nagz && git status --porcelain | wc -l | awk '{print ($1==0)?"clean":"dirty"}')" && echo "GIT_SERVER:$(cd ~/nagzerver && git status --porcelain | wc -l | awk '{print ($1==0)?"clean":"dirty"}')" && echo "GIT_WEB:$(cd ~/nagz-web && git status --porcelain | wc -l | awk '{print ($1==0)?"clean":"dirty"}')" && echo "GIT_IOS:$(cd ~/nagz-ios && git status --porcelain | wc -l | awk '{print ($1==0)?"clean":"dirty"}')" && for f in ~/nagz/.claude/commands/*.md; do echo "SKILL:$(basename "$f" .md):$(head -1 "$f")"; done
+```
 
-3. **Get test counts** from each repo's CLAUDE.md (look for the test count in parentheses).
+2. **Parse the output** and present as markdown. Format numbers with commas.
 
-4. **Check git status** of all 4 repos (nagz, nagzerver, nagz-web, nagz-ios) — report clean or dirty.
+3. **Output format:**
 
-5. **List available skills** from `~/nagz/.claude/commands/`:
-   - Read each `.md` file's first line (the description)
-   - Present as a skills table
-
-6. **Present results** — first the working directory info, then the stats table, then the skills table:
+**Working directory:** `/path/to/dir` (branch: `main`)
 
 | Repo | Source LoC | Test LoC | Tests | Git Status |
 |------|-----------|----------|-------|------------|
@@ -36,4 +25,4 @@ Show ecosystem stats: working directory, lines of code, test counts, and git sta
 |-------|-------------|
 | `/skill-name` | First line of skill file |
 
-7. Format numbers with commas for readability.
+4. **Get test counts** from each repo's CLAUDE.md (use Grep, search for test count in parentheses — do this in parallel with step 1 if possible, or read from memory).
