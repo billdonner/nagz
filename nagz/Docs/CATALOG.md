@@ -29,8 +29,11 @@ Documentation for product behavior, architecture, and policy.
 - `SIRI_SHORTCUTS.md`
 
 ## Release & Review
-- `TESTFLIGHT_TEST_PLAN.md` — Beta tester instructions
-- `APP_REVIEW_GUIDE.md` — Detailed walkthrough for Apple App Review
-- `APP_STORE_SUBMISSION.md` — Full submission checklist and timeline
-- `DEPLOYMENT_PLAN.md` — Server/web deployment and TestFlight → App Store path
-- `CODE_REVIEW_2026-02-19.md` — Comprehensive code review (101 findings)
+These docs live in the repo-root `Docs/` directory (not `nagz/Docs/`):
+- `../../Docs/TESTFLIGHT_TEST_PLAN.md` — Beta tester instructions
+- `../../Docs/APP_REVIEW_GUIDE.md` — Detailed walkthrough for Apple App Review
+- `../../Docs/APP_STORE_SUBMISSION.md` — Full submission checklist and timeline
+- `../../Docs/DEPLOYMENT_PLAN.md` — Server/web deployment and TestFlight → App Store path
+- `../../Docs/CODE_REVIEW_2026-02-19.md` — Comprehensive code review (101 findings)
+- `../../Docs/CODE_REVIEW_FINDINGS.md` — Earlier code review (113 findings)
+- `../../Docs/CODE_REVIEW_PLAN.md` — Review methodology and checklist

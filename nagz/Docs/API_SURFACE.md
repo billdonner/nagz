@@ -15,7 +15,7 @@ This document defines the V1.0 API surface.
 ## 3. Authorization and Consent Annotations
 - `guardian_only`: endpoint callable only by guardian role in target family.
 - `member`: any active family member in target family.
-- `participant`: family member with participant role (can create nags for children only).
+- `participant`: family member with participant role (can create nags per `POLICY_MATRIX.md`).
 - `recipient_only`: current nag recipient only.
 - `creator_or_guardian`: nag creator or guardian in family.
 - `self_or_guardian`: the user themselves or a guardian in a shared family.
@@ -90,6 +90,7 @@ This document defines the V1.0 API surface.
 - `GET /gamification/summary?family_id={familyId}` (`member`, `requires_consent(gamification_participation)`)
 - `GET /gamification/leaderboard?family_id={familyId}` (`member`, `requires_consent(gamification_participation)`)
 - `GET /gamification/events?user_id={userId}` (`member`, self-or-guardian, paginated)
+- `GET /gamification/badges` (`member`) — list earned badges for the current user.
 
 ## 13. Safety and Moderation
 - `POST /abuse-reports` (`member`)

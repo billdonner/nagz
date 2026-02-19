@@ -16,7 +16,7 @@ Effective configuration resolves from lowest to highest precedence:
 4. Session overrides (local only, not persisted)
 
 ## 3. Canonical Server Shape
-The server stores one canonical preference document per `user_id` and `family_id`.
+The server stores one canonical preference document per `user_id` and `family_id`. The V1.0 implementation uses a **flat key-value schema** in `prefs_json`:
 
 ```json
 {
@@ -25,50 +25,18 @@ The server stores one canonical preference document per `user_id` and `family_id
   "family_id": "fam_abc",
   "role": "guardian",
   "updated_at": "2026-02-15T18:00:00Z",
-  "prefs": {
-    "notifications": {
-      "push_enabled": true,
-      "sms_enabled": false,
-      "quiet_hours": {
-        "enabled": true,
-        "start_local": "21:00",
-        "end_local": "07:00",
-        "timezone": "America/Los_Angeles"
-      },
-      "priority_channels": ["push", "sms"]
-    },
-    "nag_defaults": {
-      "default_strategy_template": "friendly_reminder",
-      "default_due_offset_minutes": 60,
-      "allow_behavior_escalation": true,
-      "allow_time_escalation": true
-    },
-    "ai_mediation": {
-      "enabled": true,
-      "tone": "supportive",
-      "pushback_mode": "bounded",
-      "summary_frequency": "daily",
-      "tips_enabled": true
-    },
-    "incentives": {
-      "rewards_enabled": true,
-      "consequences_enabled": true,
-      "guardian_approval_required": true
-    },
-    "gamification": {
-      "enabled": true,
-      "show_leaderboard": false,
-      "show_badges": true
-    },
-    "interaction_controls": {
-      "allow_snooze": true,
-      "mute_until": null
-    },
-    "ui": {
-      "locale": "en-US",
-      "time_format": "12h",
-      "week_start": "monday"
-    }
+  "prefs_json": {
+    "gamification_enabled": false,
+    "background_color": "#f9fafb",
+    "tone": "friendly",
+    "quiet_hours_enabled": false,
+    "quiet_hours_start": "22:00",
+    "quiet_hours_end": "07:00",
+    "timezone": "America/New_York",
+    "notification_frequency": "always",
+    "delivery_channel": "push",
+    "ai_server_enabled": true,
+    "ai_on_device_enabled": true
   }
 }
 ```
@@ -123,62 +91,24 @@ Base path: `/api/v1`
 Response headers:
 - `ETag: "pref_v1_usr_123_18"`
 
-Response body includes effective user prefs and read-only policy:
+Response body includes user prefs in the flat `prefs_json` format:
 
 ```json
 {
   "schema_version": 2,
-  "etag": "pref_v2_usr_123_18",
-  "effective": {
-    "prefs": {
-      "notifications": {
-        "push_enabled": true,
-        "sms_enabled": false,
-        "quiet_hours": {
-          "enabled": true,
-          "start_local": "21:00",
-          "end_local": "07:00",
-          "timezone": "America/Los_Angeles"
-        },
-        "priority_channels": ["push", "sms"]
-      },
-      "nag_defaults": {
-        "default_strategy_template": "friendly_reminder",
-        "default_due_offset_minutes": 60,
-        "allow_behavior_escalation": true,
-        "allow_time_escalation": true
-      },
-      "ai_mediation": {
-        "enabled": true,
-        "tone": "supportive",
-        "pushback_mode": "bounded",
-        "summary_frequency": "daily",
-        "tips_enabled": true
-      },
-      "incentives": {
-        "rewards_enabled": true,
-        "consequences_enabled": true,
-        "guardian_approval_required": true
-      },
-      "gamification": {
-        "enabled": true,
-        "show_leaderboard": false,
-        "show_badges": true
-      },
-      "interaction_controls": {
-        "allow_snooze": true,
-        "mute_until": null
-      }
-    },
-    "policy": {
-      "report_visibility": "guardian_only",
-      "daily_nag_cap": 8,
-      "max_snooze_minutes": 30,
-      "child_can_nag_guardian": false,
-      "gamification_points_multiplier": 1.0,
-      "ai_pushback_max_attempts_per_window": 2,
-      "ai_pushback_cooldown_minutes": 60
-    }
+  "etag": "a1b2c3d4e5f6g7h8",
+  "prefs_json": {
+    "gamification_enabled": false,
+    "background_color": "#f9fafb",
+    "tone": "friendly",
+    "quiet_hours_enabled": false,
+    "quiet_hours_start": "22:00",
+    "quiet_hours_end": "07:00",
+    "timezone": "America/New_York",
+    "notification_frequency": "always",
+    "delivery_channel": "push",
+    "ai_server_enabled": true,
+    "ai_on_device_enabled": true
   }
 }
 ```
@@ -227,11 +157,9 @@ All non-2xx API responses use this envelope:
 Canonical error codes are authoritative in `ARCHITECTURE.md` section 9.
 
 ## 8. Merge and Conflict Behavior
-- Partial patch updates only specified keys.
-- Unspecified keys are unchanged.
-- `unset` removes user override and falls back to lower precedence.
-- Optimistic locking via `ETag` and `If-Match`.
-- Retry flow on `412`: `GET` latest -> reapply intent -> `PATCH`.
+- `PATCH` performs a **shallow merge**: keys in the request overwrite existing values; keys not present in the request are preserved.
+- Clients may send partial or full `prefs_json` payloads; either is safe.
+- Future versions may add `unset` semantics and `If-Match`/`ETag` optimistic concurrency (412 Precondition Failed).
 
 ## 9. Offline and Caching
 - Cache last successful effective configuration with `etag`.
