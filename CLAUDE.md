@@ -47,10 +47,10 @@ After any API or model change in nagzerver:
 
 | Repo | Tests | Command |
 |------|-------|---------|
-| nagzerver | 183 | `cd ~/nagzerver && uv run pytest` |
+| nagzerver | 190 | `cd ~/nagzerver && uv run pytest` |
 | nagz-web | 126 | `cd ~/nagz-web && npx vitest run` |
 | nagz-ios | 209 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
-| **Total** | **518** | |
+| **Total** | **525** | |
 
 ## Custom Skills (Slash Commands)
 
@@ -73,6 +73,7 @@ Skills live in `~/nagz/.claude/commands/`.
 | TestFlight Test Plan | `Docs/TESTFLIGHT_TEST_PLAN.md` | Beta tester walkthrough |
 | App Review Guide | `Docs/APP_REVIEW_GUIDE.md` | Detailed Apple reviewer guide (15 sections) |
 | App Store Submission | `Docs/APP_STORE_SUBMISSION.md` | Full submission checklist (6 phases) |
+| Deployment Plan | `Docs/DEPLOYMENT_PLAN.md` | Server/web deployment, TestFlight → App Store |
 
 ## Key Architecture Notes
 

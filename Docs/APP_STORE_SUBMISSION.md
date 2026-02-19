@@ -369,8 +369,8 @@ NOTES:
 | TESTFLIGHT_TEST_PLAN.md | Beta tester instructions | nagz/Docs/ |
 | APP_REVIEW_GUIDE.md | Detailed review walkthrough | nagz/Docs/ |
 | APP_STORE_SUBMISSION.md | This document | nagz/Docs/ |
-| Privacy Policy | Legal (web-hosted) | TODO: create and host |
-| Terms of Service | Legal (web-hosted) | TODO: create and host |
+| Privacy Policy | Legal (server-hosted) | Server endpoint: `GET /api/v1/legal/privacy-policy` (needs production URL) |
+| Terms of Service | Legal (server-hosted) | Server endpoint: `GET /api/v1/legal/terms-of-service` (needs production URL) |
 | ExportOptions.plist | Archive export config | TODO: create in nagz-ios |
 | Screenshots (6-8) | App Store listing | TODO: capture |
 | App Icon (1024x1024) | App Store listing | TODO: design |

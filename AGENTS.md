@@ -23,7 +23,7 @@ All repos live side-by-side under `~/`. There is no monorepo — each has its ow
 - Python 3.12, FastAPI, SQLAlchemy (async with asyncpg), PostgreSQL, Redis
 - Package manager: `uv`
 - Linter: `ruff`
-- Tests: `pytest` (183 tests)
+- Tests: `pytest` (190 tests)
 
 ### API Routers
 
@@ -131,7 +131,7 @@ npx vitest run        # run tests
 - `AuthManager` is `@Observable @MainActor` — drives auth UI state, never use from App Intents
 - No singletons — services created fresh in `NagzApp.init()`
 - JSON: `convertFromSnakeCase` / `convertToSnakeCase` handles all field mapping
-- Dev server: `http://127.0.0.1:8001/api/v1` (use IP, not localhost, to avoid IPv6 timeout)
+- Dev server: `http://127.0.0.1:9800/api/v1` (use IP, not localhost, to avoid IPv6 timeout)
 
 **Models** (`Nagz/Models/`): AuthModels, NagModels, FamilyModels, EscalationModels, GamificationModels, PolicyModels, SafetyModels, ConsentModels, DeviceModels, PreferenceModels, AIModels, and more.
 
@@ -198,10 +198,10 @@ After any API or model change in nagzerver:
 
 | Repo | Tests | Command |
 |------|-------|---------|
-| nagzerver | 183 | `cd ~/nagzerver && uv run pytest` |
+| nagzerver | 190 | `cd ~/nagzerver && uv run pytest` |
 | nagz-web | 126 | `cd ~/nagz-web && npx vitest run` |
 | nagz-ios | 209 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
-| **Total** | **518** | |
+| **Total** | **525** | |
 
 ## Documentation
 
@@ -213,7 +213,8 @@ Spec and review docs in `~/nagz/Docs/`:
 | `APP_STORE_SUBMISSION.md` | Full submission checklist |
 | `TESTFLIGHT_TEST_PLAN.md` | Beta tester walkthrough |
 | `CODE_REVIEW_PLAN.md` | Code review methodology |
-| `CODE_REVIEW_FINDINGS.md` | Review results and fixes |
+| `CODE_REVIEW_2026-02-19.md` | Review results (101 findings) |
+| `DEPLOYMENT_PLAN.md` | TestFlight → App Store deployment plan |
 
 Server-side docs in `~/nagzerver/docs/`:
 

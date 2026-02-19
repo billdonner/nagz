@@ -4,7 +4,7 @@
 
 This document covers the full path from current state to App Store release, including server deployment choices, TestFlight beta, and App Store submission.
 
-**Current state:** 3 repos, 516+ tests passing, code review fixes applied, all features implemented.
+**Current state:** 3 repos, 525 tests passing, code review fixes applied, all features implemented.
 
 ---
 

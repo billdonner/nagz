@@ -23,6 +23,7 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - Participants can create nags for guardians, participants, and children.
 - Children cannot create nags for guardians.
 - Children cannot create nags for children in V1.0.
+- New members joining a family default to the `participant` role (not `guardian`).
 - Self-nags are allowed only for guardians in V1.0.
 - Two guardians can co-own a nag policy.
 - Co-owned policy changes require dual guardian approval; if co-owners disagree, current active policy remains.

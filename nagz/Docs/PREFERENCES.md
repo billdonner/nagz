@@ -20,7 +20,7 @@ The server stores one canonical preference document per `user_id` and `family_id
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "user_id": "usr_123",
   "family_id": "fam_abc",
   "role": "guardian",
@@ -127,8 +127,8 @@ Response body includes effective user prefs and read-only policy:
 
 ```json
 {
-  "schema_version": 1,
-  "etag": "pref_v1_usr_123_18",
+  "schema_version": 2,
+  "etag": "pref_v2_usr_123_18",
   "effective": {
     "prefs": {
       "notifications": {

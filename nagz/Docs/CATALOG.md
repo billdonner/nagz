@@ -32,3 +32,5 @@ Documentation for product behavior, architecture, and policy.
 - `TESTFLIGHT_TEST_PLAN.md` — Beta tester instructions
 - `APP_REVIEW_GUIDE.md` — Detailed walkthrough for Apple App Review
 - `APP_STORE_SUBMISSION.md` — Full submission checklist and timeline
+- `DEPLOYMENT_PLAN.md` — Server/web deployment and TestFlight → App Store path
+- `CODE_REVIEW_2026-02-19.md` — Comprehensive code review (101 findings)
