@@ -5,6 +5,36 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-19 — Session 4: Metrics Endpoint + Gap Analysis + Cross-Repo Sync
+
+### Metrics Endpoint (nagzerver)
+- **Created `GET /api/v1/metrics`** — unauthenticated monitoring endpoint
+- Returns 22 metrics: uptime, RPS (with sparkline history), memory RSS/VMS, CPU%, user/family counts, nags by status, ack rate, nag events, deliveries by channel, failed deliveries, AI mediation events, gamification events, open abuse reports, active blocks
+- **RateCounter utility class** — thread-safe sliding-window request counter with sparkline history
+- **ServerInfo model** added to response (name, version, uptime)
+- **Added psutil dependency** to pyproject.toml
+- **Request-counting middleware** wired into FastAPI app
+- **mark_start()** called in lifespan handler for uptime tracking
+
+### Gap Analysis (all 3 repos vs specs)
+- Full spec-vs-implementation audit across 62 API endpoints and 20+ features
+- **Result: excellent coverage** — all v1.0 endpoints implemented on server, 57/62 on iOS, 62/62 on web (generated client)
+- All 6 v2.0 Siri intents implemented
+
+### Gap Fixes
+- **iOS: Added per-user preference endpoints** (`getUserPreferences`, `updateUserPreferences`) — guardians can now view/edit child preferences
+- **iOS: Added `POST /accounts`** endpoint for authenticated registration flow
+- **Spec: Added Section 20 (Metrics)** to API_SURFACE.md documenting the new endpoint
+- **Web: Regenerated TypeScript client** from updated openapi.json — picked up metrics endpoint + 15 new model types
+
+### Cross-Repo Sync
+- Regenerated openapi.json (56 paths) from nagzerver FastAPI app
+- Copied to nagz-web and ran Orval to regenerate TypeScript client
+- All 525 tests passing (190 + 126 + 209)
+- Committed and pushed all 4 repos
+
+---
+
 ## 2026-02-19 — Session 3: Deep Consistency Audit
 
 ### Documentation Consistency Audit (cross-codebase)
