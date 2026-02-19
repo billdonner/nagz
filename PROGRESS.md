@@ -5,6 +5,21 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-19 — Session 3: Deep Consistency Audit
+
+### Documentation Consistency Audit (cross-codebase)
+- **Identified 11 issues** across docs in nagz, nagzerver, nagz-ios, nagz-web
+- **Synced 3 divergent docs** from nagzerver → nagz/Docs: REQUIREMENTS.md (self-nag rule), PREFERENCES.md (flat schema), AI_ARCHITECTURE.md (iOS 17+)
+- **Fixed API_SURFACE.md** in both repos: added `GET /gamification/badges`, fixed participant role annotation
+- **Fixed CATALOG.md** in nagz: corrected release doc paths (Docs/ vs nagz/Docs/), added CODE_REVIEW_PLAN/FINDINGS entries
+- **Fixed CATALOG.md** in nagzerver: added 3 unindexed docs (DEMO, APP_STORE_DESCRIPTION, PRODUCT_DESCRIPTION)
+- **Fixed port registry** in ~/CLAUDE.md: nagz-web 3000 → 5173 (Vite default, matches CORS config)
+- **Deduplicated iOS clientAPIVersion**: VersionChecker now delegates to Constants.Version (single source)
+- **Updated MEMORY.md**: user preference for maximum auto-approval of all tool calls
+- **Committed and pushed** all 3 repos (nagz, nagzerver, nagz-ios)
+
+---
+
 ## 2026-02-19 — Session 2 (continued)
 
 ### Doc Consistency Audit & Fixes
