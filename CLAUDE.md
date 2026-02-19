@@ -62,7 +62,7 @@ Available when working from `~/nagz`:
 | `/sync-api` | Regenerate openapi.json → TS client, check iOS model drift |
 | `/gap-check` | Compare specs in `Docs/` vs implementations across all repos |
 | `/ship` | Test all → commit dirty repos → push everything |
-| `/stats` | Show ecosystem LoC, test counts, and git status |
+| `/stats` | Show cwd, ecosystem LoC, test counts, git status, and available skills |
 
 Skills live in `~/nagz/.claude/commands/`.
 
