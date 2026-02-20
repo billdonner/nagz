@@ -1,4 +1,4 @@
-# nagz
+# Nagz
 
 Nagz is a family-oriented AI-mediated nagging/reminder app with **Apple Intelligence** integration.
 
@@ -13,29 +13,55 @@ Nagz uses a split AI architecture:
 See `nagz/Docs/AI_ARCHITECTURE.md` for the full design.
 
 ## Documentation
-- `nagz/Docs/REQUIREMENTS.md`
-- `nagz/Docs/ARCHITECTURE.md`
-- `nagz/Docs/PREFERENCES.md`
-- `nagz/Docs/POLICY_MATRIX.md`
-- `nagz/Docs/SAFETY_AND_COMPLIANCE.md`
-- `nagz/Docs/GLOSSARY.md`
-- `nagz/Docs/API_SURFACE.md`
-- `nagz/Docs/AI_BEHAVIOR.md`
-- `nagz/Docs/AI_ARCHITECTURE.md`
-- `nagz/Docs/INCENTIVES.md`
-- `nagz/Docs/GAMIFICATION.md`
-- `nagz/Docs/SIRI_SHORTCUTS.md`
-- `nagz/Docs/PARENT_GUARDIAN_USER_MANUAL.md`
-- `nagz/Docs/SPEC_BASELINE_CHANGELOG.md`
-- `nagz/Docs/web-samples/parent-guardian-manual.html`
-- `nagz/Docs/web-samples/guardian-portal.html`
 
-## Ecosystem
+See `nagz/Docs/CATALOG.md` for the full spec index, including:
 
-| Repo | Description | Tests |
-|------|-------------|-------|
-| [nagzerver](https://github.com/billdonner/nagzerver) | Python API server (source of truth) | 175 |
-| [nagz-ios](https://github.com/billdonner/nagz-ios) | SwiftUI iOS client + Apple Intelligence | 166 |
-| [nagz-web](https://github.com/billdonner/nagz-web) | React/TypeScript web client | 105 |
+- Requirements, Architecture, Preferences, Policy Matrix
+- Safety & Compliance, Glossary, API Surface
+- AI Behavior, AI Architecture, Incentives, Gamification
+- Siri & Shortcuts, Parent/Guardian Manual
 
-Docs index: `nagz/Docs/CATALOG.md` (with `nagz/Docs/README.md` as shim).
+## All Projects
+
+### Nagz — AI-mediated nagging/reminder app
+
+| Repo | Description | Port |
+|------|-------------|------|
+| [nagz](https://github.com/billdonner/nagz) | **This repo** — specs, docs, orchestration hub | — |
+| [nagzerver](https://github.com/billdonner/nagzerver) | Python API server (source of truth) | 9800 |
+| [nagz-web](https://github.com/billdonner/nagz-web) | TypeScript/React web app | 5173 |
+| [nagz-ios](https://github.com/billdonner/nagz-ios) | SwiftUI iOS app + Apple Intelligence | — |
+
+### OBO — Flashcard learning app
+
+| Repo | Description | Port |
+|------|-------------|------|
+| [obo](https://github.com/billdonner/obo) | Hub — specs, docs, orchestration | — |
+| [obo-server](https://github.com/billdonner/obo-server) | Python/FastAPI deck API | 9810 |
+| [obo-gen](https://github.com/billdonner/obo-gen) | Swift CLI deck generator | — |
+| [obo-ios](https://github.com/billdonner/obo-ios) | SwiftUI iOS flashcard app | — |
+
+### Alities — Trivia game platform
+
+| Repo | Description | Port |
+|------|-------------|------|
+| [alities](https://github.com/billdonner/alities) | Hub — specs, docs, orchestration | — |
+| [alities-engine](https://github.com/billdonner/alities-engine) | Swift trivia engine daemon | 9847 |
+| [alities-studio](https://github.com/billdonner/alities-studio) | React/TypeScript game designer | 9850 |
+| [alities-mobile](https://github.com/billdonner/alities-mobile) | SwiftUI iOS game player | — |
+| [alities-trivwalk](https://github.com/billdonner/alities-trivwalk) | Python TrivWalk trivia game | — |
+
+### Server Monitor — Multi-frontend server dashboard
+
+| Repo | Description | Port |
+|------|-------------|------|
+| [monitor](https://github.com/billdonner/monitor) | Hub — specs, docs, orchestration | — |
+| [server-monitor](https://github.com/billdonner/server-monitor) | Python web dashboard + Terminal TUI | 9860 |
+| [server-monitor-ios](https://github.com/billdonner/server-monitor-ios) | SwiftUI iOS + WidgetKit companion | — |
+
+### Standalone Tools
+
+| Repo | Description |
+|------|-------------|
+| [claude-cli](https://github.com/billdonner/claude-cli) | Swift CLI for the Claude API |
+| [Flyz](https://github.com/billdonner/Flyz) | Fly.io deployment configs for all servers |
