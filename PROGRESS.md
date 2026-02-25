@@ -5,6 +5,18 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-25 — Session 7: Fly.io OOM Fix
+
+### Server Out-of-Memory Crash
+- **Problem:** `bd-nagzerver` instance crashed with OOM — uvicorn killed by Linux OOM killer
+- **Root cause:** Only 256 MB RAM allocated, with 2 machines running. Python baseline RSS ~120-130 MB left minimal headroom for request spikes and GC pressure
+- **Fix:** Scaled RAM 256 MB → 512 MB, reduced machines 2 → 1 (net cost neutral)
+- Added `--workers 1 --limit-max-requests 1000` to uvicorn CMD in Dockerfile — auto-restarts worker after 1,000 requests to prevent memory creep
+- Redeployed to Fly.io, verified healthy: 107 MB RSS with 512 MB available (75% headroom)
+- Load tested with 50+ rapid requests — all correct responses, no instability
+
+---
+
 ## 2026-02-25 — Session 6: Share Sheet, Tab Persistence, Auth Fix, Web Connections
 
 ### Share Sheet for Connection Invites (iOS)
