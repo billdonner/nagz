@@ -5,6 +5,25 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-24 — Session 5 (cont'd, part 2): Auth Fixes + Server Redeploy
+
+### Login Error Message Fix
+- **Server:** Login failures returned 403 ("authorization denied") instead of 401 — created `AuthnFailed` error class (401) distinct from `AuthzDenied` (403)
+- **iOS:** Added `authenticationFailed(String)` case to `APIError` — passes through server's actual message instead of generic "no permission"
+- Tests updated, all passing
+
+### Production Password Reset
+- Reset password for `billdonner@gmail.com` via SSH into Fly.io production database
+- Verified login works against live server
+
+### Build 5 (1.0.0) — TestFlight
+- Bumped build 4 → 5 with auth error fix
+- Archived, uploaded, release notes set via App Store Connect API
+- Server redeployed to Fly.io with matching 401 fix
+- **Confirmed working:** login from TestFlight app succeeds
+
+---
+
 ## 2026-02-24 — Session 5 (cont'd): TestFlight Builds + Server Deploy
 
 ### TestFlight Build 3 (1.0.0)
