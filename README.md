@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="nagz-icon.png" alt="Nagz" width="200">
+</p>
+
 # Nagz
 
 Nagz is a family-oriented AI-mediated nagging/reminder app with **Apple Intelligence** integration.
