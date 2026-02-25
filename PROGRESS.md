@@ -5,6 +5,55 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-24 — Session 5: Onboarding, Branding, Launch Screen, Website Deploy
+
+### iOS Onboarding Sequence
+- **Created 5-page swipeable onboarding carousel** (`OnboardingView.swift`)
+- Pages: Never Forget Again (bell), Your Family Hub (people), Smart Escalation (arrows), Earn Points & Streaks (flame), Stay in the Loop (notifications)
+- Each page has a 72pt hero SF Symbol, headline, subtitle, and supporting icon row
+- "Get Started" button on final page, persisted via `@AppStorage("hasSeenOnboarding")`
+- Integrated into `ContentView` — gates before auth flow, shown only once
+
+### Login & Signup Page Branding
+- **Login page**: Added blue `bell.badge.fill` SF Symbol (56pt) with "Welcome to Nagz" heading
+- **Signup page**: Added purple `person.crop.circle.badge.plus` SF Symbol with "Join the Family" heading
+
+### New App Icon
+- Replaced old parchment/serif icon with new cartoon artwork (woman nagging, man covering ears, bold "NAGZ")
+- Generated all 13 icon sizes from 1024px master via `sips`
+- Updated `LaunchLogo` image asset to match
+
+### Launch Screen
+- Initially set to parchment background matching old icon
+- Updated to white background + new cartoon icon centered
+- Dark mode variant: near-black background
+- Configured via `UILaunchScreen` in Info.plist + project.yml
+
+### Branding Across All Repos
+- **README logos**: Added centered 200px icon to nagz, nagz-ios, nagzerver READMEs
+- **nagzerver marketing site** (`nagz.online`): Added icon to hero section + favicon
+- **nagz-web**: Added icon to login page (160px, rounded corners) + favicon (replaced Vite default)
+- **nagz-ios App Store landing page** (`docs/index.html`): Added 180px rounded icon
+- **Deployed to GitHub Pages**: Pushed `gh-pages` branch, verified live at nagz.online
+
+### Integration Test Plan
+- **Created `Docs/INTEGRATION_TEST_PLAN.md`** — 223 test scenarios across 15 categories
+- 151 fully automatable, 55 semi-auto, 17 manual-only
+- Covers auth, family, nags, connections, gamification, push, AI, guardian, safety, Siri, sync, version, cross-component, performance, privacy
+- Each test has unique ID (e.g. `INT-AUTH-001`) for tracking
+
+### Development Status Assessment
+- **Code is feature-complete**: 65 API endpoints, all implemented on server + iOS + web
+- **Remaining work is deployment pipeline**: custom domain, Apple Developer enrollment, TestFlight, App Store submission
+
+### Test Results
+- **All 543 tests passing** (208 + 126 + 209), up from 525
+- nagzerver gained 18 tests since last session
+- Updated test counts in CLAUDE.md
+- Committed and pushed all 4 repos
+
+---
+
 ## 2026-02-19 — Session 4: Metrics Endpoint + Gap Analysis + Cross-Repo Sync
 
 ### Metrics Endpoint (nagzerver)
@@ -91,4 +140,4 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-*Last updated: 2026-02-19T21:00Z*
+*Last updated: 2026-02-24T21:15Z*
