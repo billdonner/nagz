@@ -151,3 +151,13 @@ All AI endpoints require `requires_consent(ai_mediation)` and the `ai_server_ena
   - Response: `{ "metrics": [{ "key", "label", "value", "unit", "warn_above?", "warn_below?", "sparkline_history?" }] }`
   - System metrics: uptime, requests/sec, memory (RSS/VMS), CPU usage.
   - App metrics: users, families, active memberships, nags by status, acknowledgement rate, nag events, deliveries by channel, failed deliveries, AI mediation events, gamification events, open abuse reports, active blocks.
+
+## 21. Connections (Cross-Family Trusted Nagging)
+- `POST /connections/invite` (`member`) — send connection invite to an email address.
+- `GET /connections` (`member`) — list active connections for current user.
+- `GET /connections/pending` (`member`) — list pending inbound invites.
+- `POST /connections/{id}/accept` (`member`) — accept a pending invite.
+- `POST /connections/{id}/decline` (`member`) — decline a pending invite.
+- `POST /connections/{id}/revoke` (`member`) — revoke an active connection (resets trusted flag).
+- `PATCH /connections/{id}/trust` (`member`) — toggle the `trusted` flag on a connection. Untrusting cancels any open trusted-child nags.
+- `GET /connections/{id}/children` (`member`) — list children in the other party's guardian families (requires trusted connection).

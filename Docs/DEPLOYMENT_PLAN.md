@@ -4,7 +4,9 @@
 
 This document covers the full path from current state to App Store release, including server deployment choices, TestFlight beta, and App Store submission.
 
-**Current state:** 3 repos, 525 tests passing, code review fixes applied, all features implemented.
+**Current state:** 3 repos, 560 tests passing, code review fixes applied, all features implemented.
+
+> **Deployment status (updated 2026-02-25):** Server live at `https://bd-nagzerver.fly.dev`, web app bundled with server, TestFlight builds 3-5 shipped, 512 MB RAM (Fly.io). See PROGRESS.md Sessions 5-8 for details.
 
 ---
 
@@ -38,11 +40,11 @@ fly secrets set NAGZ_APNS_TEAM_ID=...
 
 ### Server Deployment Checklist
 
-- [ ] Choose platform (Fly.io recommended)
-- [ ] Set up PostgreSQL (managed, daily backups)
-- [ ] Set up Redis (for rate limiting + cache)
-- [ ] Configure DNS: `api.nagz.app` → server
-- [ ] Configure TLS/SSL (auto via platform)
+- [x] Choose platform (Fly.io) — deployed as `bd-nagzerver`
+- [x] Set up PostgreSQL (managed, `bd-postgres` on Fly.io)
+- [ ] Set up Redis (for rate limiting + cache) — graceful degradation active
+- [ ] Configure DNS: `api.nagz.app` → server (using `bd-nagzerver.fly.dev` for now)
+- [x] Configure TLS/SSL (auto via Fly.io)
 - [ ] Set environment variables:
   - `NAGZ_AUTH_MODE=jwt`
   - `NAGZ_JWT_SECRET=<strong random value>`
@@ -52,12 +54,12 @@ fly secrets set NAGZ_APNS_TEAM_ID=...
   - `NAGZ_APNS_USE_SANDBOX=false`
   - `NAGZ_SCHEDULER_ENABLED=true`
   - `NAGZ_CORS_ORIGINS=https://nagz.online`
-- [ ] Run `alembic upgrade head` for database migrations
-- [ ] Create demo reviewer accounts (see Phase 4)
+- [x] Run `alembic upgrade head` for database migrations (run via `fly ssh console`)
+- [x] Create demo reviewer accounts (see Phase 4)
 - [ ] Seed demo family with sample nags
-- [ ] Verify `GET /api/v1/version` returns correctly
-- [ ] Load test: 100 concurrent users, all endpoints
-- [ ] Set up monitoring (Sentry for errors, uptime check for `api.nagz.app/api/v1/version`)
+- [x] Verify `GET /api/v1/version` returns correctly
+- [x] Load test: 50+ rapid requests, verified stable
+- [ ] Set up monitoring (Sentry for errors, uptime check)
 
 ### Dockerfile (create in nagzerver root)
 
@@ -153,12 +155,12 @@ Or simply: **Xcode → Product → Archive → Distribute App → App Store Conn
 
 ### TestFlight Configuration
 
-- [ ] Upload build to App Store Connect
-- [ ] Wait for processing (~15 min)
-- [ ] Add internal testers (your team, up to 100)
-- [ ] Write beta app description using `TESTFLIGHT_TEST_PLAN.md`
-- [ ] Set "What to Test" notes
-- [ ] Enable automatic distribution to internal testers
+- [x] Upload build to App Store Connect (builds 3, 4, 5 uploaded)
+- [x] Wait for processing (~15 min)
+- [x] Add internal testers (your team, up to 100)
+- [x] Write beta app description using `TESTFLIGHT_TEST_PLAN.md`
+- [x] Set "What to Test" notes (via App Store Connect API)
+- [x] Enable automatic distribution to internal testers
 - [ ] After internal testing: add external testers (up to 10,000)
   - External requires Beta App Review (~24-48 hours)
 

@@ -44,7 +44,19 @@ Role cardinality rule:
 - Violating requests return authorization/policy errors and are audit-logged.
 - Errors follow shared API codes from `ARCHITECTURE.md` and `PREFERENCES.md`.
 
-## 6. Policy Change Governance
+## 6. Cross-Family Trusted Connection Rules
+
+When two adults are connected and the connection is marked as **trusted**, additional nag creation paths open:
+
+| Creator | Recipient | Allowed | Condition |
+|---|---|---|---|
+| Connected adult (guardian/participant) | Other party's child | Yes | Connection active AND trusted |
+| Connected adult (guardian/participant) | Other party's child | No | Connection active but NOT trusted |
+| Connected adult (guardian/participant) | Unrelated user | No | Recipient must be other party or their child |
+
+Trusted connection nags use `connection_id` (not `family_id`) and follow the existing XOR constraint on the nag table. Untrusting a connection cancels all open trusted-child nags. Revoking a connection resets `trusted = false`.
+
+## 7. Policy Change Governance
 - Any future change to role pair permissions requires:
   - Product review
   - Safety/compliance review

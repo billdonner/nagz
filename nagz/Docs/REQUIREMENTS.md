@@ -25,6 +25,7 @@ Build a family-oriented nagging system where an intermediary AI reduces partner-
 - Children cannot create nags for children in V1.0.
 - New members joining a family default to the `participant` role (not `guardian`).
 - Self-nags are allowed for guardians and participants in V1.0 (denied for children).
+- **Trusted connections** allow cross-family nagging: when two adults are connected and one marks the connection as "trusted," the other can nag children in their guardian families. Revoking trust cancels any open trusted-child nags. Revoking the connection resets the trusted flag. Trusted-child nags use `connection_id` (not `family_id`).
 - Two guardians can co-own a nag policy.
 - Co-owned policy changes require dual guardian approval; if co-owners disagree, current active policy remains.
 - Only guardians can view family-level reports and history.

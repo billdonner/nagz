@@ -5,6 +5,54 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-25 — Session 9: Cross-Repo Audit, Doc Sync, Web Signup
+
+### Deep Audit (4 Repos)
+- **Launched 4 parallel audit agents** — thorough code review and doc inventory across nagzerver, nagz-web, nagz-ios, and nagz hub
+- **nagzerver:** 219 tests, 68 endpoints, 23 models, 79 schemas, 77 service functions — no critical issues, code quality excellent
+- **nagz-web:** 126 tests, 15 components, 14 routes, all features implemented — missing signup UI identified
+- **nagz-ios:** 215 tests, 29 views, 18 ViewModels, 76 API endpoints, 80+ models — exemplary Swift 6 adoption, no issues
+- **nagz hub:** 25 documentation files audited — 3 spec docs missing trusted connections feature
+
+### Documentation Fixes
+- **API_SURFACE.md:** Added Section 21 (Connections) with all 8 connection endpoints including PATCH /trust and GET /children
+- **REQUIREMENTS.md:** Added trusted connections to Section 4 (Roles and Relationship Rules)
+- **POLICY_MATRIX.md:** Added Section 6 (Cross-Family Trusted Connection Rules) with permission table
+- **DEPLOYMENT_PLAN.md:** Updated status — marked completed items (server deployed, TestFlight builds shipped, migrations run)
+- **Synced** API_SURFACE.md, REQUIREMENTS.md, POLICY_MATRIX.md from nagz hub → nagzerver/docs
+- **Fixed test counts:** nagz-ios CLAUDE.md (209→215), README.md (166→215)
+
+### Web Signup UI (Feature Parity)
+- **Added signup form** to Login.tsx — toggle between Sign In / Sign Up modes
+- Fields: display name (optional), email, password (8+ char validation)
+- CSS: `.login-toggle` and `.login-link-btn` styles added
+- All 126 web tests passing
+
+### Fly.io Deployment
+- Redeployed nagzerver to Fly.io with latest code
+- Server verified healthy at `bd-nagzerver.fly.dev`
+- Built and installed iOS app to iPhone Titanic
+
+### Code Review Summary
+
+| Repo | Grade | Critical Issues | Notes |
+|------|-------|-----------------|-------|
+| nagzerver | A | 0 | Well-structured, all endpoints typed, rate limiting robust |
+| nagz-web | A- | 0 | Missing signup (now fixed), minor console.error statements |
+| nagz-ios | A+ | 0 | Exemplary Swift 6, 100% feature parity, proper actor isolation |
+| nagz hub | A- | 0 | 3 docs missing trusted connections (now fixed) |
+
+### Test Summary
+
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 219 | All passed |
+| nagz-web | 126 | All passed |
+| nagz-ios | 215 | All passed |
+| **Total** | **560** | |
+
+---
+
 ## 2026-02-25 — Session 8: Trusted Connections (Cross-Family Nagging)
 
 ### Feature: Trusted Flag on Connections
