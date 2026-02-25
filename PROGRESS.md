@@ -5,6 +5,44 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-25 — Session 8: Trusted Connections (Cross-Family Nagging)
+
+### Feature: Trusted Flag on Connections
+- **Purpose:** Allow connected adults to nag each other's children without extra setup
+- Added `trusted BOOLEAN DEFAULT FALSE` to connections table (Alembic migration)
+- Added `trusted: Mapped[bool]` to Connection model + `trusted` field to ConnectionResponse schema
+- New schemas: `ConnectionTrustUpdate`, `TrustedConnectionChild`
+
+### Server Changes (nagzerver)
+- **Connection service:** `update_trust()` — toggle trusted flag, cancels trusted-child nags on untrust; `list_trusted_children()` — finds children in other party's guardian families; `revoke_connection()` now resets `trusted = False`
+- **Nag service:** Extended connection nag path — if recipient is NOT the other party AND connection is trusted, allows nag if recipient is a child in other party's guardian family
+- **New endpoints:** `PATCH /connections/{id}/trust`, `GET /connections/{id}/children`
+- **11 new tests** — trust toggle, untrust cancels child nags, trust requires active/party, list trusted children, revoke resets trust, response includes trusted field, trusted/untrusted/random-user nag creation
+
+### Web Changes (nagz-web)
+- Regenerated openapi.json with all connection endpoints → orval generated TypeScript client
+- **Connections.tsx:** Added "Trusted" checkbox column in Active Connections table with `handleToggleTrust`
+- **CreateNag.tsx:** Loads trusted children from trusted connections, displays as optgroup in recipient picker, sends `connection_id` for trusted child nags
+
+### iOS Changes (nagz-ios)
+- **ConnectionModels.swift:** Added `trusted: Bool` to `ConnectionResponse`, new `ConnectionTrustUpdate` and `TrustedConnectionChild` structs
+- **APIEndpoint.swift:** Added `updateConnectionTrust(id:trusted:)` and `listTrustedChildren(connectionId:)`
+- **ConnectionListViewModel:** Added `toggleTrust()` method
+- **ConnectionListView:** Added Toggle in active connection rows
+- **CreateNagView:** Loads trusted children, shows in recipient picker, maps to `connection_id`
+- **6 new tests:** ConnectionResponse decoding (trusted/untrusted), TrustedConnectionChild decoding, ConnectionTrustUpdate encoding, endpoint path tests
+
+### Test Summary
+
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 219 | All passed |
+| nagz-web | 126 | All passed |
+| nagz-ios | 215 | All passed |
+| **Total** | **560** | |
+
+---
+
 ## 2026-02-25 — Session 7: Fly.io OOM Fix
 
 ### Server Out-of-Memory Crash
