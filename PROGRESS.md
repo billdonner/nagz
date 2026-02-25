@@ -5,6 +5,34 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-24 — Session 5 (cont'd): TestFlight Builds + Server Deploy
+
+### TestFlight Build 3 (1.0.0)
+- Bumped build number 2 → 3
+- Created `ExportOptions.plist` for App Store Connect uploads
+- Archived, exported, and uploaded via `xcodebuild`
+- Set "What to Test" release notes via App Store Connect API
+- Release notes saved to `docs/testflight-notes-build3.md`
+
+### Server Deployment (Fly.io)
+- Deployed nagzerver + bundled nagz-web to `bd-nagzerver.fly.dev` (release v8)
+- Web app now serves new cartoon icon on login page + favicon
+- Verified live: API responding, web SPA serving updated assets
+
+### TestFlight Build 4 — Server Connection Fix
+- **Bug:** Production URL pointed to `api.nagz.app` (DNS not configured) — TestFlight users couldn't sign in
+- **Fix:** Changed production `baseURL` to `https://bd-nagzerver.fly.dev/api/v1` in `AppEnvironment.swift`
+- Bumped build 3 → 4, archived, uploaded, release notes set via API
+- Testers should update to build 4 for working sign-in
+
+### App Store Connect API Integration
+- Authenticated using `AuthKey_KURS4TFJJ9.p8` + Issuer ID via JWT (ES256)
+- App ID: `6759530926`
+- Automated: find builds, create/update `betaBuildLocalizations` with release notes
+- Token generation script at `/tmp/asc_token.py`
+
+---
+
 ## 2026-02-24 — Session 5: Onboarding, Branding, Launch Screen, Website Deploy
 
 ### iOS Onboarding Sequence
