@@ -5,6 +5,41 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-25 — Session 6: Share Sheet, Tab Persistence, Auth Fix, Web Connections
+
+### Share Sheet for Connection Invites (iOS)
+- After successfully sending an invite, success screen shows with ShareLink button
+- User can share via iMessage, WhatsApp, email etc. with pre-written message + nagz.online link
+- `invitedEmail` property added to `ConnectionListViewModel` to capture email before clearing
+
+### Session Persistence (iOS)
+- **Tab persistence**: Changed `selectedTab` from `@State` to `@AppStorage` — user returns to same tab on relaunch
+- **Login persistence**: Already working via Keychain tokens + `restoreSession()` refresh — verified end-to-end
+
+### Token Auth 401 Fix (Server + iOS)
+- **Root cause**: Expired/invalid tokens returned 403 (`AuthzDenied`) instead of 401 — iOS never triggered token refresh, showed "You don't have permission" instead
+- **Fix**: Changed all authentication failures in `deps.py`, `auth.py`, `services/auth.py` to use `AuthnFailed` (401); `AuthzDenied` (403) now reserved for true authorization failures
+- 4 tests updated for new status codes, all 208 passing
+- Server redeployed to Fly.io
+
+### People Page — Outbound Invites (iOS)
+- Added **"Invites You Sent"** section to People tab showing pending outbound invites with cancel button
+- Now loads 3 connection sets: active, inbound pending, all pending (outbound = all - inbound)
+- Friendlier duplicate invite error: "You already have a connection with this person" + orange SF Symbol
+
+### Connections Page — Web App (NEW)
+- **Created `/connections` route** with full People/Connections page (`Connections.tsx`)
+- Invite form with Web Share API (falls back to clipboard copy on desktop)
+- Sections: Invites for You (accept/decline), Invites You Sent (cancel), Active Connections (remove)
+- Navigation links added to FamilyDashboard and NagList headers
+- All 126 web tests passing, deployed to Fly.io
+
+### Device Builds
+- Built and installed directly to iPhone "Titanic" (15 Pro Max) via `xcodebuild` + `devicectl`
+- Verified login persistence, tab persistence, invite flow, share sheet on physical device
+
+---
+
 ## 2026-02-24 — Session 5 (cont'd, part 2): Auth Fixes + Server Redeploy
 
 ### Login Error Message Fix
@@ -187,4 +222,4 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-*Last updated: 2026-02-24T21:15Z*
+*Last updated: 2026-02-25T18:55Z*
