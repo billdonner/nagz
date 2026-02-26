@@ -5,6 +5,21 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 10: Display Names in Web UI
+
+### API Sync
+- **Regenerated** openapi.json from nagzerver (new fields: `creator_display_name`, `recipient_display_name` on NagResponse; `other_party_email`, `other_party_display_name` on ConnectionResponse)
+- **Regenerated** TypeScript client via orval in nagz-web
+
+### Web UI Updates (nagz-web)
+- **NagList.tsx:** Table rows, sort comparisons, and detail modal now show `creator_display_name` / `recipient_display_name` with fallback to member lookup
+- **Connections.tsx:** All three sections (inbound invites, sent invites, active connections) now show `other_party_display_name` with fallback to `other_party_email` then `invitee_email`
+- **Local interface** updated with new optional fields to match API
+- All 126 web tests passing
+- Committed and pushed to main
+
+---
+
 ## 2026-02-25 — Session 9: Cross-Repo Audit, Doc Sync, Web Signup
 
 ### Deep Audit (4 Repos)
