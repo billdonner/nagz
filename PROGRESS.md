@@ -5,6 +5,22 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 18: Docs Update, Version Bump, Deploy to Phones
+
+### Documentation Updates (nagz hub)
+- **README.md**: Expanded AI architecture — now lists 7/9 LLM operations with heuristic fallback detail
+- **APP_STORE_SUBMISSION.md**: Richer AI feature bullet ("personalized coaching tips, smart tone selection, weekly family digests, gamification nudges, and task summaries"), updated privacy section
+- **APP_REVIEW_GUIDE.md**: Version → 1.3.0 (Build 14), added §5b.3 Gamification Nudges and §5b.4 List Summary sections, NagzAI dependency noted, on-device AI description expanded
+- **TESTFLIGHT_TEST_PLAN.md**: Expanded AI test matrix (nudges, list summary, LLM-generated text), updated known limitations to reflect 7/9 LLM coverage
+
+### iOS App (nagz-ios)
+- **Version bump**: 1.2.0 → 1.3.0, build 13 → 14
+- **README.md**: AI feature table rewritten — 9-row table showing LLM/heuristic/server split per operation
+- **xcodegen regenerated** with new version
+- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
+
+---
+
 ## 2026-02-27 — Session 17: Injectable TextGenerator for Testable LLM Paths
 
 ### NagzAI Package (nagz-ai)
