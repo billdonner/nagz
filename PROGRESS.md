@@ -5,22 +5,40 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-## 2026-02-27 — Session 23: Family Tab Overhaul, Cache Fix, Share Invite
+## 2026-02-27 — Session 23: Family Tab Overhaul, People Tab, AI Personality, Inline Digest
 
-### iOS App (nagz-ios)
-- **Family tab member list**: Family page now shows all members inline with color-coded avatar circles (blue=guardian, orange=participant, green=child), display names, role labels, and a "You" badge for the current user — no longer requires navigating into "Members" to see who's in the family
-- **Member count header**: Section header shows "N Members" count
-- **Manage/All Members link**: Kept at bottom of inline list for full management access
-- **AI digest hex bug fixed**: `FamilyInsightsView.swift` was showing raw UUID hex (`String(member.userId.uuidString.prefix(8))`) when `displayName` was nil — now shows "Member" as fallback text and "?" for the avatar initial
-- **Family tab stale cache fix**: `ManageMembersViewModel` now invalidates `/families` cache after create/remove member; `FamilyTabContent` reloads on appear so changes show immediately when navigating back
-- **Family tab flicker fix**: `FamilyViewModel.loadFamily()` only shows loading spinner on first load (`family == nil`); subsequent refreshes update silently in the background
-- **Send Invite button**: Replaced plain help text in Invite Code section with a `ShareLink` that opens the iOS share sheet pre-filled with family name and invite code — users can now send invites via Messages, Email, AirDrop, etc. Invite code font also enlarged for readability
-- **AI Analysis redesign**: Replaced bland `.alert()` with rich `AISummarySheet` — shows overdue nags (red), due-soon nags (orange) with category icons and relative times, AI summary text, and open/done/overdue stat badges. Half-sheet with drag-to-expand.
-- **Sparkle button moved**: From `.automatic` (next to `+`) to `.topBarLeading` (left side). Shows spinner while generating.
-- **AI prompt improved** (nagz-ai): List summary prompt now instructs LLM to lead with what needs attention RIGHT NOW — overdue first, then due-soon, with specific categories and counts
-- **Builds 16–20**: Iterative fixes deployed across session
-- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
-- **TestFlight**: 1.3.0 (20) uploaded to App Store Connect
+### iOS App (nagz-ios) — Builds 16–25
+
+**Family Tab**
+- **AI digest hex bug fixed**: `FamilyInsightsView` was showing raw UUID hex — now shows "Member" fallback text and "?" for avatar initials
+- **Stale cache fix**: `ManageMembersViewModel` now invalidates `/families` cache after create/remove; family tab reloads on appear
+- **Flicker fix**: Loading spinner only shown on first load (`family == nil`); subsequent refreshes update silently
+- **Send Invite**: `ShareLink` in Invite Code section — opens iOS share sheet pre-filled with family name and invite code
+- **Horizontal member avatars** (Build 24): Members displayed as horizontal scroll with 52pt color-coded avatar circles (blue=guardian, orange=participant, green=child), display name, role label, and star badge for current user
+- **Inline AI digest** (Build 25): "This Week" card at top of family page with sparkle icon, AI summary text, Done/Open/Missed stats, completion percentage, and "Details" link to full FamilyInsightsView — only shows when there's useful data (`totalNags > 0`)
+
+**Nagz Tab**
+- **AI Analysis redesign** (Build 20): Replaced bland `.alert()` with rich `AISummarySheet` — shows overdue nags (red), due-soon nags (orange) with category icons and relative times, AI summary text, stat badges. Half-sheet with drag-to-expand
+- **Sparkle button moved**: From `.automatic` (next to `+`) to `.topBarLeading` (left side). Shows spinner while generating
+
+**People Tab**
+- **Connection stats** (Build 21): Each active connection now shows Sent/Received/Open/Done stat badges with color-coded icons. Uses `TaskGroup` for concurrent per-connection API fetches
+- **Tap fix** (Build 23): Added `.buttonStyle(.borderless)` to Toggle and revoke Button — fixed bug where tapping anywhere on a connection row triggered the revoke action
+
+**AI Personality** (Build 22)
+- 6 celebrity-inspired AI personalities: Standard, Simon Cowell, Susie Greene (Curb), Mr. Rogers, Gordon Ramsay, Coach
+- Picker in Account settings via `@AppStorage("nagz_ai_personality")`
+- Personality prompt injected into list summary, coaching, and push-back prompts
+
+### NagzAI Package (nagz-ai)
+- **`AIPersonality` enum**: 6 personalities with `displayName`, `tagline`, `promptInstruction`
+- **Personality in prompts**: `ListSummaryPrompt`, `CoachingPrompt`, `PushBackPrompt` all inject personality instruction
+- **Urgency emphasis**: List summary prompt rewritten to lead with what needs attention RIGHT NOW
+
+### Deployment
+- **Server**: nagzerver deployed to fly.io (bd-nagzerver.fly.dev)
+- **TestFlight**: 1.3.0 (19) uploaded to App Store Connect
+- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE) through Build 25
 - Committed and pushed to `experimental/ai-integration`
 
 ---
