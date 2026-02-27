@@ -5,6 +5,29 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 17: Injectable TextGenerator for Testable LLM Paths
+
+### NagzAI Package (nagz-ai)
+- **New `TextGenerator` protocol** (`Sources/NagzAI/TextGenerator.swift`) — single-method `String → String` abstraction for LLM calls
+- **New `FoundationModelsTextGenerator`** (`Providers/FoundationModelsTextGenerator.swift`) — real implementation gated behind `#if canImport(FoundationModels)`, wraps `LanguageModelSession`
+- **Refactored `FoundationModelsProvider`** — added `textGenerator` property with two inits:
+  - `init()` — production: wires real generator (or nil on non-FM platforms)
+  - `init(textGenerator:)` — test-only: inject any mock
+- **Eliminated per-method `#if canImport` gates** — all 7 LLM methods now use `guard let textGenerator else { heuristicFallback }`; the `#if canImport` gate is only in `init()` and the gated file
+- **14 new tests** in `FoundationModelsProviderTests.swift` with `MockTextGenerator`:
+  - Summarize excuse (LLM text + heuristic category, truncation)
+  - Select tone (firm + supportive with LLM reason)
+  - Coaching (LLM tip + heuristic scenario/category)
+  - Digest (LLM summaryText + preserved structured fields)
+  - Push back (LLM message + heuristic tone, shouldPushBack always true)
+  - List summary (pure LLM text)
+  - Gamification nudges (personalized, fallback on mismatch, empty passthrough)
+  - Patterns + predictCompletion stay heuristic (ignore textGenerator)
+- **110 tests total** (96 existing + 14 new) — all passing
+- **Docs updated**: CLAUDE.md (key files, pattern note), SPEC.md (§5.5, test table, v1.2.0)
+
+---
+
 ## 2026-02-27 — Session 16: Expand Foundation Models to All NagzAI Operations
 
 ### NagzAI Package (nagz-ai)
