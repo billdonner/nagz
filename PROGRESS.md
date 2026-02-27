@@ -5,23 +5,32 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-## 2026-02-26 — Session 14: AI-Powered UI Surfaces + Doc Updates
+## 2026-02-26 — Session 14: AI-Powered UI Surfaces + TestFlight Build 12
 
 ### iOS (nagz-ios) — `experimental/ai-integration` branch
 - **Created `EnvironmentValues+AI.swift`** — `\.aiService` environment key mirroring existing `\.apiClient` pattern
 - **Wired AIService** in `NagzApp.swift` — `.environment(\.aiService, aiService)` alongside `.environment(\.apiClient, apiClient)`
-- **Created `AIInsightsSection.swift`** (~125 lines) — inline AI section for NagDetailView:
+- **Created `AIInsightsSection.swift`** (~160 lines) — inline AI section for NagDetailView:
   - Tone badge (color-coded capsule: blue=neutral, green=supportive, red=firm) with reason text
   - Coaching tip (lightbulb icon + tip + scenario caption)
   - Completion prediction (percentage gauge + suggested reminder time)
-  - Fetches all 3 in parallel via `async let` with `try?` — hidden if AI unavailable
+  - Three-tier fallback: NagzAIAdapter (GRDB cache) → ServerAIService → direct NagzAI.Router heuristics
+  - Derives synthetic context from nag status/category so insights vary per nag
 - **Created `FamilyInsightsView.swift`** (~145 lines) — guardian-only Family tab view:
   - Weekly digest: summary text, per-member completion stats, totals footer
   - User patterns: day-of-week miss insights from 90-day analysis
   - Pull-to-refresh + ProgressView loading state + graceful error handling
-- **Modified `NagDetailView.swift`** — inserted `AIInsightsSection(nagId:)` after Details section
+- **Modified `NagDetailView.swift`** — inserted `AIInsightsSection(nagId:nag:)` after Details section
 - **Modified `AuthenticatedTabView.swift`** — added "AI Insights" section with Family Insights NavigationLink (guardian-only)
-- **202 tests pass**, clean build, committed and pushed
+- **NagzAIAdapter** — removed cache-freshness gate on nag-specific operations (local heuristics preferred when nag is cached)
+- **Debugging cycle**: fixed 403 consent error on devices without GRDB cache, fixed identical insights across nags
+- **202 tests pass**, clean build, verified on both phones (Titanic + rowboat)
+
+### TestFlight Distribution
+- **Bumped** version to 1.2.0 (build 12)
+- Archived, uploaded to App Store Connect
+- Release notes set: AI Insights feature summary
+- Auto-distributed to "family-naggers" internal beta group
 
 ### Documentation Updates (nagz hub + nagz-ios)
 - **AI_ARCHITECTURE.md** — updated Section 4.3 (`OnDeviceAIService` → `NagzAIAdapter`), added Section 4.4 (iOS UI surfaces), updated implementation checklist (steps 5-8 marked DONE)
