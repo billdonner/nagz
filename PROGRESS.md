@@ -5,6 +5,22 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 12b: Nagz rename, For Me / For Others sections, v1.1.11
+
+### iOS (nagz-ios)
+- **NagListView** — split into "For Me" (recipient is current user) and "For Others" sections with `.insetGrouped` style
+- **AuthenticatedTabView** — tab label renamed from "Nags" to "Nagz"
+- Navigation title changed to "Nagz"
+- **Version bumped** to 1.1.11 (build 9)
+- Deployed to both phones: Titanic (iPhone 15 Pro Max) and rowboat (iPhone SE)
+
+### Web (nagz-web)
+- **NagList** — heading changed from "All Nagz" to "Nagz", split into "For Me" and "For Others" sections
+- "For Me" table shows "From" column; "For Others" table shows "To" column
+- Updated `phase3-coverage.test.tsx` to test both sections (126 tests pass)
+
+---
+
 ## 2026-02-26 — Session 12: WebSocket Real-Time Updates + APNs Smart Push
 
 ### Server — Event Bus + WebSocket Hub (nagzerver)
