@@ -5,6 +5,39 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 12: WebSocket Real-Time Updates + APNs Smart Push
+
+### Server — Event Bus + WebSocket Hub (nagzerver)
+- **New `services/events.py`** — central event publisher via Redis pub/sub with JSON serialization
+- **New `routers/ws.py`** — WebSocket endpoint `WS /api/v1/ws?token=...&family_id=...` with JWT auth, Redis pub/sub subscription, ping/pong keepalive, connection tracking
+- **Nag routers** — `publish_event()` called after nag create, update, status change, excuse submit
+- **Family routers** — `publish_event()` called after member add/remove
+- **Smart push** — APNs notifications for `nag_created` (→ recipient) and `nag_completed` (→ creator), skipped when user has active WebSocket
+- **8 new tests** for event publishing, serialization, and router integration (242 total pass)
+
+### iOS — WebSocketService (nagz-ios)
+- **New `WebSocketService` actor** — connects to `wss://server/api/v1/ws`, decodes JSON events via `AsyncStream<NagEvent>`, auto-reconnects with exponential backoff (1s → 30s), keepalive pings every 25s
+- **NagListView** — subscribes to WebSocket events, reloads on nag mutations; **removed 30-second polling timer**
+- **ChildNagListView** — subscribes to WebSocket events for real-time updates
+- Threaded through `NagzApp → ContentView → AuthenticatedTabView/ChildTabView`
+
+### Web — useWebSocket Hook (nagz-web)
+- **New `useWebSocket` hook** — opens WS connection, auto-reconnects with exponential backoff, exposes `eventCount` for triggering refreshes
+- **FamilyDashboard** — auto-refreshes nag counts on WebSocket events
+- **NagList** — auto-refreshes nag list on events
+- **KidView** — auto-refreshes nags/excuses on events
+- All 126 web tests pass
+
+### Test Results
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 242 | All pass |
+| nagz-web | 126 | All pass |
+| nagz-ios | Build succeeds | No regressions |
+| **Total** | **368+** | **All pass** |
+
+---
+
 ## 2026-02-26 — Session 11: Child Login (Family Code + Username + PIN)
 
 ### Database & Models (nagzerver)
