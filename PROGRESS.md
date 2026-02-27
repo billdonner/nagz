@@ -5,6 +5,24 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 22: Web Urgency Colors, Header Rename, Dep Updates & Deploy
+
+### Web App (nagz-web)
+- **Urgency-colored nag rows**: Ported iOS 5-tier urgency system to TypeScript
+  - New `urgencyTier()` function in `nag-utils.ts`: calm (>24h), approaching (2–24h, blue), dueSoon (<2h, yellow), overdue (<1h past, orange), critical (>1h past, red)
+  - `URGENCY_COLORS` for due-date text color, `URGENCY_BORDER` for 3px left accent bar
+  - Applied to both "For Me" and "Nagz to Others:" table rows in `NagList.tsx`
+- **Section header rename**: "For Others" → "Nagz to Others:" (matches iOS)
+- **Test updated**: `phase3-coverage.test.tsx` assertion updated to match new header
+- **Dependency patches**: axios 1.13.6, react-router-dom 7.13.1, eslint 9.39.3, typescript-eslint 8.56.1, orval 8.5.1
+- **Build**: clean (272 modules), **Tests**: 126/126 passing
+- Committed and pushed to `main`
+
+### iOS App (nagz-ios)
+- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
+
+---
+
 ## 2026-02-27 — Session 21: On-Device AI Architecture Docs & Website Update
 
 ### Documentation (nagz hub)
