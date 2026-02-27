@@ -5,6 +5,19 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 23: Family Tab Enhancement & AI Digest Hex Bug Fix
+
+### iOS App (nagz-ios)
+- **Family tab member list**: Family page now shows all members inline with color-coded avatar circles (blue=guardian, orange=participant, green=child), display names, role labels, and a "You" badge for the current user — no longer requires navigating into "Members" to see who's in the family
+- **Member count header**: Section header shows "N Members" count
+- **Manage/All Members link**: Kept at bottom of inline list for full management access
+- **AI digest hex bug fixed**: `FamilyInsightsView.swift` was showing raw UUID hex (`String(member.userId.uuidString.prefix(8))`) when `displayName` was nil — now shows "Member" as fallback text and "?" for the avatar initial
+- **Build 16**: Bumped `CURRENT_PROJECT_VERSION` 15 → 16 in `project.yml`
+- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE) via `xcrun devicectl device install app`
+- Committed and pushed to `experimental/ai-integration`
+
+---
+
 ## 2026-02-27 — Session 22: Web Urgency Colors, Header Rename, Dep Updates & Deploy
 
 ### Web App (nagz-web)
