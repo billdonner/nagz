@@ -5,6 +5,20 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 16: Expand Foundation Models to All NagzAI Operations
+
+### NagzAI Package (nagz-ai)
+- **6 new prompt files**: ExcusePrompt, TonePrompt, DigestPrompt, PushBackPrompt, ListSummaryPrompt, GamificationPrompt
+- **Design pattern**: Each prompt has `build()` (constructs system prompt) + `parse()` (extracts LLM text, heuristic for structured fields)
+- **FoundationModelsProvider upgraded**: 7 of 9 operations now use on-device LLM via `#if canImport(FoundationModels)`
+- **2 operations stay heuristic-only**: `patterns` (pure date counting), `predictCompletion` (pure math)
+- **Hybrid approach**: LLM generates text fields (summary, reason, message, tip); enums, numbers, dates computed heuristically
+- **For digest + gamification**: heuristic runs FIRST for structured data, then LLM overlays natural text
+- **37 new tests** across 6 test files (96 total, up from 59) — all passing
+- **Docs updated**: CLAUDE.md, SPEC.md (v1.1.0) with all new prompt specs
+
+---
+
 ## 2026-02-27 — Session 15: Gamification Nudges + iOS 26 Deployment Target
 
 ### NagzAI Package (nagz-ai)
