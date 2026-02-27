@@ -5,6 +5,22 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 20: Smart Defaults for New Nag Sheet
+
+### iOS App (nagz-ios)
+- **Smart defaults**: New Nag form now pre-selects category and completion type based on recipient history
+  - Queries local GRDB `cached_nags` table for most frequently used values per creator→recipient pair
+  - Triggers on recipient selection in `onChange(of: recipientId)` — instant, no network call
+  - User can still override via pickers; if no history exists, defaults stay as chores/ackOnly
+- **New file**: `EnvironmentValues+Database.swift` — `DatabaseManager` environment key (follows existing AI/API pattern)
+- **DatabaseManager**: Added `nagDefaults(creatorId:recipientId:)` query method using GRDB reader pool
+- **CreateNagViewModel**: Added `applySmartDefaults(db:creatorId:recipientId:)` — maps raw strings to enum values
+- **CreateNagView**: Reads `databaseManager` from environment; calls smart defaults after recipient context is set
+- **NagzApp**: Injects `.environment(\.databaseManager, databaseManager)` into view hierarchy
+- **All 202 iOS tests pass**, committed and pushed to `experimental/ai-integration`
+
+---
+
 ## 2026-02-27 — Session 19: Urgency-Colored Nag List Cells
 
 ### iOS App (nagz-ios)
