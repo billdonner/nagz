@@ -5,6 +5,26 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 13: Integrate nagz-ai Package into nagz-ios
+
+### nagz-ai Package
+- Standalone Swift package at `~/nagz-ai` with Router (auto-selects Foundation Models on iOS 26+ / Heuristic fallback)
+- 42 tests, zero dependencies — all passing
+
+### iOS (nagz-ios) — `experimental/ai-integration` branch
+- **Added NagzAI** as local SPM dependency in `project.yml`
+- **Created `NagzAIAdapter.swift`** (228 lines) — actor conforming to `AIService`, bridges GRDB context → NagzAI Router → app response types
+- **Replaced `OnDeviceAIService`** entirely (deleted)
+- **Coaching** — proper scenario detection (`first_miss`, `streak_3`, `repeated_time_conflict`, `high_completion_homework`) instead of random tip
+- **Digest** — works locally when cache is fresh (was always server-only fallback)
+- **PushBack** — works locally when cache is fresh (was always server-only fallback)
+- **Foundation Models** — auto-selected on iOS 26+ via Router; heuristic fallback on iOS 17–25
+- Updated `NagzApp.swift` wiring (3-line swap)
+- Updated tests in `ServiceAndViewModelTests.swift` and `Phase2CoverageTests.swift` to use `NagzAIAdapter(preferHeuristic: true)`
+- **202 tests pass**, clean build
+
+---
+
 ## 2026-02-26 — Session 12b: Nagz rename, For Me / For Others sections, v1.1.11
 
 ### iOS (nagz-ios)
