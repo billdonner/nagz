@@ -5,6 +5,49 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 11: Child Login (Family Code + Username + PIN)
+
+### Database & Models (nagzerver)
+- **Alembic migration** adds `child_code` to families, `username`/`pin_hash` to family_memberships, new `child_settings` table
+- **Models** updated: `Family.child_code`, `FamilyMembership.username/pin_hash`, new `ChildSettings` ORM class
+- **Family service** generates unique 6-char uppercase alphanumeric child codes, hashes PINs with bcrypt
+
+### Server Auth & API (nagzerver)
+- **`POST /auth/child-login`** — family code + username + PIN authentication with Redis rate limiting (5 attempts/15 min)
+- **`PUT /families/{id}/members/{uid}/credentials`** — guardian sets child username+PIN
+- **`PATCH /families/{id}/members/{uid}/pin`** — child changes own PIN
+- **`GET/PATCH /families/{id}/children/{uid}/settings`** — guardian manages per-child controls
+- **Authorization enforcement** — snooze limits, excuse toggle, quiet hours checked in nag routers
+- **15 new tests** (234 total, all passing), committed and pushed
+
+### iOS Client (nagz-ios)
+- **Models:** `ChildLoginRequest`, extended `AuthResponse` with `familyId`/`familyRole`, `ChildSettingsResponse/Update`, `ChildCredentialsSet`, `PinChangeRequest`
+- **5 new API endpoints** in `APIEndpoint.swift`
+- **AuthManager:** `isChildUser` routing, `childLogin()` method, role persistence
+- **7 new views:** `ChildLoginView` (PIN pad), `ChildTabView`, `ChildNagListView`, `ChildNagRowView`, `ChildSettingsView`, `ChildControlsView`
+- **ContentView** routes child→ChildTabView, adult→AuthenticatedTabView
+- **LoginView** adds "I'm a Kid" button
+- **ManageMembersView** adds credential management and child controls links
+- Build succeeds, 215 tests passing, committed and pushed
+
+### Web Client (nagz-web)
+- **Regenerated** TypeScript API client with child login types
+- **Login.tsx:** "I'm a Kid" toggle → family code + username + 4-digit PIN form
+- **FamilyDashboard.tsx:** displays `child_code` alongside invite code, credential management modal, child controls link per child member
+- **ChildSettings.tsx:** new component — guardian per-child snooze/excuse/quiet hours controls
+- **members.tsx:** exposes `childCode` from family response
+- All 126 web tests passing, committed and pushed
+
+### Test Results
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 234 | All passing |
+| nagz-web | 126 | All passing |
+| nagz-ios | 215 | All passing |
+| **Total** | **575** | |
+
+---
+
 ## 2026-02-26 — Session 10: Display Names in Web UI
 
 ### API Sync

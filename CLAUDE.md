@@ -30,10 +30,10 @@ After any API or model change in nagzerver:
 
 | Repo | Tests | Command |
 |------|-------|---------|
-| nagzerver | 219 | `cd ~/nagzerver && uv run pytest` |
+| nagzerver | 234 | `cd ~/nagzerver && uv run pytest` |
 | nagz-web | 126 | `cd ~/nagz-web && npx vitest run` |
 | nagz-ios | 215 | `cd ~/nagz-ios && xcodebuild test -project Nagz.xcodeproj -scheme Nagz -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.5'` |
-| **Total** | **560** | |
+| **Total** | **575** | |
 
 ## Custom Skills (Slash Commands)
 
