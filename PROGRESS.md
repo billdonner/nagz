@@ -5,6 +5,25 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 21: On-Device AI Architecture Docs & Website Update
+
+### Documentation (nagz hub)
+- **APP_STORE_SUBMISSION.md**: Expanded AI feature bullets with 7/9 on-device LLM detail; enhanced privacy section clarifying no text leaves device
+- **APP_REVIEW_GUIDE.md**: Added full 9-row AI operations table (on-device/heuristic/server columns), privacy guarantee section, routing explanation to section 5b; updated section 12 data privacy verification
+- **TESTFLIGHT_TEST_PLAN.md**: Expanded known limitations with per-operation on-device vs heuristic breakdown
+
+### Server Docs (nagzerver)
+- **APP_STORE_DESCRIPTION.md**: New "On-device AI intelligence" section with 7/9 detail, heuristic fallback messaging, privacy guarantee
+
+### Website & iOS App (nagz-ios)
+- **docs/index.html**: New "On-Device AI" marketing section on landing page — Apple Foundation Models, privacy messaging
+- **docs/privacy.html**: New section 2g explaining on-device AI data processing and no external AI services
+- **docs/support.html**: Expanded "What does the AI do?" FAQ with on-device detail; added new "Does Nagz send data to external AI?" FAQ (answer: no)
+- **NagListView.swift**: Renamed section header "For Others" → "Nagz to Others:"
+- All committed and pushed across 3 repos
+
+---
+
 ## 2026-02-27 — Session 20: Smart Defaults for New Nag Sheet
 
 ### iOS App (nagz-ios)
