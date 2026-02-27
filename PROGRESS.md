@@ -5,15 +5,18 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-## 2026-02-27 — Session 23: Family Tab Enhancement & AI Digest Hex Bug Fix
+## 2026-02-27 — Session 23: Family Tab Overhaul, Cache Fix, Share Invite
 
 ### iOS App (nagz-ios)
 - **Family tab member list**: Family page now shows all members inline with color-coded avatar circles (blue=guardian, orange=participant, green=child), display names, role labels, and a "You" badge for the current user — no longer requires navigating into "Members" to see who's in the family
 - **Member count header**: Section header shows "N Members" count
 - **Manage/All Members link**: Kept at bottom of inline list for full management access
 - **AI digest hex bug fixed**: `FamilyInsightsView.swift` was showing raw UUID hex (`String(member.userId.uuidString.prefix(8))`) when `displayName` was nil — now shows "Member" as fallback text and "?" for the avatar initial
-- **Build 16**: Bumped `CURRENT_PROJECT_VERSION` 15 → 16 in `project.yml`
-- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE) via `xcrun devicectl device install app`
+- **Family tab stale cache fix**: `ManageMembersViewModel` now invalidates `/families` cache after create/remove member; `FamilyTabContent` reloads on appear so changes show immediately when navigating back
+- **Family tab flicker fix**: `FamilyViewModel.loadFamily()` only shows loading spinner on first load (`family == nil`); subsequent refreshes update silently in the background
+- **Send Invite button**: Replaced plain help text in Invite Code section with a `ShareLink` that opens the iOS share sheet pre-filled with family name and invite code — users can now send invites via Messages, Email, AirDrop, etc. Invite code font also enlarged for readability
+- **Builds 16–19**: Iterative fixes deployed across session
+- **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
 - Committed and pushed to `experimental/ai-integration`
 
 ---
