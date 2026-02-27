@@ -15,8 +15,12 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 - **Family tab stale cache fix**: `ManageMembersViewModel` now invalidates `/families` cache after create/remove member; `FamilyTabContent` reloads on appear so changes show immediately when navigating back
 - **Family tab flicker fix**: `FamilyViewModel.loadFamily()` only shows loading spinner on first load (`family == nil`); subsequent refreshes update silently in the background
 - **Send Invite button**: Replaced plain help text in Invite Code section with a `ShareLink` that opens the iOS share sheet pre-filled with family name and invite code — users can now send invites via Messages, Email, AirDrop, etc. Invite code font also enlarged for readability
-- **Builds 16–19**: Iterative fixes deployed across session
+- **AI Analysis redesign**: Replaced bland `.alert()` with rich `AISummarySheet` — shows overdue nags (red), due-soon nags (orange) with category icons and relative times, AI summary text, and open/done/overdue stat badges. Half-sheet with drag-to-expand.
+- **Sparkle button moved**: From `.automatic` (next to `+`) to `.topBarLeading` (left side). Shows spinner while generating.
+- **AI prompt improved** (nagz-ai): List summary prompt now instructs LLM to lead with what needs attention RIGHT NOW — overdue first, then due-soon, with specific categories and counts
+- **Builds 16–20**: Iterative fixes deployed across session
 - **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
+- **TestFlight**: 1.3.0 (20) uploaded to App Store Connect
 - Committed and pushed to `experimental/ai-integration`
 
 ---
