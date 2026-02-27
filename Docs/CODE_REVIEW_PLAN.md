@@ -10,7 +10,7 @@
 |------|------|-------|-------|-------|
 | nagzerver | ~/nagzerver | Python 3.12, FastAPI, SQLAlchemy | 77 | ~7,200 |
 | nagz-web | ~/nagz-web | React 18, TypeScript, Vite | 174 | ~8,800 |
-| nagz-ios | ~/nagz-ios | SwiftUI, Swift 6, iOS 17+ | 95 | ~7,100 |
+| nagz-ios | ~/nagz-ios | SwiftUI, Swift 6, iOS 26+ | 95 | ~7,100 |
 
 ---
 

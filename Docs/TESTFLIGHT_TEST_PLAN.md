@@ -147,6 +147,6 @@ Use the TestFlight feedback button (shake device or screenshot → "Send Beta Fe
 
 - Server URL may be development instance (slower responses)
 - SMS delivery not enabled in beta
-- AI features use heuristic engine (not LLM)
+- AI features use Foundation Models (on-device LLM) for coaching, heuristics for other operations
 - Only "friendly_reminder" strategy template available
 - US-only launch scope

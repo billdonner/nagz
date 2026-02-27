@@ -9,7 +9,7 @@
 | **App Name** | Nagz |
 | **Bundle ID** | com.nagz.app |
 | **Version** | 1.0.0 (Build 1) |
-| **Platform** | iOS 17.0+ |
+| **Platform** | iOS 26.0+ |
 | **Swift** | 6.0 (strict concurrency) |
 | **Category** | Lifestyle / Family |
 | **Dependencies** | KeychainAccess 4.2.2 (SPM), GRDB 7.0.0 (SPM) |

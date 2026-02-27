@@ -13,7 +13,7 @@ Nagz uses a split AI architecture: on-device intelligence for privacy-sensitive,
 
 ## 3. AI Service Interface
 
-All AI features are defined as operations on this shared interface. Each operation has an on-device implementation (heuristic engine on iOS 17+, upgradable to Apple Foundation Models on iOS 26+) and a server implementation (web + fallback).
+All AI features are defined as operations on this shared interface. Each operation has an on-device implementation (Apple Foundation Models + heuristic fallback, iOS 26 baseline) and a server implementation (web + fallback).
 
 | Operation | Input | Output |
 |-----------|-------|--------|
@@ -35,15 +35,15 @@ All AI features are defined as operations on this shared interface. Each operati
          │                         │
   ┌──────┴───────┐         ┌──────┴──────┐
   │  On-Device   │         │   Server    │
-  │  (iOS 17+)   │         │  (all clients) │
+  │  (iOS 26+)   │         │  (all clients) │
   │              │         │              │
-  │  Heuristic   │         │  Heuristic   │
-  │  engine      │         │  engine      │
-  │  (Foundation │         │              │
-  │   Models on  │         │              │
-  │   iOS 26+)   │         │              │
-  │  + GRDB      │         │  (upgradable │
-  │  event cache │         │   to LLM)   │
+  │  Foundation  │         │  Heuristic   │
+  │  Models +    │         │  engine      │
+  │  Heuristic   │         │              │
+  │  fallback    │         │  (upgradable │
+  │              │         │   to LLM)   │
+  │  + GRDB      │         │              │
+  │  event cache │         │              │
   └──────────────┘         └──────────────┘
 ```
 

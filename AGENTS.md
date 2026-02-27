@@ -13,7 +13,7 @@ Nagz is a family task-reminder ("nagging") app. Guardians create nags for family
 | **nagz** | `~/nagz` | Markdown | Specs, documentation, central hub |
 | **nagzerver** | `~/nagzerver` | Python 3.12, FastAPI, SQLAlchemy (async), PostgreSQL, Redis | API server (source of truth) |
 | **nagz-web** | `~/nagz-web` | React, TypeScript, Vite | Web client |
-| **nagz-ios** | `~/nagz-ios` | SwiftUI, Swift 6, iOS 17+ | iOS client |
+| **nagz-ios** | `~/nagz-ios` | SwiftUI, Swift 6, iOS 26+ | iOS client |
 
 All repos live side-by-side under `~/`. There is no monorepo — each has its own git history.
 
@@ -108,7 +108,7 @@ npx vitest run        # run tests
 ## iOS Client (nagz-ios)
 
 ### Tech Stack
-- SwiftUI, MVVM, iOS 17+ (@Observable)
+- SwiftUI, MVVM, iOS 26+ (@Observable)
 - Swift 6 strict concurrency
 - Dependencies: KeychainAccess (SPM), GRDB (SPM)
 - Project generated with xcodegen from `project.yml`

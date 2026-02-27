@@ -5,6 +5,34 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 15: Gamification Nudges + iOS 26 Deployment Target
+
+### NagzAI Package (nagz-ai)
+- **New types**: `GamificationContext`, `GamificationNudgeItem`, `GamificationNudgeResult` — context + results for streak/badge nudges
+- **New protocol method**: `gamificationNudges(context:)` added to `NagzAIService`
+- **HeuristicProvider**: Implemented streak-at-risk alerts (5 tiers: no streak → early → mid → long → legendary) and badge proximity nudges (first_completion, streak_3, streak_7, streak_30, century_club)
+- **FoundationModelsProvider**: Delegates to heuristic (nudges are threshold-based)
+- **ServerProvider**: Throws `.notAvailable` (on-device only)
+- **Router**: Routes `gamificationNudges` to selected provider
+- **8 new tests** in RouterTests: no-streak, early, mid, long, legendary, first-completion, priority-sort, custom-provider
+- **59 tests pass** (up from 51)
+
+### iOS 26 Deployment Target
+- **Package.swift**: swift-tools-version 5.10 → 6.2, platforms `.iOS(.v17)/.macOS(.v14)` → `.iOS(.v26)/.macOS(.v26)`
+- **project.yml**: `iOS: "17.0"` → `iOS: "26.0"`, regenerated Xcode project
+- **FoundationModelsProvider simplified**: Removed `#available(iOS 26, ...)` runtime guards and `isAvailable` check fallback — Foundation Models always available with iOS 26 baseline
+- **Router comment**: Updated tier description to reflect iOS 26 baseline
+
+### iOS (nagz-ios)
+- **GamificationViewModel**: Added `nudges` property, loads AI nudges after badges via `NagzAI.Router().gamificationNudges()`
+- **GamificationView**: Added "Tips" section above "Your Stats" displaying icon + message rows from AI nudges
+
+### Documentation Updates (all repos)
+- Updated 12+ doc files across nagz, nagz-ai, nagz-ios replacing "iOS 17" → "iOS 26"
+- Key files: APP_REVIEW_GUIDE.md, APP_STORE_SUBMISSION.md, TESTFLIGHT_TEST_PLAN.md, AI_ARCHITECTURE.md, SIRI_SHORTCUTS.md, CODE_REVIEW_PLAN.md, AGENTS.md, CLAUDE.md (all repos), README.md, SPEC.md
+
+---
+
 ## 2026-02-26 — Session 14: AI-Powered UI Surfaces + TestFlight Build 12
 
 ### iOS (nagz-ios) — `experimental/ai-integration` branch

@@ -204,7 +204,7 @@ Include in App Store description and/or in-app About screen.
 | Set build configuration to Release | Xcode → Edit Scheme → Release |
 | Update MARKETING_VERSION | Increment in project.yml |
 | Update CURRENT_PROJECT_VERSION | Increment in project.yml |
-| Verify deployment target | iOS 17.0 |
+| Verify deployment target | iOS 26.0 |
 | Switch to production API URL | AppEnvironment.swift |
 | Remove development NSAllowsLocalNetworking | Info.plist cleanup |
 | Enable bitcode (if required) | Xcode build settings |

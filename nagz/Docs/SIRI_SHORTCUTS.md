@@ -6,7 +6,7 @@ Nagz exposes key nag operations to Siri, Shortcuts, and Apple Intelligence via t
 
 **Framework choice**: App Intents (not the deprecated SiriKit/INIntent). App Intents is the only path forward for Siri integration, Apple Intelligence schemas, interactive snippets, and Control Center widgets.
 
-**Minimum target**: iOS 17 (matches current Nagz deployment target). Interactive snippets require iOS 26+.
+**Minimum target**: iOS 26 (matches current Nagz deployment target). Interactive snippets are available on all supported devices.
 
 ## 2. Design Principles
 
