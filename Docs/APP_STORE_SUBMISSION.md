@@ -50,7 +50,7 @@
 |-------|---------|
 | **App Name** | Nagz |
 | **Subtitle** | Family Task Reminders |
-| **Promotional Text** | Keep your family on track with smart reminders, gamification, and Siri integration. |
+| **Promotional Text** | Keep your family on track with smart reminders, on-device AI coaching, gamification, and Siri integration. |
 
 ### 2.2 Description (4000 char max)
 
@@ -67,7 +67,7 @@ KEY FEATURES
 • Siri Shortcuts — "Show my nags" or "Create a nag" by voice
 • Role-based access: guardians manage, participants and children complete
 • Safety tools: block, report, and mute family members
-• On-device AI coaching and behavioral insights
+• On-device AI: personalized coaching tips, smart tone selection, weekly family digests, gamification nudges, and task summaries — powered by Apple Foundation Models
 • Push notification reminders at every escalation phase
 
 BUILT FOR FAMILIES
@@ -78,7 +78,7 @@ BUILT FOR FAMILIES
 
 PRIVACY FIRST
 • No ads, no tracking, no data selling
-• On-device AI processing when possible
+• On-device AI for 7 of 9 intelligent features — your data never leaves your iPhone
 • Minimal data collection: just email and family task data
 • Account deletion available anytime
 

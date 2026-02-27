@@ -74,9 +74,12 @@ Nagz is a family task-reminder app. Guardians create "nags" (reminders) for fami
 | Test | Steps | Expected |
 |------|-------|----------|
 | **Nag AI section** | Open any nag → scroll to "AI Insights" | Tone badge, coaching tip, and completion prediction shown |
-| **Tone indicator** | Check AI Insights section | Color-coded capsule (blue/green/red) with explanation |
+| **Tone indicator** | Check AI Insights section | Color-coded capsule (blue/green/red) with LLM-generated explanation |
+| **Coaching tip** | Check AI Insights section | Lightbulb icon with personalized tip text |
 | **Completion gauge** | Check AI Insights section | Percentage bar showing likelihood + optional reminder time |
-| **Family Insights** | Family tab → AI Insights (guardian only) | Weekly digest with per-member stats and miss patterns |
+| **Family Insights** | Family tab → AI Insights (guardian only) | Weekly digest with LLM summary, per-member stats, and miss patterns |
+| **List summary** | View nag list header | 2-3 sentence summary of your task list |
+| **Gamification nudges** | Points & Streaks → Tips section | Personalized streak/badge nudges with emoji icons |
 | **Pull to refresh** | Family Insights → pull down | Data refreshes |
 
 ### Safety
@@ -147,6 +150,6 @@ Use the TestFlight feedback button (shake device or screenshot → "Send Beta Fe
 
 - Server URL may be development instance (slower responses)
 - SMS delivery not enabled in beta
-- AI features use Foundation Models (on-device LLM) for coaching, heuristics for other operations
+- AI features use Foundation Models (on-device LLM) for 7 of 9 operations (excuse summaries, tone, coaching, digest, push-back, list summaries, gamification nudges); patterns and prediction use heuristics
 - Only "friendly_reminder" strategy template available
 - US-only launch scope

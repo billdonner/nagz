@@ -10,9 +10,10 @@ Nagz is a family-oriented AI-mediated nagging/reminder app with **Apple Intellig
 
 Nagz uses a split AI architecture:
 
-- **On-device** (iOS) — Apple Foundation Models for privacy-sensitive processing (excuse summarization, coaching, pattern detection). Data stays on device.
-- **Server-side** (all clients) — Deterministic heuristic engine, upgradable to LLM. 7 AI endpoints for web clients and iOS fallback.
-- **Siri & Shortcuts** (V2.0) — App Intents for voice control and automation ("Show my nags", "Mark my homework as done").
+- **On-device** (iOS) — Apple Foundation Models for 7 of 9 AI operations (excuse summaries, tone reasons, coaching tips, weekly digest, push-back messages, list summaries, gamification nudges). All text stays on device.
+- **Heuristic** — Pure math/counting for patterns and completion prediction. Also provides structured data (tone enums, categories, icons) that the LLM doesn't generate.
+- **Server-side** (all clients) — Deterministic heuristic engine at 7 AI endpoints for web clients and iOS fallback.
+- **Siri & Shortcuts** — App Intents for voice control and automation ("Show my nags", "Mark my homework as done").
 
 See `nagz/Docs/AI_ARCHITECTURE.md` for the full design.
 

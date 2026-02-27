@@ -8,11 +8,11 @@
 |-------|-------|
 | **App Name** | Nagz |
 | **Bundle ID** | com.nagz.app |
-| **Version** | 1.0.0 (Build 1) |
+| **Version** | 1.3.0 (Build 14) |
 | **Platform** | iOS 26.0+ |
 | **Swift** | 6.0 (strict concurrency) |
 | **Category** | Lifestyle / Family |
-| **Dependencies** | KeychainAccess 4.2.2 (SPM), GRDB 7.0.0 (SPM) |
+| **Dependencies** | KeychainAccess 4.2.2, GRDB 7.0.0, NagzAI (local SPM) |
 | **Backend** | Python (FastAPI), hosted at api.nagz.app |
 | **Price** | Free (no IAP, no subscriptions, no ads) |
 
@@ -202,27 +202,44 @@ Verify escalation badges update correctly over time.
 
 ---
 
-## 5b. AI Insights (Guardian Only)
+## 5b. AI Insights
+
+All AI text is generated on-device using Apple Foundation Models (7 of 9 operations). Structured data (tone enums, categories, icons) is computed heuristically. No AI data leaves the device.
 
 ### 5b.1 Nag Detail AI Section
 
 | Step | Verify |
 |------|--------|
 | 1 | Open any nag detail | AI Insights section loads below Details |
-| 2 | Tone badge | Color-coded capsule (blue=neutral, green=supportive, red=firm) with reason text |
-| 3 | Coaching tip | Lightbulb icon with contextual tip and scenario description |
+| 2 | Tone badge | Color-coded capsule (blue=neutral, green=supportive, red=firm) with LLM-generated reason |
+| 3 | Coaching tip | Lightbulb icon with personalized tip (LLM) and scenario description (heuristic) |
 | 4 | Completion prediction | Percentage gauge with progress bar and optional suggested reminder time |
 | 5 | AI service unavailable | Section gracefully hidden, rest of view unaffected |
 
-### 5b.2 Family Insights View
+### 5b.2 Family Insights View (Guardian Only)
 
 | Step | Verify |
 |------|--------|
 | 1 | Family tab → AI Insights → Family Insights | Guardian-only navigation link |
-| 2 | Weekly Digest | Summary text, per-member completion stats (name, completed/total, rate), totals row |
-| 3 | Your Patterns | Day-of-week miss insights from 90-day analysis |
+| 2 | Weekly Digest | LLM-generated summary text, per-member completion stats (name, completed/total, rate), totals row |
+| 3 | Your Patterns | Day-of-week miss insights from 90-day analysis (heuristic) |
 | 4 | Pull to refresh | Refreshes both digest and patterns |
 | 5 | No data | "No insights" empty state when insufficient activity |
+
+### 5b.3 Gamification Nudges
+
+| Step | Verify |
+|------|--------|
+| 1 | Points & Streaks → Tips section | Shows personalized nudges for streak-at-risk and badge proximity |
+| 2 | Nudge messages | LLM-personalized text with emoji icons (heuristic decides which nudges to show) |
+| 3 | No nudges | Section hidden when no streak-at-risk and no badge proximity |
+
+### 5b.4 List Summary
+
+| Step | Verify |
+|------|--------|
+| 1 | Nag list view | LLM-generated 2-3 sentence summary of current task status |
+| 2 | Child vs parent | Language adapts (kid-friendly vs concise adult) |
 
 ---
 
@@ -353,7 +370,7 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 | No contacts | Confirmed: no CNContactStore |
 | Keychain for tokens | Access token and refresh token stored in Keychain (com.nagz.app) |
 | Local SQLite cache | GRDB database in Application Support, encrypted at rest by iOS |
-| On-device AI | Heuristic processing uses only local GRDB cache data |
+| On-device AI | Apple Foundation Models for text generation (7/9 ops) + heuristics for structured data, all using local GRDB cache — no data sent to external AI services |
 | UserDefaults | Only user_id and family_id (UUIDs) for Siri intent access |
 
 ---
