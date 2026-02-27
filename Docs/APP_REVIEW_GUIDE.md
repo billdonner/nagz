@@ -204,7 +204,23 @@ Verify escalation badges update correctly over time.
 
 ## 5b. AI Insights
 
-All AI text is generated on-device using Apple Foundation Models (7 of 9 operations). Structured data (tone enums, categories, icons) is computed heuristically. No AI data leaves the device.
+Nagz uses a 3-tier hybrid AI architecture. All AI text generation runs on-device using Apple Foundation Models (7 of 9 operations). Structured data (tone enums, categories, icons) is computed by local heuristics. Two operations (pattern detection, completion prediction) are pure math — no LLM needed.
+
+**Privacy guarantee:** No user text (excuses, coaching tips, digest summaries) ever leaves the device. Only structured enums and aggregated counts sync to the server. No external AI services are used.
+
+**How it works:** When an AI feature is invoked, the app queries its local GRDB SQLite cache for context (miss counts, streaks, categories), then routes to Apple Foundation Models for text generation. If on-device generation fails, a heuristic fallback produces the result using keyword matching, threshold logic, and templates — ensuring the feature always works, even offline.
+
+| Operation | On-Device LLM | Heuristic Fallback | Server Fallback |
+|-----------|:---:|:---:|:---:|
+| Excuse Summarization | LLM summarizes text | Keyword classify + truncate | `/ai/summarize-excuse` |
+| Tone Selection | LLM explains reasoning | Threshold: misses/streaks | `/ai/select-tone` |
+| Coaching Tips | LLM generates tip | 5 scenario templates | `/ai/coaching` |
+| Weekly Digest | LLM summarizes week | SQL aggregation + template | `/ai/digest` |
+| Push-Back Reminders | LLM tone-matched message | Fixed messages by tone | `/ai/push-back` |
+| List Summary | LLM 2-3 sentences | Template-based | on-device only |
+| Gamification Nudges | LLM personalizes text | Heuristic selects nudges | on-device only |
+| Pattern Detection | — (heuristic only) | Weekday miss counting | `/ai/patterns` |
+| Completion Prediction | — (heuristic only) | Weighted average | `/ai/predict-completion` |
 
 ### 5b.1 Nag Detail AI Section
 
@@ -370,7 +386,7 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 | No contacts | Confirmed: no CNContactStore |
 | Keychain for tokens | Access token and refresh token stored in Keychain (com.nagz.app) |
 | Local SQLite cache | GRDB database in Application Support, encrypted at rest by iOS |
-| On-device AI | Apple Foundation Models for text generation (7/9 ops) + heuristics for structured data, all using local GRDB cache — no data sent to external AI services |
+| On-device AI | Apple Foundation Models for text generation (7/9 ops) + heuristics for structured data (2/9 ops are pure math). All processing uses local GRDB cache. No user text sent to external AI services — only structured enums and counts sync to server |
 | UserDefaults | Only user_id and family_id (UUIDs) for Siri intent access |
 
 ---

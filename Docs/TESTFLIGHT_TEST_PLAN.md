@@ -150,6 +150,10 @@ Use the TestFlight feedback button (shake device or screenshot → "Send Beta Fe
 
 - Server URL may be development instance (slower responses)
 - SMS delivery not enabled in beta
-- AI features use Foundation Models (on-device LLM) for 7 of 9 operations (excuse summaries, tone, coaching, digest, push-back, list summaries, gamification nudges); patterns and prediction use heuristics
+- AI features use Apple Foundation Models (on-device LLM) for 7 of 9 operations — all text generation happens on your iPhone:
+  - On-device LLM: excuse summaries, tone selection, coaching tips, weekly digests, push-back reminders, list summaries, gamification nudges
+  - Local heuristics only (no LLM needed): pattern detection (weekday miss counting), completion prediction (weighted math)
+  - No user text ever leaves your device — only structured data (categories, counts) syncs to the server
+  - If the LLM is unavailable, heuristic fallbacks ensure every feature still works instantly
 - Only "friendly_reminder" strategy template available
 - US-only launch scope

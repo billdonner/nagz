@@ -67,7 +67,10 @@ KEY FEATURES
 • Siri Shortcuts — "Show my nags" or "Create a nag" by voice
 • Role-based access: guardians manage, participants and children complete
 • Safety tools: block, report, and mute family members
-• On-device AI: personalized coaching tips, smart tone selection, weekly family digests, gamification nudges, and task summaries — powered by Apple Foundation Models
+• On-device AI powered by Apple Foundation Models — 7 of 9 intelligent features run entirely on your iPhone:
+  - Excuse summarization, tone selection, coaching tips, weekly digests, push-back reminders, task list summaries, and gamification nudges
+  - Pattern detection and completion prediction use fast local heuristics
+  - No text ever leaves your device — only structured data (categories, counts) syncs to the server
 • Push notification reminders at every escalation phase
 
 BUILT FOR FAMILIES
@@ -78,7 +81,8 @@ BUILT FOR FAMILIES
 
 PRIVACY FIRST
 • No ads, no tracking, no data selling
-• On-device AI for 7 of 9 intelligent features — your data never leaves your iPhone
+• On-device AI for 7 of 9 intelligent features — all text generation happens on your iPhone using Apple Foundation Models, never sent to external servers
+• Two remaining features (pattern detection, completion prediction) use lightweight math — no AI model needed
 • Minimal data collection: just email and family task data
 • Account deletion available anytime
 
