@@ -67,7 +67,7 @@ All AI features are defined as operations on this shared interface. Each operati
 
 ### 4.3 Fallback path
 
-The `OnDeviceAIService` automatically falls back to `ServerAIService` when the local GRDB cache is stale or data is unavailable. The iOS `AIService` protocol:
+The `NagzAIAdapter` automatically falls back to `ServerAIService` when the local GRDB cache is stale or data is unavailable. The iOS `AIService` protocol:
 
 ```swift
 protocol AIService: Sendable {
@@ -81,9 +81,26 @@ protocol AIService: Sendable {
 }
 
 // Two implementations:
-// - OnDeviceAIService (heuristics against GRDB cache, falls back to server)
+// - NagzAIAdapter (routes to NagzAI package heuristics/Foundation Models via GRDB cache, falls back to server)
 // - ServerAIService (calls /api/v1/ai/* endpoints)
 ```
+
+### 4.4 iOS UI surfaces
+
+AI features are exposed in two views:
+
+1. **AIInsightsSection** (inline in NagDetailView) — fetches tone, coaching tip, and completion prediction in parallel for the current nag. Renders as an "AI Insights" section with:
+   - Tone badge (color-coded capsule: blue=neutral, green=supportive, red=firm) + reason
+   - Coaching tip (lightbulb icon + tip text + scenario caption)
+   - Completion prediction (percentage gauge + suggested reminder time)
+   - Section is hidden if AI service is nil or all fetches fail
+
+2. **FamilyInsightsView** (guardian-only, in Family tab) — shows:
+   - Weekly digest: summary text, per-member completion stats, totals
+   - User patterns: day-of-week miss insights from 90-day analysis
+   - Pull-to-refresh support
+
+Both views access `AIService` via SwiftUI `@Environment(\.aiService)`, injected at the app root alongside `\.apiClient`.
 
 ## 5. Server AI Endpoints
 
@@ -244,7 +261,9 @@ All AI features require the `ai_mediation` consent (see `SAFETY_AND_COMPLIANCE.m
 2. ~~**Server AI endpoints** — expose heuristics via `/api/v1/ai/*` endpoints (7 endpoints, 29 tests).~~ DONE
 3. ~~**Server sync endpoint** — `GET /api/v1/sync/events` for incremental iOS cache sync (4 tests).~~ DONE
 4. **Web integration** — call server AI endpoints from nagz-web components (TS client generated).
-5. ~~**iOS AIService protocol** — `AIService` protocol with `ServerAIService` and `OnDeviceAIService`.~~ DONE
+5. ~~**iOS AIService protocol** — `AIService` protocol with `ServerAIService` and `NagzAIAdapter`.~~ DONE
 6. ~~**iOS GRDB cache** — `DatabaseManager` with 6 tables, `SyncService` polling every 5 min.~~ DONE
-7. ~~**iOS OnDeviceAIService** — heuristic logic against GRDB cache with server fallback.~~ DONE
-8. **LLM upgrade** — swap heuristics for Apple Foundation Models (iOS 26+) or server LLM when ready.
+7. ~~**iOS NagzAIAdapter** — routes to NagzAI package (heuristics + Foundation Models on iOS 26+) with server fallback.~~ DONE
+8. ~~**iOS AI UI surfaces** — AIInsightsSection in NagDetailView + FamilyInsightsView in Family tab.~~ DONE
+9. **Web AI integration** — call server AI endpoints from nagz-web components (TS client generated).
+10. **LLM upgrade** — swap heuristics for Apple Foundation Models (iOS 26+) or server LLM when ready.

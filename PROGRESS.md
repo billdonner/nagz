@@ -5,6 +5,32 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-26 — Session 14: AI-Powered UI Surfaces + Doc Updates
+
+### iOS (nagz-ios) — `experimental/ai-integration` branch
+- **Created `EnvironmentValues+AI.swift`** — `\.aiService` environment key mirroring existing `\.apiClient` pattern
+- **Wired AIService** in `NagzApp.swift` — `.environment(\.aiService, aiService)` alongside `.environment(\.apiClient, apiClient)`
+- **Created `AIInsightsSection.swift`** (~125 lines) — inline AI section for NagDetailView:
+  - Tone badge (color-coded capsule: blue=neutral, green=supportive, red=firm) with reason text
+  - Coaching tip (lightbulb icon + tip + scenario caption)
+  - Completion prediction (percentage gauge + suggested reminder time)
+  - Fetches all 3 in parallel via `async let` with `try?` — hidden if AI unavailable
+- **Created `FamilyInsightsView.swift`** (~145 lines) — guardian-only Family tab view:
+  - Weekly digest: summary text, per-member completion stats, totals footer
+  - User patterns: day-of-week miss insights from 90-day analysis
+  - Pull-to-refresh + ProgressView loading state + graceful error handling
+- **Modified `NagDetailView.swift`** — inserted `AIInsightsSection(nagId:)` after Details section
+- **Modified `AuthenticatedTabView.swift`** — added "AI Insights" section with Family Insights NavigationLink (guardian-only)
+- **202 tests pass**, clean build, committed and pushed
+
+### Documentation Updates (nagz hub + nagz-ios)
+- **AI_ARCHITECTURE.md** — updated Section 4.3 (`OnDeviceAIService` → `NagzAIAdapter`), added Section 4.4 (iOS UI surfaces), updated implementation checklist (steps 5-8 marked DONE)
+- **APP_REVIEW_GUIDE.md** — added AI Insights to Nag Detail table + new Section 5b (AI Insights testing)
+- **TESTFLIGHT_TEST_PLAN.md** — added AI Insights test scenarios
+- **nagz-ios/CLAUDE.md** — added AI architecture notes (environment key, adapter, views)
+
+---
+
 ## 2026-02-26 — Session 13: Integrate nagz-ai Package into nagz-ios
 
 ### nagz-ai Package

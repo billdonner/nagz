@@ -134,6 +134,7 @@ All accounts are pre-configured in the same family with sample nags.
 | Due date | Formatted naturally (e.g., "Tomorrow at 3 PM") |
 | Escalation phase | Badge: Created → Due Soon → Overdue → Escalated → Guardian Review |
 | Status pill | Color-coded: open (blue), completed (green), missed (red) |
+| AI Insights section | Tone badge, coaching tip, completion prediction (loads async, hidden if unavailable) |
 | Completion type | Displayed correctly |
 | Recurrence | "Repeats daily/weekly/monthly" if set |
 | Mark Complete button | Only for recipient |
@@ -198,6 +199,30 @@ Verify escalation badges update correctly over time.
 |------|--------|
 | View incentive rules | List of configured rules |
 | Rules affect point awards | Correct points for on-time, streak bonuses |
+
+---
+
+## 5b. AI Insights (Guardian Only)
+
+### 5b.1 Nag Detail AI Section
+
+| Step | Verify |
+|------|--------|
+| 1 | Open any nag detail | AI Insights section loads below Details |
+| 2 | Tone badge | Color-coded capsule (blue=neutral, green=supportive, red=firm) with reason text |
+| 3 | Coaching tip | Lightbulb icon with contextual tip and scenario description |
+| 4 | Completion prediction | Percentage gauge with progress bar and optional suggested reminder time |
+| 5 | AI service unavailable | Section gracefully hidden, rest of view unaffected |
+
+### 5b.2 Family Insights View
+
+| Step | Verify |
+|------|--------|
+| 1 | Family tab → AI Insights → Family Insights | Guardian-only navigation link |
+| 2 | Weekly Digest | Summary text, per-member completion stats (name, completed/total, rate), totals row |
+| 3 | Your Patterns | Day-of-week miss insights from 90-day analysis |
+| 4 | Pull to refresh | Refreshes both digest and patterns |
+| 5 | No data | "No insights" empty state when insufficient activity |
 
 ---
 

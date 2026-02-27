@@ -69,6 +69,16 @@ Nagz is a family task-reminder app. Guardians create "nags" (reminders) for fami
 | **Leaderboard** | Enable gamification consent → view leaderboard | Top members with medal emojis |
 | **Earn points** | Complete a nag on time | Points increase, event logged |
 
+### AI Insights
+
+| Test | Steps | Expected |
+|------|-------|----------|
+| **Nag AI section** | Open any nag → scroll to "AI Insights" | Tone badge, coaching tip, and completion prediction shown |
+| **Tone indicator** | Check AI Insights section | Color-coded capsule (blue/green/red) with explanation |
+| **Completion gauge** | Check AI Insights section | Percentage bar showing likelihood + optional reminder time |
+| **Family Insights** | Family tab → AI Insights (guardian only) | Weekly digest with per-member stats and miss patterns |
+| **Pull to refresh** | Family Insights → pull down | Data refreshes |
+
 ### Safety
 
 | Test | Steps | Expected |
