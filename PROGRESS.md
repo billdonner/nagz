@@ -5,6 +5,21 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-27 — Session 19: Urgency-Colored Nag List Cells
+
+### iOS App (nagz-ios)
+- **NagRowView**: Added private `Urgency` enum computing tier from `dueAt` vs `Date()` for `.open` nags
+  - 5 tiers: calm (>24h), approaching (2–24h, blue tint), due soon (<2h, yellow bar), overdue (<1h past, orange bar), critical (>1h past, red bar)
+  - Row gets background tint, 3px leading accent bar, and urgency-colored due-date text
+  - Completed/missed nags unaffected (always calm)
+- **ChildNagRowView**: Added matching `ChildUrgency` enum
+  - Shadow color/radius intensifies with urgency (blue → orange → red, 4px → 10px)
+  - Due-date text color follows same tier scheme
+- **No API changes, no new files** — purely client-side computation from existing `dueAt` field
+- **All 202 iOS tests pass**, committed and pushed to `experimental/ai-integration`
+
+---
+
 ## 2026-02-27 — Session 18: Docs Update, Version Bump, Deploy to Phones
 
 ### Documentation Updates (nagz hub)
