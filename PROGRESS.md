@@ -5,6 +5,27 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-28 — Session 25: Onboarding Refresh & Re-run Button
+
+### iOS App (nagz-ios) — Build 28
+
+**Onboarding Carousel Updated**
+- Page 2 "Your Family Hub": now mentions inline AI weekly digest, member avatars, invite sharing (was just roles)
+- Page 3 replaced: "Smart Escalation" → **"Connect & Nag Anyone"** — People tab, tap-to-nag, per-connection stats
+- Page 4 replaced: "Earn Points & Streaks" → **"AI-Powered Insights"** — analysis, celebrity AI personalities, coaching tips
+- Page 5 "Stay in the Loop": now covers push notifications + streaks + badges (was snooze/excuses)
+
+**Re-run Onboarding from Family Tab**
+- Added `isRerun` parameter to `OnboardingView` — when `true`, last page shows "Done" (dismisses sheet) instead of "Get Started" (sets `hasSeenOnboarding`)
+- New "What's New in Nagz" button (sparkles icon) in Family tab, just above Log Out
+- Presents onboarding carousel as a `.sheet` so users can review features anytime
+
+### Build
+- Build number bumped 27 → 28, xcodegen regenerated
+- Committed and pushed to `experimental/ai-integration`
+
+---
+
 ## 2026-02-28 — Session 24: Connection Safety, Nag Detail Layout, Tap-to-Nag
 
 ### iOS App (nagz-ios) — Builds 26–27
