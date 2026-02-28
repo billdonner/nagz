@@ -5,6 +5,31 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-28 — Session 24: Connection Safety, Nag Detail Layout, Tap-to-Nag
+
+### iOS App (nagz-ios) — Builds 26–27
+
+**Critical Bug Fix: Accidental Connection Revoke**
+- **Root cause**: Inline X (revoke) button in connection rows was too easy to tap accidentally — all 3 active connections were revoked in the database
+- **Database repair**: Restored revoked connections directly in Fly.io Postgres (`jamesdonner@gmail.com` and `billdonner@gmail.com` set back to `active`)
+- **Revoke replaced with swipe-to-delete** (Build 26): Removed inline X button entirely; connections now require swipe-left to reveal "Remove" action
+- **Confirmation alert**: "Remove Connection?" dialog names the person and warns "You'll need to re-invite them to reconnect"
+
+**Nag Detail Layout Fix**
+- **Gap eliminated**: Mark Complete, Submit Excuse, and Snooze were 3 separate single-button sections — each had insetGrouped spacing creating a huge visual gap. Consolidated into a single "Actions" section
+
+**Tap Connection to Create Nag**
+- Tapping an active connection on People tab opens New Nag sheet with that person pre-selected as recipient
+- `CreateNagView` gains `preselectedConnectionId` parameter — auto-selects recipient after recipients load
+- `ConnectionListView` now receives `familyId` and `currentUserId` from `AuthenticatedTabView` for proper nag creation context
+
+### Deployment
+- **TestFlight**: 1.3.0 (27) uploaded to App Store Connect
+- **Deployed to both phones**: Titanic + rowboat through Build 27
+- Committed and pushed to `experimental/ai-integration`
+
+---
+
 ## 2026-02-27 — Session 23: Family Tab Overhaul, People Tab, AI Personality, Inline Digest
 
 ### iOS App (nagz-ios) — Builds 16–25
@@ -37,7 +62,7 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ### Deployment
 - **Server**: nagzerver deployed to fly.io (bd-nagzerver.fly.dev)
-- **TestFlight**: 1.3.0 (19) uploaded to App Store Connect
+- **TestFlight**: 1.3.0 (25) uploaded to App Store Connect
 - **Deployed to both phones**: Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE) through Build 25
 - Committed and pushed to `experimental/ai-integration`
 
