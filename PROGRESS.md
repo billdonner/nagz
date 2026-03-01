@@ -5,6 +5,57 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-01 — Session 27: AI Gating, WebSocket Fixes, Counterpart Grouping, TestFlight 36
+
+### iOS App (nagz-ios) — Builds 33–36
+
+**Nag List Grouped by Counterpart**
+- Replaced flat "For Me" / "Nagz to Others" sections with counterpart-grouped sections
+- "From James D", "From Sarah", "To James D" etc. — each person gets their own section
+- Uses `creatorDisplayName` and `recipientDisplayName` from NagResponse
+
+**Apple Intelligence Gating**
+- Devices without Apple Intelligence hardware now get a clean non-AI experience
+- Hidden on non-AI devices: sparkles summary button, AI Insights section, AI Personality picker
+- Runtime detection via `SystemLanguageModel.default.isAvailable` (not compile-time)
+- Result cached in `static let` to avoid repeated XPC calls that were causing 20s+ launch delays
+- Gamification Tips section kept (works with heuristic fallback, not AI-branded)
+
+**WebSocket Fixes**
+- Close code 4002 (Redis unavailable) now stops reconnecting instead of looping every 30s
+- Combined with previous 4001 (auth failure) handling
+
+**Version Display**
+- Version/build label added to bottom toolbar of NagListView: `v1.3.0 (36)`
+
+### NagzAI Package (nagz-ai)
+
+- `FoundationModelsProvider.isRuntimeAvailable` — new runtime check using `SystemLanguageModel`
+- `Router.isAppleIntelligenceAvailable` — public API for UI gating
+- Availability result cached to avoid repeated `com.apple.modelcatalog.catalog` XPC lookups
+
+### Server (nagzerver)
+
+**WebSocket Redis Pool Bug Fix**
+- `from nagz.db.redis import pool as redis_pool` captured `None` at import time
+- Pool was initialized later by `init_redis()` but ws.py never saw the update
+- Changed to `from nagz.db import redis as redis_module` and access `redis_module.pool` at runtime
+- This was causing all WebSocket connections to get 4002 (Redis unavailable)
+
+**Duplicate Connection Prevention**
+- `invite()` now checks both directions by user ID, not just email
+- Prevents A→B and B→A both becoming active connections
+
+### Global Preferences Updated
+
+- `~/CLAUDE.md` — added iOS Build Conventions: always bump build, show version on main screen, inform user
+
+### TestFlight
+
+- **Build 36 (v1.3.0)** uploaded to App Store Connect
+
+---
+
 ## 2026-02-28 — Session 26: Push Notifications, Repeat Nagging & Connection Notifications
 
 ### Connection Notification Fix (all 3 repos)
