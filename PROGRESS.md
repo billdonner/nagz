@@ -5,7 +5,27 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-## 2026-02-28 — Session 26: Push Notifications & Aggressive Repeat Nagging
+## 2026-02-28 — Session 26: Push Notifications, Repeat Nagging & Connection Notifications
+
+### Connection Notification Fix (all 3 repos)
+
+**Problem**: When friend sends connection request and user accepts, the friend's phone never learns about it — no push, no WebSocket event, no sync.
+
+**Root cause**: `accept_connection` endpoint only wrote to DB and emitted audit event. Zero notification pipeline.
+
+**Server (nagzerver)**
+- Added `push_for_connection_event()` in events.py — sends push to invitee on invite, push to inviter on accept
+- Added `_broadcast_connection_event()` in connections router — publishes WebSocket events to all families both parties belong to
+- New event types: `connection_invited`, `connection_accepted`
+- Added `SyncedConnection` to sync endpoint — connections now included in sync response
+- Push skipped for users with active WebSocket (consistent with nag push logic)
+
+**iOS (nagz-ios)**
+- Added `connectionInvited`/`connectionAccepted` to `NagEventType` enum
+- `ConnectionListView` now accepts `WebSocketService` and auto-refreshes on connection events
+- Wired `webSocketService` through from `AuthenticatedTabView`
+- Added `SyncedConnection` to `SyncResponse` model
+- Updated all WebSocket switch statements (NagListView, ChildNagListView) to handle new event types
 
 ### Server (nagzerver)
 
