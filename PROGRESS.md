@@ -5,6 +5,36 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-02-28 — Session 26: Push Notifications & Aggressive Repeat Nagging
+
+### Server (nagzerver)
+
+**APNS Key-from-Env Support**
+- Added `apns_key_content` config setting — base64-encoded .p8 key loaded from `NAGZ_APNS_KEY_CONTENT` env var
+- File path (`apns_key_path`) takes precedence for local dev; env var for Fly.io production
+- `_is_configured()` now accepts either key source
+
+**Repeat Notifications (Make Nagz Naggier!)**
+- Overdue nags (phase >= 2) now get repeat push notifications every 15 minutes
+- 6 cycling increasingly exasperated messages: "Hey! '{label}' is still not done..." → "Last chance before I tell everyone..."
+- Redis-tracked state: `scheduler:last_push:{nag_id}` timestamp + `scheduler:repeat_count:{nag_id}` counter (24h TTL)
+- Counter resets on phase advance for fresh message cycle
+- Quiet hours respected for repeats
+- No DB records for repeat pushes (nag_event_id=None) — avoids delivery table bloat
+- `repeat: True` in push payload for future iOS differentiation
+- `repeat_notification_interval` config setting (default 900s / 15 min)
+
+**Tests**
+- 12 new tests: repeat firing, interval suppression, phase_1 exclusion, counter increment, counter reset on phase advance, first-repeat-without-history, key-from-env loading, file-precedence, _is_configured with key_content
+- Total: 254 tests passing (was 242)
+
+### User Action Required
+1. Generate APNS key at developer.apple.com → Auth Keys → APNs
+2. `base64 -i AuthKey_XXXXXXXXXX.p8` → set as `NAGZ_APNS_KEY_CONTENT` on Fly.io
+3. Also set `NAGZ_APNS_KEY_ID`, `NAGZ_APNS_TEAM_ID`, `NAGZ_APNS_BUNDLE_ID`, `NAGZ_APNS_USE_SANDBOX`
+
+---
+
 ## 2026-02-28 — Session 25: Onboarding Refresh & Re-run Button
 
 ### iOS App (nagz-ios) — Build 28
