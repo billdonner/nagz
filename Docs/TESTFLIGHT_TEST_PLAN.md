@@ -69,6 +69,37 @@ Nagz is a family task-reminder app. Guardians create "nags" (reminders) for fami
 | **Leaderboard** | Enable gamification consent → view leaderboard | Top members with medal emojis |
 | **Earn points** | Complete a nag on time | Points increase, event logged |
 
+### AI Chat — "Talk to Nagz"
+
+The Chat tab (first tab, requires Apple Intelligence device) lets you manage nags conversationally.
+
+| Test | Steps | Expected |
+|------|-------|----------|
+| **Chat tab visible** | Open app on iPhone 15 Pro or newer | Chat tab appears as first tab with message icon |
+| **Chat tab hidden** | Open app on older device without Apple Intelligence | Chat tab does not appear |
+| **Greeting** | Open Chat tab | Personality-appropriate greeting message appears |
+| **List nags** | Type "What's overdue?" or "Show my tasks" | AI lists your open nags with overdue indicators |
+| **Create nag** | Type "Remind me to call the dentist tomorrow" | AI creates nag, confirms recipient and due time |
+| **Create nag for someone** | Type "Nag Cookie to do her homework" | AI finds the person and creates nag for them |
+| **Complete nag** | Type "I took out the trash" | AI finds matching nag and marks it done |
+| **Reschedule nag** | Type "Push back the homework to tomorrow" | AI reschedules the matching nag |
+| **Submit excuse** | Type "Send excuses for my overdue nags — I'm sick" | AI submits excuse on overdue nags (does NOT create new nags) |
+| **Status check** | Type "How am I doing?" | AI summarizes task load with overdue counts |
+| **Self-nag** | Type "Remind me to pick up groceries" | Creates nag assigned to yourself, appears in "My Reminders" |
+| **Keyboard dismiss** | Tap outside text field, or tap "Done" above keyboard | Keyboard dismisses, tab bar accessible |
+| **Long conversation** | Send 10+ messages | Error message if context window exceeded, suggesting fresh start |
+| **Personality** | Change personality in settings → reopen Chat | Greeting and tone match selected personality |
+
+### Per-Nag AI Chat
+
+| Test | Steps | Expected |
+|------|-------|----------|
+| **Open nag chat** | Open any nag detail → tap chat bubble icon | Chat sheet opens with personality greeting and nag context |
+| **Reschedule via chat** | In nag chat: "Can I do this tomorrow?" | AI pushes back, then reschedules if you insist |
+| **Complete via chat** | In nag chat: "I finished it" | AI marks nag done and congratulates |
+| **Submit excuse** | In nag chat: "I'm not feeling well" | AI submits excuse for review |
+| **Chat persistence** | Close and reopen nag chat | Prior messages visible as read-only history |
+
 ### AI Insights
 
 | Test | Steps | Expected |
@@ -104,9 +135,10 @@ Test these by voice or in the Shortcuts app:
 | "Check overdue nags in Nagz" | Reports overdue count and categories |
 | "Snooze a nag in Nagz" | Prompts for nag and minutes, reschedules |
 | "Family status in Nagz" | Reports weekly completion rate |
+| **"Remind me in Nagz"** | Prompts for description and time, creates self-reminder (default 60 min, category "other") |
 
 Also test in Shortcuts app:
-- Open Shortcuts → search "Nagz" → all 6 shortcuts should appear
+- Open Shortcuts → search "Nagz" → all 7 shortcuts should appear (including "Quick Remind")
 - Create an automation (e.g., morning nag check at 7 AM)
 
 ---
@@ -117,7 +149,18 @@ Also test in Shortcuts app:
 |------|-------|----------|
 | **Permission prompt** | First launch after login | System dialog asks for notification permission |
 | **Nag reminder** | Create nag with near-future due date | Push notification arrives near due time |
-| **Tap notification** | Tap the push notification | App opens to the relevant nag detail |
+| **Tap notification** | Tap the push notification | App opens to the relevant nag detail (Nagz tab) |
+| **No creator alerts (default)** | Create nag for someone else, let it go overdue | You do NOT get a push notification (default off) |
+| **Opt-in creator alerts** | Family → Preferences → enable "Notify when sent nags are overdue" | You now get alerts when nags you sent go overdue |
+| **Quiet hours** | Set quiet hours in Preferences | No pushes during quiet window |
+
+## People Tab — Overdue Digest
+
+| Test | Steps | Expected |
+|------|-------|----------|
+| **Overdue badge** | Send nags to connections, let some go overdue → open People tab | Red "Overdue" count next to connections with past-due nags |
+| **Stats per connection** | Open People tab | Each connection shows Sent, Received, Open, Done counts |
+| **Self-nag section** | Create nags for yourself | They appear in "My Reminders" section at bottom of Nagz tab |
 
 ---
 
@@ -146,14 +189,17 @@ Use the TestFlight feedback button (shake device or screenshot → "Send Beta Fe
 
 ---
 
-## Known Limitations (V1.0 Beta)
+## Known Limitations (V1.3 Beta)
 
 - Server URL may be development instance (slower responses)
 - SMS delivery not enabled in beta
-- AI features use Apple Foundation Models (on-device LLM) for 7 of 9 operations — all text generation happens on your iPhone:
-  - On-device LLM: excuse summaries, tone selection, coaching tips, weekly digests, push-back reminders, list summaries, gamification nudges
-  - Local heuristics only (no LLM needed): pattern detection (weekday miss counting), completion prediction (weighted math)
-  - No user text ever leaves your device — only structured data (categories, counts) syncs to the server
-  - If the LLM is unavailable, heuristic fallbacks ensure every feature still works instantly
+- AI Chat and per-nag chat require Apple Intelligence (iPhone 15 Pro or newer). On older devices, the Chat tab and chat buttons are hidden — all other features work normally.
+- On-device LLM has a small context window — very long chat conversations will hit a limit. Switch tabs and come back to start fresh.
+- The on-device model may occasionally refuse certain requests (content guardrails). Rephrase and try again.
+- AI features use Apple Foundation Models (on-device LLM) — all text generation happens on your iPhone:
+  - On-device LLM: AI chat, excuse summaries, tone selection, coaching tips, weekly digests, push-back reminders, list summaries, gamification nudges
+  - Local heuristics only (no LLM needed): pattern detection, completion prediction
+  - No user text ever leaves your device — only structured data syncs to the server
+  - If the LLM is unavailable, heuristic fallbacks ensure every feature still works
 - Only "friendly_reminder" strategy template available
 - US-only launch scope
