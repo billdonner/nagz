@@ -5,6 +5,40 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 30 (cont): Merge to Main & Deploy
+
+### Merged all experimental/ai-integration branches to main
+
+| Repo | Commits | Files Changed | Lines Added |
+|------|---------|---------------|-------------|
+| nagz-ai | 15 | 32 | +2,226 |
+| nagzerver | 12 | 18 | +974 |
+| nagz-ios | 20 | 63 | +4,048 |
+
+### Deployed nagzerver from main to Fly.io production
+
+### All test suites green — 620 total
+
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 255 | PASS |
+| nagz-web | 126 | PASS |
+| nagz-ios | 239 | PASS |
+
+### Phase 2 fully complete
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 2A | Chat Persistence (GRDB) | Done |
+| 2B | Global AI Chat — 6 tools, prompts, VM, view, tab | Done |
+| 2C | Siri Enhancement — SiriTipView, expanded phrases, QuickAddNagIntent | Done |
+| 2D | Test Suite — 5 test files across nagz-ai + nagz-ios | Done |
+| Bonus | SubmitExcuseTool, notification gating, overdue digest on People tab | Done |
+
+### Codebase: 35,876 LoC across all repos
+
+---
+
 ## 2026-03-01 — Session 30: Global Chat Polish, Notifications, Siri QuickAdd
 
 ### Continued from Session 29 — Real-Device Testing & Iteration (builds 53–54)
