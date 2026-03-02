@@ -5,9 +5,11 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
-## 2026-03-02 — Session 31: TestFlight Build 55, Cross-Repo Code Review
+## 2026-03-02 — Session 31: TestFlight Builds 55–56, Cross-Repo Code Review
 
-### TestFlight Release — Build 55
+### TestFlight Release — Build 56 (with fixes)
+- Build 55: initial release with AI chat + Siri
+- Build 56: includes all code review fixes below
 - Bumped build 54 → 55, archived, uploaded to App Store Connect
 - TestFlight notes: "All new chat interface, also with Siri"
 
@@ -31,6 +33,16 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 - nagz-ios: NagChatViewModel.onMutated callback is dead code
 - nagz-ios: APIClient.performRequest duplicates ~70 lines from performRequestWithData
 - nagz-ios: SyncedNagEvent.payload typed as [String: String]? but server sends arbitrary dict
+
+### Server deployed to Fly.io production with fixes
+
+### All 620 tests green after fixes
+
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 255 | PASS |
+| nagz-web | 126 | PASS |
+| nagz-ios | 239 | PASS |
 
 ### Repos changed: nagzerver, nagz-ios
 
