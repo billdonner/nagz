@@ -5,6 +5,37 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 31: TestFlight Build 55, Cross-Repo Code Review
+
+### TestFlight Release — Build 55
+- Bumped build 54 → 55, archived, uploaded to App Store Connect
+- TestFlight notes: "All new chat interface, also with Siri"
+
+### Cross-Repo Code Review — 15 issues found and prioritized
+
+**Critical fixes applied:**
+
+| Fix | Repo | Issue |
+|-----|------|-------|
+| `exportAccountData()` POST → GET | nagz-ios | HTTP method mismatch — would 405 on account export |
+| AI endpoints: `require_member` → `_require_nag_access` | nagzerver | All 6 AI endpoints crashed with 403 on connection nags (family_id=None) |
+| Terms of Service: `[Your State]` → `California` | nagzerver | Placeholder text in production legal document |
+| Added `parentNagId: UUID?` to `NagResponse` | nagz-ios | Missing field — silently dropped by decoder |
+
+**Other findings documented (not fixed — low severity):**
+- nagz-ai: PushBackPrompt tone logic inconsistency (missing streak check vs TonePrompt)
+- nagz-web: Generated API endpoint modules (18 files) unused — all calls use customInstance directly
+- nagzerver: Scheduler quiet hours bypass for connection nags (family_id=None in _get_user_prefs)
+- nagzerver: SyncedNag.family_id non-optional but nags can have None
+- nagzerver: Missing response_model on PIN change and account export endpoints
+- nagz-ios: NagChatViewModel.onMutated callback is dead code
+- nagz-ios: APIClient.performRequest duplicates ~70 lines from performRequestWithData
+- nagz-ios: SyncedNagEvent.payload typed as [String: String]? but server sends arbitrary dict
+
+### Repos changed: nagzerver, nagz-ios
+
+---
+
 ## 2026-03-02 — Session 30 (cont): Merge to Main & Deploy
 
 ### Merged all experimental/ai-integration branches to main
