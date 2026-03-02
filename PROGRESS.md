@@ -5,6 +5,34 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 33: Schedule View (Calendar-Based Nag Planning), Build 59
+
+### Feature: Schedule View
+
+James's feedback: "I NEED to see due dates in calendar version, schedule it myself, and Angela needs to see where I have things slotted in." Pure iOS UI feature — no server changes needed.
+
+| Component | Changes |
+|-----------|---------|
+| CommitTimePickerSheet | Extracted from NagDetailView to shared `Views/Components/` for reuse |
+| ScheduleNagListView | New date-grouped view with sections: Overdue, Today, Tomorrow, future days, Later, Unscheduled |
+| NagListView | Added list/calendar toggle in toolbar, wired schedule view with commit sheet |
+| ScheduleViewTests | 10 pure-logic tests for grouping function (all passing) |
+
+Key behaviors:
+- `committedAt` takes priority over `dueAt` for date grouping
+- Received nags without `committedAt` go to purple "Unscheduled" section with swipe-to-schedule
+- Sent nags always grouped under `dueAt` — creator sees recipient's committed time via existing purple badge
+- Self-nags go under `dueAt`, never unscheduled
+- Both list and schedule views share the same filter picker (Open/Completed/Missed/All)
+
+### Test Results
+
+| Suite | Count | Status |
+|-------|-------|--------|
+| ScheduleViewTests | 10/10 | All pass |
+
+---
+
 ## 2026-03-02 — Session 32: Commit Time Feature, Build 58, Deploy + Migration
 
 ### Feature: Commit Time & Recipient Experience
