@@ -5,6 +5,76 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-01 — Session 29: Phase 2 — Chat Persistence, Global AI Chat, Siri, Tests
+
+### NagzAI Package (nagz-ai) — 132 tests (22 new)
+
+**GlobalChatPrompt** — New prompt builder for "Talk to Nagz" conversational chat
+- System instructions with 5 tool descriptions (listNags, createNag, completeNag, rescheduleNag, nagStatus)
+- Natural language time parsing hints ("tomorrow" = 18h, "next week" = 168h)
+- Personality-aware greetings (Simon Cowell: "Right, Alice. I'm here. What do you need?")
+
+**NagChatPromptTests** (14 tests) — Full coverage for Phase 1 prompt builder
+- Personality instruction for all 6 cases, OVERDUE/SOON detection, category/description inclusion
+- Creator name handling, CRITICAL TOOL RULES section
+- Greeting variants (overdue vs upcoming, description vs category fallback)
+
+**GlobalChatPromptTests** (8 tests) — Coverage for global chat prompt
+- User name/family context, time parsing hints, tool rules, personality variation
+
+### iOS App (nagz-ios) — Build 42
+
+**Chat Persistence (Phase 2A)**
+- `CachedChatMessage` GRDB record type (id, nagId, role, content, timestamp)
+- Migration v2: `cached_chat_messages` table with FK to `cached_nags` + index
+- DatabaseManager: `saveChatMessage()`, `chatMessages(forNagId:)`, `deleteChatMessages(forNagId:)`
+- NagChatViewModel loads prior messages on setup (read-only history), persists all new messages
+- NagDetailView passes DatabaseManager from environment to NagChatView
+- ChatMessage model extended with custom init, Role.rawString, Role(rawValue:)
+
+**Global AI Chat (Phase 2B) — "Talk to Nagz"**
+- Extracted `ChatBubble` + `TypingIndicator` into shared `ChatComponents.swift`
+- 5 global chat tools in `GlobalChatTools.swift`:
+  - ListNagsTool — lists user's open tasks with overdue indicators
+  - CreateNagTool — creates nag from natural language ("remind me to take out trash tomorrow")
+  - GlobalCompleteTool — fuzzy-matches task description to complete the right nag
+  - GlobalRescheduleTool — fuzzy-matches + reschedules
+  - NagStatusTool — "You have 5 open tasks. 2 are overdue. Next up: trash in 30 min."
+- `GlobalChatViewModel` — LanguageModelSession with 5 tools
+- `GlobalChatView` — full-screen chat tab UI
+- 4th tab "Chat" (sparkles.bubble icon) in AuthenticatedTabView, gated on Apple Intelligence
+
+**Siri Enhancement (Phase 2C)**
+- Expanded phrases in NagzShortcutsProvider (3→5-6 phrases per shortcut)
+- SiriTipView on NagListView empty state: "Try saying 'Create a nag'"
+
+**Tests (Phase 2D)**
+- ChatToolTests (8 tests) — tool names, descriptions, ToolResultCollector drain/clear
+- ChatPersistenceTests (6 tests) — GRDB round-trip, ordering, deletion, isolation, migration v2
+- ChatViewModelTests (8 tests) — initial state, send-without-session, Role serialization
+
+| Test Suite | Tests Added | Total |
+|------------|-------------|-------|
+| nagz-ai | +22 | 132 |
+| nagz-ios (new Chat/) | +22 | — |
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `nagz-ai/.../GlobalChatPrompt.swift` | Global chat system instructions |
+| `nagz-ai/.../NagChatPromptTests.swift` | Phase 1 prompt tests |
+| `nagz-ai/.../GlobalChatPromptTests.swift` | Global prompt tests |
+| `nagz-ios/.../CachedChatMessage.swift` | GRDB record for chat persistence |
+| `nagz-ios/.../ChatComponents.swift` | Shared ChatBubble + TypingIndicator |
+| `nagz-ios/.../GlobalChatTools.swift` | 5 tools for global chat |
+| `nagz-ios/.../GlobalChatViewModel.swift` | Global chat state management |
+| `nagz-ios/.../GlobalChatView.swift` | Global chat UI |
+| `nagz-ios/.../ChatToolTests.swift` | Tool name/description tests |
+| `nagz-ios/.../ChatPersistenceTests.swift` | GRDB round-trip tests |
+| `nagz-ios/.../ChatViewModelTests.swift` | ViewModel state tests |
+
+---
+
 ## 2026-03-01 — Session 28: Per-Nag AI Chat — "Talk to Your Nag" (Phase 1)
 
 ### NagzAI Package (nagz-ai)
