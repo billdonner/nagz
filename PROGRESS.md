@@ -5,6 +5,60 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 32: Commit Time Feature, Build 58, Deploy + Migration
+
+### Feature: Commit Time & Recipient Experience
+
+Full implementation of `committed_at` across nagzerver and nagz-ios:
+
+| Component | Changes |
+|-----------|---------|
+| Alembic migration | Merge migration adding `committed_at` (DateTime tz) to nags table |
+| Model + Schema | `committed_at` added to Nag model, NagUpdate, NagResponse, SyncedNag |
+| Service | Recipient-only validation, must be future, passed through to DB |
+| Router | PATCH /nags/{id} allows recipient when only `committed_at` is in body |
+| Escalation | `compute_phase()` accepts `committed_at_override` parameter |
+| Scheduler | Checks `use_commit_time_for_escalation` preference before using override |
+| Sync | `committed_at` included in sync response |
+| Server tests | 9 new tests (4 nag CRUD, 5 scheduler) — all pass |
+
+### iOS Changes (Build 58)
+
+| Component | Changes |
+|-----------|---------|
+| NagModels | `committedAt` on NagResponse and NagUpdate |
+| NagDetailViewModel | `commitTime(date:)` method mirrors snooze pattern |
+| NagDetailView | Purple "Committed" label, "I'll do it by..." button, DatePicker sheet |
+| NagRowView | Purple clock badge with relative time display |
+| NagListView | "From [Name]" sections sorted by committedAt ?? dueAt ascending |
+| PreferencesView | Toggle for "Use commit time for escalation" |
+| Tests | 3 new decoding tests, IntentTests constructor updated |
+
+### Test Results — 632 all green
+
+| Repo | Tests | Passed | Status |
+|------|-------|--------|--------|
+| nagzerver | 264 | 264 | +9 new |
+| nagz-web | 126 | 126 | unchanged |
+| nagz-ios | 242 | 242 | +3 new |
+| **Total** | **632** | **632** | |
+
+### Deployment
+
+- nagzerver deployed to Fly.io (3 deploys — added alembic to Dockerfile, fixed env.py % escaping)
+- Alembic migration applied to production DB (fixed table ownership, stamped version for skipped migrations)
+- iOS Build 58 archived and uploaded to TestFlight
+- Production DB now has `committed_at` column on `nags` table
+
+### Infrastructure Fixes
+
+- Dockerfile: added `COPY alembic/` and `COPY alembic.ini` for remote migrations
+- alembic/env.py: escape `%` as `%%` for configparser compatibility with production DB URL
+- Fly Postgres: transferred all table ownership from `postgres` to `nagz_user`
+- Stamped alembic version to account for previously-applied-but-untracked migrations
+
+---
+
 ## 2026-03-02 — Session 31: TestFlight Builds 55–56, Cross-Repo Code Review
 
 ### TestFlight Release — Build 56 (with fixes)
