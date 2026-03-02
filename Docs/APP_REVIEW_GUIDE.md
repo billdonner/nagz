@@ -8,7 +8,7 @@
 |-------|-------|
 | **App Name** | Nagz |
 | **Bundle ID** | com.nagz.app |
-| **Version** | 1.3.0 (Build 14) |
+| **Version** | 1.3.0 (Build 54) |
 | **Platform** | iOS 26.0+ |
 | **Swift** | 6.0 (strict concurrency) |
 | **Category** | Lifestyle / Family |
@@ -135,6 +135,7 @@ All accounts are pre-configured in the same family with sample nags.
 | Escalation phase | Badge: Created → Due Soon → Overdue → Escalated → Guardian Review |
 | Status pill | Color-coded: open (blue), completed (green), missed (red) |
 | AI Insights section | Tone badge, coaching tip, completion prediction (loads async, hidden if unavailable) |
+| AI Chat button | Sparkle icon in toolbar — opens per-nag chat (Apple Intelligence devices only) |
 | Completion type | Displayed correctly |
 | Recurrence | "Repeats daily/weekly/monthly" if set |
 | Mark Complete button | Only for recipient |
@@ -259,6 +260,96 @@ Nagz uses a 3-tier hybrid AI architecture. All AI text generation runs on-device
 
 ---
 
+## 5c. AI Chat — "Talk to Nagz"
+
+The Chat tab is the first tab in the app on Apple Intelligence devices (iPhone 15 Pro or newer). It provides a full conversational interface for managing nags using natural language. All processing runs on-device via Apple Foundation Models — no user text leaves the device.
+
+**Device gating:** The Chat tab and all per-nag chat buttons are hidden at compile time using `#if canImport(FoundationModels)` and at runtime via `SystemLanguageModel.isAvailable`. On non-AI devices, the app functions normally with all other features.
+
+### 5c.1 Global Chat (Chat Tab)
+
+| Step | Action | Verify |
+|------|--------|--------|
+| 1 | Open Chat tab | Personality-appropriate greeting displayed |
+| 2 | Type "What's overdue?" | AI lists open nags with overdue indicators |
+| 3 | Type "Remind me to call the dentist tomorrow" | AI creates self-nag, confirms description and due time |
+| 4 | Type "Nag Cookie to do her homework" | AI resolves family member/connection by name, creates nag for them |
+| 5 | Type "I took out the trash" | AI fuzzy-matches nag by description, marks it completed |
+| 6 | Type "Push back the homework to tomorrow" | AI reschedules matching nag, confirms new due time |
+| 7 | Type "Send excuses for my overdue nags — I'm sick" | AI submits excuse on existing overdue nags (does NOT create new nags) |
+| 8 | Type "How am I doing?" | AI summarizes task load with per-person overdue counts |
+| 9 | Tap outside text field or "Done" button | Keyboard dismisses, tab bar accessible |
+| 10 | Send 15+ messages | Context limit error shown with "switch tabs to start fresh" guidance |
+| 11 | Change AI personality in settings | Greeting and response tone match selected personality |
+
+**Tools available to the AI (6 total):**
+
+| Tool | Purpose | Triggered By |
+|------|---------|-------------|
+| listNags | List user's tasks | "What's overdue?", "Show my tasks" |
+| createNag | Create a new nag | "Remind me to...", "Nag X to..." |
+| completeNag | Mark task done | "I finished...", "Done with..." |
+| rescheduleNag | Postpone a task | "Push back...", "Do it tomorrow" |
+| nagStatus | Summarize task load | "How am I doing?" |
+| submitExcuse | Submit excuse on overdue nags | "Send excuses", "Tell them I'm sick" |
+
+### 5c.2 Per-Nag Chat
+
+| Step | Action | Verify |
+|------|--------|--------|
+| 1 | Open any nag detail → tap sparkle chat icon | Chat sheet opens with nag-specific context |
+| 2 | AI greeting | Mentions the specific nag and its status (overdue, upcoming, etc.) |
+| 3 | Type "Can I do this tomorrow?" | AI pushes back first, then reschedules if user insists |
+| 4 | Type "I finished it" | AI marks nag completed, congratulates |
+| 5 | Type "I'm not feeling well" | AI submits excuse for guardian review |
+| 6 | Close and reopen chat | Prior messages visible as read-only history (chat persistence via GRDB) |
+| 7 | New session after reopen | AI starts fresh session (on-device model has no cross-session memory) |
+
+### 5c.3 AI Personalities
+
+Users can select an AI personality that affects all chat interactions:
+
+| Personality | Style | Verify |
+|-------------|-------|--------|
+| Standard | Witty, helpful assistant | Default, professional tone |
+| Simon Cowell | Brutally honest | Direct, critical responses |
+| Susie Greene | Dramatic, enthusiastic | Excitable, loud personality |
+| Mr. Rogers | Gentle, kind | Warm, patient responses |
+| Gordon Ramsay | Intense, motivational | Urgent, commanding tone |
+| Coach | High-energy motivator | Pump-up language, exclamation marks |
+
+### 5c.4 Self-Nags
+
+| Step | Action | Verify |
+|------|--------|--------|
+| 1 | In chat: "Remind me to pick up groceries" | Creates nag with self as recipient |
+| 2 | View Nagz tab | Self-nag appears in "My Reminders" section at bottom, separate from nags from others |
+| 3 | Self-nag icon | Pin icon distinguishes self-reminders |
+
+---
+
+## 5d. Connections (People Tab)
+
+### 5d.1 Connection Management
+
+| Step | Action | Verify |
+|------|--------|--------|
+| 1 | People tab → + button | Invite by email form |
+| 2 | Send invite | Appears in "Invites You Sent" section |
+| 3 | Other user accepts | Moves to "Active Connections" with stats |
+| 4 | Trust toggle | Can enable/disable per connection |
+| 5 | Swipe to remove | Confirmation → connection removed |
+
+### 5d.2 Overdue Digest
+
+| Step | Action | Verify |
+|------|--------|--------|
+| 1 | Open People tab | Each connection shows stats: Sent, Received, Open, Done |
+| 2 | Connections with overdue nags | Red "Overdue" count with exclamation triangle icon |
+| 3 | Tap connection | Opens sheet to create nag for that person |
+
+---
+
 ## 6. Preferences & Consents
 
 ### 6.1 Preferences
@@ -267,6 +358,8 @@ Nagz uses a 3-tier hybrid AI architecture. All AI text generation runs on-device
 |---------|--------|
 | Notification channels (push/SMS) | Toggles persist |
 | Quiet hours (enable, start, end, timezone) | Reminders suppressed during quiet hours |
+| Notify when sent nags are overdue | Toggle off by default — when on, user gets push when nags they sent go overdue |
+| Notification frequency | always / once per phase / daily digest |
 | AI mediation tone (neutral/supportive/firm) | Preference saved |
 | Snooze permissions | Toggle persists |
 
@@ -322,17 +415,24 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 | "Check overdue nags in Nagz" | "N overdue: chores, homework." or "No overdue nags." |
 | "Snooze a nag in Nagz" | Prompts for nag and minutes |
 | "Family status in Nagz" | "This week: N% completion rate across N nags." |
+| "Remind me in Nagz" | Prompts for description and time, creates self-reminder (default 60 min) |
 
-### 8.2 Shortcuts App
+### 8.2 Siri Tip
 
 | Test | Verify |
 |------|--------|
-| Open Shortcuts → search "Nagz" | All 6 shortcuts appear |
+| View nag list with no nags (empty state) | SiriTipView shown: "Try saying 'Create a nag'" |
+
+### 8.3 Shortcuts App
+
+| Test | Verify |
+|------|--------|
+| Open Shortcuts → search "Nagz" | All 7 shortcuts appear (including "Quick Remind") |
 | Add shortcut to home screen | Shortcut icon created |
 | Run shortcut from home screen | Intent executes correctly |
 | Create automation with Nagz action | Automation triggers correctly |
 
-### 8.3 Error Handling
+### 8.4 Error Handling
 
 | Condition | Expected |
 |-----------|----------|
@@ -348,9 +448,14 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 |------|--------|
 | First launch → permission prompt | System dialog with clear purpose |
 | Deny permission | App functions without notifications, no repeated prompts |
-| Accept → create nag with near due date | Notification arrives |
-| Tap notification | Opens app to relevant nag detail |
+| Accept → create nag with near due date | Notification arrives to recipient |
+| Tap notification | Opens app to relevant nag detail on Nagz tab |
 | Background → notification | Banner/alert shown |
+| Creator not notified (default) | Create nag for someone, let it go overdue — creator does NOT get push |
+| Creator opts in | Preferences → "Notify when sent nags are overdue" → ON → creator gets phase 4 alerts |
+| Quiet hours | Set quiet hours in Preferences → no pushes during that window |
+| Escalation phases | Nag progresses: Due Soon → Overdue → Escalated — separate notifications at each phase |
+| Repeat notifications | Overdue nag gets cycling increasingly exasperated messages every 15 min |
 
 ---
 
@@ -386,8 +491,9 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 | No contacts | Confirmed: no CNContactStore |
 | Keychain for tokens | Access token and refresh token stored in Keychain (com.nagz.app) |
 | Local SQLite cache | GRDB database in Application Support, encrypted at rest by iOS |
-| On-device AI | Apple Foundation Models for text generation (7/9 ops) + heuristics for structured data (2/9 ops are pure math). All processing uses local GRDB cache. No user text sent to external AI services — only structured enums and counts sync to server |
-| UserDefaults | Only user_id and family_id (UUIDs) for Siri intent access |
+| On-device AI | Apple Foundation Models for text generation (7/9 ops) + AI chat (6 tools). All processing uses local GRDB cache. No user text sent to external AI services — only structured enums and counts sync to server |
+| Chat persistence | Per-nag chat history stored in local GRDB SQLite (CachedChatMessage table). Messages never leave device. |
+| UserDefaults | user_id, family_id (UUIDs) for Siri intent access; ai_personality preference; selected tab index |
 
 ---
 
@@ -424,4 +530,6 @@ Test each with Siri (long-press home/side button or "Hey Siri"):
 | Create nag | < 2 seconds response |
 | Complete nag | < 2 seconds response |
 | Family load | < 3 seconds with members |
+| AI chat response | 2-10 seconds (on-device model generation) |
+| Chat with tool calls | 3-15 seconds (generation + API call) |
 | Memory usage | < 100MB typical |
