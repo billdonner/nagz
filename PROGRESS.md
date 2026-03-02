@@ -5,6 +5,37 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-01 — Session 30: Global Chat Polish, Notifications, Siri QuickAdd
+
+### Continued from Session 29 — Real-Device Testing & Iteration (builds 53–54)
+
+**Global Chat Fixes (build 53)**
+- Wired `SubmitExcuseTool` into LanguageModelSession tools array (was instantiated but not registered)
+- Updated GlobalChatPrompt with excuse tool description + "NEVER use createNag for excuses" rule
+- AI can now submit excuses on overdue nags conversationally
+
+**Notification Gating (build 53)**
+- Server scheduler: guardian-review push notifications now gated on `notify_sent_overdue` preference (default OFF)
+- Creators no longer get push notifications when nags they sent become overdue — must opt in
+- PreferencesView: new toggle "Notify when sent nags are overdue" in Notifications section
+- Server deployed to Fly.io production
+
+**People Tab Digest (build 53)**
+- `ConnectionNagStats` extended with `overdueCount` — computes from open nags past dueAt
+- Red "Overdue" badge with exclamation triangle icon shown per connection in People tab
+- Gives at-a-glance digest of who's behind without extra taps
+
+**Siri QuickAddNagIntent (build 54) — Phase 2C Complete**
+- New `QuickAddNagIntent`: streamlined self-reminder with just description + time (default 60 min)
+- Defaults category to `.other`, recipient to self — no entity selection dialogs
+- Registered in NagzShortcutsProvider with phrases: "Remind me in Nagz", "Quick nag in Nagz"
+- Phase 2C fully complete (SiriTipView + expanded phrases were already in place)
+
+**Repos Changed:** nagz-ai, nagz-ios, nagzerver
+**Installed:** Titanic (iPhone 15 Pro Max) + rowboat (iPhone SE)
+
+---
+
 ## 2026-03-01 — Session 29: Phase 2 — Chat Persistence, Global AI Chat, Siri, Tests
 
 ### NagzAI Package (nagz-ai) — 132 tests (22 new)
