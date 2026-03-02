@@ -30,15 +30,17 @@
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Production API server deployed | TODO | api.nagz.app or equivalent |
-| SSL/TLS certificate | TODO | Valid cert for HTTPS |
-| Update AppEnvironment.swift production URL | TODO | Replace placeholder |
-| APNs production push configured | TODO | Server-side push sending |
-| SMS provider configured (Twilio/etc.) | TODO | US-only, STOP/HELP support |
+| Production API server deployed | DONE | bd-nagzerver.fly.dev (Fly.io) |
+| SSL/TLS certificate | DONE | Fly.io auto-managed TLS |
+| Update AppEnvironment.swift production URL | TODO | Replace placeholder with production domain |
+| APNs production push configured | DONE | JWT-based ES256, server sends via httpx HTTP/2 |
+| SMS provider configured (Twilio/etc.) | DEFERRED | Not in V1.3 — SMS bridge deferred |
 | Database backups configured | TODO | Automated daily backups |
 | Monitoring/alerting (Sentry, DataDog) | TODO | Error tracking, uptime |
-| Rate limiting verified | TODO | 120 read/min, 60 write/min per user |
+| Rate limiting verified | DONE | 120 read/min, 60 write/min per user |
 | Load testing completed | TODO | Simulate 1000+ concurrent users |
+| WebSocket service running | DONE | Real-time events for nag/connection updates |
+| Notification scheduler running | DONE | Background loop with escalation phases + repeat notifications |
 
 ---
 
@@ -49,40 +51,48 @@
 | Field | Content |
 |-------|---------|
 | **App Name** | Nagz |
-| **Subtitle** | Family Task Reminders |
-| **Promotional Text** | Keep your family on track with smart reminders, on-device AI coaching, gamification, and Siri integration. |
+| **Subtitle** | AI-Powered Family Reminders |
+| **Promotional Text** | Talk to your tasks. Create, complete, and manage family reminders by chatting with on-device AI. No data leaves your phone. |
 
 ### 2.2 Description (4000 char max)
 
 ```
-Nagz helps families stay organized with smart, escalating reminders.
+Nagz helps families stay organized with AI-powered conversational reminders.
 
-WHAT IT DOES
-Guardians create "nags" — task reminders for chores, meds, homework, and appointments. Family members complete them, earn points, and build streaks. If a nag is missed, it escalates — gently at first, then more firmly.
+TALK TO YOUR TASKS
+Just type what you need: "Remind me to call the dentist tomorrow" or "What's overdue?" The AI chat creates, completes, reschedules, and manages your nags — all conversationally. Choose from 6 AI personalities: a motivational coach, Gordon Ramsay, Mr. Rogers, and more.
 
 KEY FEATURES
+• AI Chat — create, complete, and manage tasks by chatting naturally
+• Per-nag conversations — talk to any specific task for context-aware help
+• Connections — nag friends and family outside your household
 • Create reminders with categories, due dates, and recurrence
 • Track completion with points, streaks, and family leaderboards
 • Escalating reminders that adapt over time
-• Siri Shortcuts — "Show my nags" or "Create a nag" by voice
+• 7 Siri Shortcuts — "Remind me in Nagz" for quick self-reminders
 • Role-based access: guardians manage, participants and children complete
 • Safety tools: block, report, and mute family members
-• On-device AI powered by Apple Foundation Models — 7 of 9 intelligent features run entirely on your iPhone:
-  - Excuse summarization, tone selection, coaching tips, weekly digests, push-back reminders, task list summaries, and gamification nudges
-  - Pattern detection and completion prediction use fast local heuristics
-  - No text ever leaves your device — only structured data (categories, counts) syncs to the server
-• Push notification reminders at every escalation phase
+• Push notifications with escalation phases and repeat reminders
+• Self-reminders separated into "My Reminders" for easy tracking
+
+ON-DEVICE AI — PRIVATE BY DESIGN
+All AI features run entirely on your iPhone using Apple Foundation Models:
+• Conversational chat with 6 tools (list, create, complete, reschedule, status, excuse)
+• Excuse summarization, tone selection, coaching tips, weekly digests
+• Push-back reminders, task list summaries, gamification nudges
+• No text ever leaves your device — only structured data syncs to the server
+• Works offline with heuristic fallbacks when AI is unavailable
 
 BUILT FOR FAMILIES
 • Guardian controls for policies, consents, and incentive rules
 • COPPA-compliant child accounts with guardian consent
 • Quiet hours to silence reminders at bedtime
-• Gamification that motivates without pressuring
+• Notification preferences: control who gets notified and when
+• People tab with at-a-glance overdue digest per connection
 
 PRIVACY FIRST
 • No ads, no tracking, no data selling
-• On-device AI for 7 of 9 intelligent features — all text generation happens on your iPhone using Apple Foundation Models, never sent to external servers
-• Two remaining features (pattern detection, completion prediction) use lightweight math — no AI model needed
+• All AI processing on-device — zero external AI services
 • Minimal data collection: just email and family task data
 • Account deletion available anytime
 
@@ -92,7 +102,7 @@ Start your family's productivity journey with Nagz.
 ### 2.3 Keywords (100 char max)
 
 ```
-family,reminders,chores,tasks,kids,parenting,nag,homework,meds,streaks
+family,reminders,chores,tasks,kids,parenting,nag,AI,chat,streaks
 ```
 
 ### 2.4 Screenshots (Required)
@@ -104,14 +114,14 @@ family,reminders,chores,tasks,kids,parenting,nag,homework,meds,streaks
 | iPad 13" (optional) | 2064 x 2752 | 0-8 screenshots |
 
 **Recommended screenshots:**
-1. Nag list with open reminders (hero shot)
-2. Create nag form with category picker
-3. Nag detail with escalation phase
-4. Family members with roles
-5. Points & streaks gamification view
-6. Siri Shortcuts in action
-7. Reports / completion rate
-8. Safety features (block/report)
+1. AI Chat — conversational task creation (hero shot)
+2. AI Chat — listing overdue nags with personality
+3. Nag list with "My Reminders" section and overdue indicators
+4. Per-nag chat with context-aware AI response
+5. People tab with overdue digest badges per connection
+6. Nag detail with AI Insights and escalation phase
+7. Points & streaks gamification view
+8. Siri "Remind me in Nagz" quick add
 
 ### 2.5 App Icon
 
@@ -123,7 +133,8 @@ family,reminders,chores,tasks,kids,parenting,nag,homework,meds,streaks
 ### 2.6 App Preview Video (Optional)
 
 - 15-30 seconds
-- Show: create nag → notification → complete → earn points → Siri shortcut
+- Show: AI chat creating nag → notification → complete via chat → earn points → Siri "Remind me"
+- Highlight: conversational flow, personality selection, overdue digest
 - No device bezels required
 
 ---
@@ -263,8 +274,11 @@ Or use **Xcode → Product → Archive → Distribute App → App Store Connect*
 | No development URLs in release build | grep for 127.0.0.1, localhost |
 | App launches in < 3 seconds | Time cold launch |
 | No crashes on common devices | Test on 3+ device types |
-| All test suites passing | /test-all |
+| All test suites passing | /test-all (620 tests: 255 + 126 + 239) |
 | Version checker working | Verify /version endpoint live |
+| AI chat works on AI device | Test on iPhone 15 Pro or newer |
+| AI chat hidden on non-AI device | Verify Chat tab absent on iPhone SE/older |
+| Chat persistence survives restart | Close app, reopen, check per-nag history |
 
 ---
 
@@ -282,9 +296,9 @@ Or use **Xcode → Product → Archive → Distribute App → App Store Connect*
 ### 5.2 Review Notes Template
 
 ```
-Nagz is a family task-reminder app where guardians create reminders
-("nags") for family members. Members complete tasks, earn points,
-and build streaks.
+Nagz is a family task-reminder app with AI-powered conversational
+management. Users chat naturally to create, complete, and manage
+reminders. All AI runs on-device via Apple Foundation Models.
 
 DEMO ACCOUNTS:
 Guardian: reviewer-guardian@nagz.app / [password]
@@ -292,12 +306,22 @@ Child: reviewer-child@nagz.app / [password]
 Both accounts are in the same family with sample nags.
 
 TO TEST:
-1. Log in as guardian → view nag list → create a nag
-2. Log in as child → view assigned nags → complete a nag
-3. Try Siri: "Show my nags in Nagz"
-4. View Points & Streaks for gamification
+1. Log in as guardian → Chat tab → type "What's overdue?"
+2. In Chat: "Remind me to call the dentist tomorrow" → creates nag
+3. In Chat: "I took out the trash" → completes matching nag
+4. Open a nag detail → tap sparkle icon → per-nag AI chat
+5. People tab → see overdue digest per connection
+6. Try Siri: "Remind me in Nagz"
+7. View Points & Streaks for gamification
 
-NOTES:
+AI CHAT NOTES:
+- Requires Apple Intelligence (iPhone 15 Pro or newer)
+- Chat tab hidden on non-AI devices — all other features work
+- 6 AI personalities available (Standard, Gordon Ramsay, Mr. Rogers, etc.)
+- All text generation on-device — no external AI services
+- Context window is limited; long conversations show friendly error
+
+OTHER NOTES:
 - "Meds" category is a reminder label only, no medical advice
 - Child accounts (< 13) require guardian consent per COPPA
 - No in-app purchases, ads, or tracking
@@ -312,11 +336,13 @@ NOTES:
 | **1.3 Kids Category** | App involves children | COPPA consent flow, guardian controls, age-gating |
 | **2.1 App Completeness** | Server down during review | Ensure production server uptime, provide demo accounts |
 | **2.3 Accurate Metadata** | "Meds" could imply medical | Disclaimer: reminder label only, no medical advice |
+| **2.3 Accurate Metadata** | "AI" claims | All AI is on-device Apple Foundation Models — no external AI services, clearly disclosed |
 | **3.1.1 In-App Purchase** | No monetization | Confirm no hidden paywalls or future-gating |
-| **4.0 Design** | Push notification purpose | Only used for nag reminders, clear opt-in |
-| **5.1.1 Data Collection** | Privacy labels accuracy | Verified: email, name, user ID, usage data only |
-| **5.1.2 Data Use and Sharing** | Third-party sharing | None — no analytics, no ads, no data brokers |
-| **5.6 App Intents** | Siri phrases work | Tested all 14 phrases, proper error handling |
+| **4.0 Design** | Push notification purpose | Only used for nag reminders, clear opt-in, creator notifications off by default |
+| **4.0 Design** | AI features on older devices | Chat tab gracefully hidden via `#if canImport(FoundationModels)` + runtime check |
+| **5.1.1 Data Collection** | Privacy labels accuracy | Verified: email, name, user ID, usage data only. AI chat stays on-device. |
+| **5.1.2 Data Use and Sharing** | Third-party sharing | None — no analytics, no ads, no data brokers, no external AI |
+| **5.6 App Intents** | Siri phrases work | Tested all 7 shortcuts with proper error handling |
 
 ---
 
