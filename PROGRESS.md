@@ -5,6 +5,48 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-01 — Session 28: Per-Nag AI Chat — "Talk to Your Nag" (Phase 1)
+
+### NagzAI Package (nagz-ai)
+
+**NagChatPrompt** — New prompt builder for chat sessions
+- `build()` creates system instructions with nag context (category, due date, overdue status, creator name)
+- Personality-aware preamble (Gordon Ramsay, Simon Cowell, Mr. Rogers, etc.)
+- Rules: push back before agreeing to reschedule, challenge flimsy excuses, 1-3 sentences, stay in character
+- `greeting()` generates personality-appropriate opening lines (overdue vs. upcoming variants for each personality)
+
+### iOS App (nagz-ios) — Build 41
+
+**ChatMessage Model** — Simple in-memory message model (id, role, content, timestamp)
+
+**NagChatTools** — Three Foundation Models `Tool` protocol conformances
+- `RescheduleTool` — delays nag by 1-168 hours via `APIClient.updateNag()`
+- `CompleteTool` — marks nag done via `APIClient.updateNagStatus()`
+- `ExcuseTool` — submits excuse via `APIClient.submitExcuse()`
+- `ToolResultCollector` actor — collects tool action messages for system message display
+- All gated with `#if canImport(FoundationModels)`
+
+**NagChatViewModel** — Session management + message state
+- Creates `LanguageModelSession` with all three tools + system instructions
+- Adds personality-appropriate AI greeting as first message
+- `send()` appends user message, calls `session.respond(to:)`, drains tool results, appends AI response
+- Handles `exceededContextWindowSize` gracefully with user-facing message
+- Tracks `nagWasMutated` flag for parent view reload
+
+**NagChatView** — Chat bubble UI presented as sheet
+- AI bubbles (leading, gray), user bubbles (trailing, blue), system messages (centered, capsule)
+- Typing indicator with animated pulsing dots during generation
+- Auto-scroll to bottom on new messages
+- Personality name displayed in nav subtitle
+- Close button triggers reload if nag was mutated
+
+**NagDetailView** — Wired chat button + sheet
+- Chat toolbar button gated on: Apple Intelligence available + open nag + current user is recipient
+- Sheet presents NagChatView with personality from UserDefaults
+- onDismiss reloads nag detail to reflect any mutations
+
+---
+
 ## 2026-03-01 — Session 27: AI Gating, WebSocket Fixes, Counterpart Grouping, TestFlight 36
 
 ### iOS App (nagz-ios) — Builds 33–36
