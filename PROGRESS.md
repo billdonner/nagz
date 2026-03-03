@@ -5,6 +5,25 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 34: Direction Bars + Chat Overdue Banner + Intent Error Fix, Builds 60–61
+
+### Test Results (All Green)
+
+| Repo | Tests | Status |
+|------|-------|--------|
+| nagzerver | 264 | PASS |
+| nagz-web | 126 | PASS |
+| nagz-ios | 254 | PASS |
+| **Total** | **644** | |
+
+### Fix: Friendly Intent Error Messages (Build 61)
+
+- All App Intents now wrap API calls with `NagzIntentError.wrapAPI()`
+- Users see "Session expired. Please log in again." instead of "Nagz.APIError error 4"
+- Affected: ListNags, CheckOverdue, Complete, Create, Snooze intents + NagEntityQuery
+
+---
+
 ## 2026-03-02 — Session 34: Direction Bars + Chat Overdue Banner, Build 60
 
 ### Feature: Direction Color Bars on Nag Rows
