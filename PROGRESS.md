@@ -5,6 +5,33 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 37: Overdue Banner + AI Context Fix, Builds 64–71
+
+### Gamification Crash Fix (Build 64)
+- Fixed crash/hang when navigating to gamification while it's disabled (server returns 403)
+- Added `isNotEnabled` flag in `GamificationViewModel`, shows friendly "Gamification Off" message
+
+### Direction Bars + Sparklines (Builds 65–68)
+- Added direction indicators to nag rows: arrows (↙ received, ↗ sent, ↺ self) + background tints (blue/orange/purple)
+- Fixed sidebar always showing direction color instead of urgency overriding it
+- Added collapsible sections grouped by counterpart with default collapse (Open: From expanded, To/Self collapsed)
+- Added urgency sparklines next to section headers — colored pips sorted by urgency, max 20 per section
+
+### Self-Nag Warning (Build 69)
+- Orange warning "This will remind you, not someone else" when user selects themselves as nag recipient
+- Button text changes from "Create Nag" to "Remind Myself"
+
+### Nag Detail Header (Build 70)
+- Changed `navigationTitle` from generic "Nag Detail" to the nag's description/category name
+
+### Overdue Banner + AI Context Fix (Build 71)
+- **Fixed overdue banner** in Chat tab: was counting ALL open nags (19 overdue), now only counts nags assigned TO the user (2 overdue)
+- **Fixed AI tool outputs**: `NagStatusTool` and `ListNagsTool` now lead with "YOUR TO-DO" section before "MONITORING (sent to others)" — AI no longer confuses monitoring with user's own tasks
+- **Updated AI system prompt** in `GlobalChatPrompt.swift`: added CRITICAL instruction to distinguish user's tasks from monitored tasks
+- Banner text clarified: "2 overdue **for you**" and "3 open **for you** — all on track"
+
+---
+
 ## 2026-03-02 — Session 36: Onboarding Update for Settings Restructure, Build 63
 
 ### Onboarding Changes (Build 63)
