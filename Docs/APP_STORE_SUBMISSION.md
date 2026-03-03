@@ -274,7 +274,7 @@ Or use **Xcode → Product → Archive → Distribute App → App Store Connect*
 | No development URLs in release build | grep for 127.0.0.1, localhost |
 | App launches in < 3 seconds | Time cold launch |
 | No crashes on common devices | Test on 3+ device types |
-| All test suites passing | /test-all (620 tests: 255 + 126 + 239) |
+| All test suites passing | /test-all (644 tests: 254 + 126 + 264) |
 | Version checker working | Verify /version endpoint live |
 | AI chat works on AI device | Test on iPhone 15 Pro or newer |
 | AI chat hidden on non-AI device | Verify Chat tab absent on iPhone SE/older |

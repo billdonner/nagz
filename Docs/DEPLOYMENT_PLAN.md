@@ -4,7 +4,7 @@
 
 This document covers the full path from current state to App Store release, including server deployment choices, TestFlight beta, and App Store submission.
 
-**Current state:** 3 repos, 560 tests passing, code review fixes applied, all features implemented.
+**Current state:** 3 repos, 644 tests passing, code review fixes applied, all features implemented.
 
 > **Deployment status (updated 2026-02-25):** Server live at `https://bd-nagzerver.fly.dev`, web app bundled with server, TestFlight builds 3-5 shipped, 512 MB RAM (Fly.io). See PROGRESS.md Sessions 5-8 for details.
 

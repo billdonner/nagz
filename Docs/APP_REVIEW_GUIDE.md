@@ -8,7 +8,7 @@
 |-------|-------|
 | **App Name** | Nagz |
 | **Bundle ID** | com.nagz.app |
-| **Version** | 1.3.0 (Build 54) |
+| **Version** | 1.3.0 (Build 71) |
 | **Platform** | iOS 26.0+ |
 | **Swift** | 6.0 (strict concurrency) |
 | **Category** | Lifestyle / Family |
@@ -53,7 +53,7 @@ All accounts are pre-configured in the same family with sample nags.
 
 | Step | Action | Verify |
 |------|--------|--------|
-| 1 | Family tab → Log Out | Confirmation → returns to login screen |
+| 1 | Settings tab → Log Out | Confirmation → returns to login screen |
 | 2 | Keychain tokens cleared | Relaunching app shows login (no auto-restore) |
 | 3 | UserDefaults cleared | nagz_user_id and nagz_family_id removed |
 
@@ -61,7 +61,7 @@ All accounts are pre-configured in the same family with sample nags.
 
 | Step | Action | Verify |
 |------|--------|--------|
-| 1 | Family tab → Account → Delete Account | Warning: "This action is permanent" |
+| 1 | Settings tab → Account → Delete Account | Warning: "This action is permanent" |
 | 2 | Confirm deletion | Account soft-deleted, returned to login |
 | 3 | Try logging in with deleted account | Login fails |
 
@@ -113,6 +113,7 @@ All accounts are pre-configured in the same family with sample nags.
 - Guardian: can create for anyone
 - Participant: can create for other participants
 - Child: cannot create nags for guardians
+- **Self-nag warning**: selecting yourself as recipient shows orange "This will remind you, not someone else" warning and changes button to "Remind Myself"
 
 ### 3.2 View Nag List
 
@@ -125,11 +126,17 @@ All accounts are pre-configured in the same family with sample nags.
 - Pull-to-refresh works
 - Pagination loads more items on scroll
 - Empty states shown with appropriate messaging
+- **Collapsible sections**: Nags grouped by counterpart ("From X", "To X", "My Reminders") with tap-to-collapse headers
+- **Default collapse**: Open tab shows "From" expanded, "To" and "My Reminders" collapsed; other tabs collapse everything
+- **Direction indicators**: Each nag row shows direction arrow (↙ received, ↗ sent, ↺ self) with colored sidebar (blue = received, orange = sent, purple = self)
+- **Urgency sparklines**: Small colored pip bars next to each section header showing urgency distribution (red → orange → yellow → blue → green → gray)
+- **Schedule view**: Calendar icon in toolbar toggles between list and schedule views
 
 ### 3.3 Nag Detail
 
 | Element | Verify |
 |---------|--------|
+| Navigation title | Shows nag description or category name (not generic "Nag Detail") |
 | Category + icon | Matches created category |
 | Due date | Formatted naturally (e.g., "Tomorrow at 3 PM") |
 | Escalation phase | Badge: Created → Due Soon → Overdue → Escalated → Guardian Review |
@@ -237,7 +244,7 @@ Nagz uses a 3-tier hybrid AI architecture. All AI text generation runs on-device
 
 | Step | Verify |
 |------|--------|
-| 1 | Family tab → AI Insights → Family Insights | Guardian-only navigation link |
+| 1 | Settings tab → Family → AI Insights → Family Insights | Guardian-only navigation link |
 | 2 | Weekly Digest | LLM-generated summary text, per-member completion stats (name, completed/total, rate), totals row |
 | 3 | Your Patterns | Day-of-week miss insights from 90-day analysis (heuristic) |
 | 4 | Pull to refresh | Refreshes both digest and patterns |
@@ -270,14 +277,14 @@ The Chat tab is the first tab in the app on Apple Intelligence devices (iPhone 1
 
 | Step | Action | Verify |
 |------|--------|--------|
-| 1 | Open Chat tab | Personality-appropriate greeting displayed |
-| 2 | Type "What's overdue?" | AI lists open nags with overdue indicators |
+| 1 | Open Chat tab | Personality-appropriate greeting displayed; overdue banner shows count of YOUR overdue tasks only (not tasks sent to others) |
+| 2 | Type "What's overdue?" | AI lists nags assigned to user with overdue indicators (separates "your tasks" from "monitoring others") |
 | 3 | Type "Remind me to call the dentist tomorrow" | AI creates self-nag, confirms description and due time |
 | 4 | Type "Nag Cookie to do her homework" | AI resolves family member/connection by name, creates nag for them |
 | 5 | Type "I took out the trash" | AI fuzzy-matches nag by description, marks it completed |
 | 6 | Type "Push back the homework to tomorrow" | AI reschedules matching nag, confirms new due time |
 | 7 | Type "Send excuses for my overdue nags — I'm sick" | AI submits excuse on existing overdue nags (does NOT create new nags) |
-| 8 | Type "How am I doing?" | AI summarizes task load with per-person overdue counts |
+| 8 | Type "How am I doing?" | AI summarizes YOUR tasks separately from tasks you're monitoring for others |
 | 9 | Tap outside text field or "Done" button | Keyboard dismisses, tab bar accessible |
 | 10 | Send 15+ messages | Context limit error shown with "switch tabs to start fresh" guidance |
 | 11 | Change AI personality in settings | Greeting and response tone match selected personality |
@@ -382,14 +389,14 @@ Grant and revoke each consent — verify features enable/disable accordingly.
 
 | Step | Verify |
 |------|--------|
-| Family tab → Safety → select member → Block | Confirmation dialog |
+| Settings tab → Family → Safety → select member → Block | Confirmation dialog |
 | Confirm block | Member blocked, interactions prevented |
 
 ### 7.2 Report Abuse
 
 | Step | Verify |
 |------|--------|
-| Family tab → Safety → Report | Report form submitted |
+| Settings tab → Family → Safety → Report | Report form submitted |
 | Report submitted | Success confirmation |
 
 ### 7.3 Account Deletion
