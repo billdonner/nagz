@@ -5,6 +5,35 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 34: Direction Bars + Chat Overdue Banner, Build 60
+
+### Feature: Direction Color Bars on Nag Rows
+
+| Detail | Value |
+|--------|-------|
+| Blue bar | Received nags (for me) |
+| Orange bar | Sent nags (I sent) |
+| Purple bar | Self-nags |
+| Urgency override | Due-soon/overdue/critical urgency bars take priority |
+| Label colors | "From:" now blue, "To:" now orange (was all orange) |
+| Files | `NagRowView.swift` — affects all lists automatically |
+
+### Feature: Chat Overdue Banner
+
+| Detail | Value |
+|--------|-------|
+| Red banner | N overdue — shows most urgent nag name + how late |
+| Blue banner | N open — all on track |
+| Green banner | All caught up! |
+| Tap action | Switches to Nagz tab |
+| Files | `GlobalChatView.swift` |
+
+### Build
+
+- Bumped build 59 → 60, committed & pushed
+
+---
+
 ## 2026-03-02 — Session 33: Schedule View (Calendar-Based Nag Planning), Build 59
 
 ### Feature: Schedule View
