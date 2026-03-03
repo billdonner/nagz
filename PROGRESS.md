@@ -5,6 +5,18 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 36: Onboarding Update for Settings Restructure, Build 63
+
+### Onboarding Changes (Build 63)
+
+- **Updated main onboarding page 2**: "Your Family Hub" → "Your Settings Hub" with gear icon, reflecting that Settings is now the tab and Family is nested inside
+- **Added family mini-onboarding**: one-time sheet appears on first visit to Settings → Family, explaining members, AI digest, guardian dashboard, and invite sharing
+- Mini-onboarding reuses `OnboardingPageView` for visual consistency (made internal from private)
+- `@AppStorage("hasSeenFamilyIntro")` ensures sheet only shows once
+- Build bumped 62 → 63
+
+---
+
 ## 2026-03-02 — Session 35: Replace Family Tab with Settings Tab, Build 62
 
 ### Settings Tab (Build 62)
