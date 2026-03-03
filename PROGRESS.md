@@ -5,6 +5,30 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-02 — Session 35: Replace Family Tab with Settings Tab, Build 62
+
+### Settings Tab (Build 62)
+
+- **Renamed Family tab → Settings** with `gearshape.fill` icon
+- Created `SettingsTabContent` with structured sections:
+  - Account (email, user ID)
+  - AI Personality picker (Apple Intelligence only)
+  - Family → NavigationLink push to `FamilyTabContent` (shows family name or "Create or Join")
+  - Gamification (Points & Streaks, Incentive Rules) — only when family exists
+  - Safety
+  - Legal (Privacy Policy, Terms of Service)
+  - Feedback (Report an Issue)
+  - Your Data (Export, Delete Account)
+  - What's New
+  - Log Out
+  - Footer (email + version)
+- **FamilyTabContent stripped down** to pure family management: digest card, members, preferences/consents (admin), guardian dashboard (admin), invite code
+- Removed `authManager` dependency from `FamilyTabContent` (no longer needed)
+- No-family welcome screen simplified to just Create/Join buttons
+- All sections previously in AccountView now inlined directly in SettingsTabContent
+
+---
+
 ## 2026-03-02 — Session 34: Direction Bars + Chat Overdue Banner + Intent Error Fix, Builds 60–61
 
 ### Test Results (All Green)
