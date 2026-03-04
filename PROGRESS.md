@@ -5,6 +5,46 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-04 — Session 41: Rename Trusted → Caregiver, Build 83
+
+### All Repos — trusted→caregiver rename (DB column unchanged)
+- **Concept**: "Trusted" → "Caregiver" — clearer term for tutors/nannies/coaches who can nag children but NOT the parent
+- **Two connection types**: Friend (caregiver=false) bidirectional nagging; Caregiver (caregiver=true) nags children only
+
+### Server (nagzerver) — 7 files changed
+- `schemas/connections.py`: `ConnectionResponse.caregiver` with `validation_alias="trusted"` (reads DB column, serializes as "caregiver"); `ConnectionTypeUpdate`; `CaregiverConnectionChild`; `ConnectionInvite` now accepts `caregiver: bool = False`
+- `schemas/sync.py`: `SyncedConnection.caregiver` with `validation_alias="trusted"`
+- `routers/connections.py`: `PATCH /connections/{id}/type` (was `/trust`); invite passes caregiver flag; `list_caregiver_children`
+- `services/connections.py`: `invite()` accepts `trusted` param
+- Tests: all `/trust`→`/type`, `trusted`→`caregiver`; added `test_invite_with_caregiver_flag`; 285 tests total
+
+### iOS (nagz-ios) — Build 83
+- `ConnectionModels.swift`: `caregiver: Bool`, `ConnectionTypeUpdate`, `CaregiverConnectionChild`
+- `AIModels.swift`: `SyncedConnection.caregiver`
+- `APIEndpoint.swift`: `updateConnectionType(id:caregiver:)`, `listCaregiverChildren`, `inviteConnection(email:caregiver:)`
+- `ConnectionListViewModel.swift`: `toggleType(id:currentCaregiver:)`
+- `ConnectionListView.swift`: "Caregiver"/"Friend" badges, `/type` endpoint, footer text updated
+- `CreateNagView.swift`: `caregiverChildren`, "Caregivers' Kids" section header
+- `GlobalChatTools.swift`: `InviteConnectionTool` adds `caregiver` arg, distinct confirmation messages
+- `ModelDecodingTests.swift`: all trusted→caregiver assertions + `/type` endpoint path tests
+
+### Web (nagz-web)
+- `Connections.tsx`: `caregiver` field, `/type` endpoint, "Caregiver" column header
+- `CreateNag.tsx`: `caregiverChildren`, `CaregiverChild` interface, "Caregivers' Kids" optgroup
+- Generated models: `caregiverConnectionChild.ts`, `connectionTypeUpdate.ts`; updated `connectionResponse.ts`, `syncedConnection.ts`
+
+### AI (nagz-ai)
+- `GlobalChatPrompt.swift`: friend/caregiver distinction in inviteConnection docs; AI auto-sets caregiver=true for tutors/nannies/coaches; ambiguous invites ask "friend or caregiver?"
+
+### Test Results
+| Suite | Count | Status |
+|-------|-------|--------|
+| nagzerver | 285 | ✅ all pass |
+| nagz-web | 126 | ✅ all pass |
+| nagz-ios | 254 | ✅ all pass |
+
+---
+
 ## 2026-03-04 — Session 40: Withdraw & Dismiss Nags, Build 80
 
 ### Server (nagzerver) — 8 files changed

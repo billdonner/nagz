@@ -123,7 +123,7 @@ AIInsightsSection(.task)
 | AuthModels | LoginRequest, SignupRequest, ChildLoginRequest, AuthResponse |
 | FamilyModels | FamilyResponse, MemberResponse, MemberDetail, FamilyCreate |
 | AIModels | ToneSelectResponse, CoachingResponse, PredictCompletionResponse, DigestResponse, PatternsResponse |
-| ConnectionModels | ConnectionResponse, InviteRequest, TrustedConnectionChild |
+| ConnectionModels | ConnectionResponse, ConnectionInvite, ConnectionTypeUpdate, CaregiverConnectionChild |
 | GamificationModels | GamificationEvent, LeaderboardEntry |
 | EscalationModels | EscalationEvent, PhaseTransition |
 | ErrorModels | APIError enum with `.isRetryable` |
