@@ -5,6 +5,47 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-03 — Session 38: James Feedback Sprint, Builds 74–77
+
+### Invite Flow + Stale Detection (Build 74)
+- Merged `invite-flow-share-sheet` branch to main
+- **Invite redesign**: auto-opens iOS share sheet after creating invite, removed misleading "Invite Sent!" intermediate screen
+- **Stale invite badges** on People tab: orange "Getting stale" at 5+ days, red "Likely missed" at 14+ days
+- **AI stale invite awareness**: NagStatusTool reports pending invites older than 5 days
+- **Chat banner cleanup**: simplified to "X overdue for you · worst Xd late" with lineLimit(1)
+
+### James Feedback Features (Build 75)
+Based on stream-of-consciousness feedback from James (co-founder testing):
+
+- **DayPlannerView**: new hourly timeline replacing ScheduleNagListView — date strip for next 8 days, unscheduled inbox (horizontal scroll), hourly slots (6am–11pm) with current-time indicator
+- **QuickScheduleSheet**: preset time buttons (Morning, Afternoon, Evening, Tonight, In 1h, In 3h, Tomorrow AM, Weekend) with custom graphical picker fallback
+- **Smart time presets in CreateNagView**: quick-time chips before DatePicker
+- **Smart time follow-up in chat**: AI asks "When do you actually need this done?" when no time specified
+- **Markdown fix in chat**: `AttributedString(markdown:)` so **bold** and *italic* render properly instead of showing raw asterisks
+- **Enhanced AI personalities**: Susie/Simon/Gordon now take user's side dramatically, report on others' overdue tasks with character-appropriate outrage
+- **Proactive personality behavior**: AI offers to escalate, respects update preferences, reports on others' completion in character
+- **People tab analytics**: completion rate, on-time rate, and reliability badge (Reliable/Usually OK/Sometimes Late/Needs Work) per connection
+
+### Calm Visual Design (Build 76)
+- **Removed Missed tab** from segmented picker — missed nags folded into "All" view
+- Renamed "Completed" tab → "Done"
+- **Reduced urgency backgrounds**: 10% opacity → 4-6% so rows don't glow red/orange
+- **Reduced direction tints**: 6% → 3% for subtler appearance
+- **Category icons calmed**: chores orange→brown, meds red→pink
+- **Missed status orange everywhere**: status dot, sparkline, detail badge (was red)
+- Approaching urgency text → secondary (gray) instead of blue
+- Accent sidebar only shows for overdue+ (removed for dueSoon)
+
+### People Tab Fixes (Build 77)
+- **Fixed nag creation refresh**: People tab stats now reload after creating a nag (was silently stale — missing onDismiss handler)
+- **Fixed reliability score**: blended 60% completion + 40% on-time rate (was completion-only, so "100% done + 0% on time = Reliable" which was contradictory)
+- Late pill icon changed from red to orange
+
+### Cross-Repo Changes
+- **nagz-ai**: Enhanced personality prompts (Susie advocate mode, Simon/Gordon character advocacy), proactive personality behavior instructions, smart time follow-up prompt
+
+---
+
 ## 2026-03-02 — Session 37: Overdue Banner + AI Context Fix, Builds 64–71
 
 ### Gamification Crash Fix (Build 64)
