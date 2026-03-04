@@ -16,7 +16,13 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 - `GET /nags` now supports `exclude_dismissed` query param
 - Smart push: notifies recipient when nag withdrawn
 - NagResponse schema: added `recipient_dismissed_at` field
-- 9 new tests (273 total, all passing)
+- 9 new withdraw/dismiss tests (273 total)
+
+### Trusted Connections & Family Management
+- **Trusted connection restriction**: trusted connections can only nag children, not the adult party
+- **Leave family**: `POST /families/{familyId}/leave` with last-guardian protection (412 if last guardian)
+- **Single-family constraint**: users can only belong to one active family at a time (must leave first)
+- 10 additional tests (283 total, all passing)
 
 ### iOS (nagz-ios) — Build 80
 - `NagStatus.withdrawn` enum case with gray styling
@@ -28,6 +34,10 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 - Open tab excludes dismissed nags; All tab shows them with eye.slash icon
 - Withdrawn nags at 50% opacity
 - WebSocket handles `nag_withdrawn` events
+- Safety page shows "Blocked" capsule pill on blocked member rows
+- Connection list shows Friend/Trusted labels with shield icon
+- Leave Family button in settings with confirmation dialog
+- Footer explaining Friend vs Trusted connections
 
 ---
 
