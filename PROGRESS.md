@@ -5,6 +5,31 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-04 — Session 39: App Store Prep + UI Polish, Builds 78–79
+
+### App Store Connect Setup
+- Created **GitHub Pages** for legal docs: privacy-policy.html, terms-of-service.html at billdonner.github.io/nagz/
+- Renamed `Docs/` → `docs/` for GitHub Pages compatibility (macOS case-insensitive workaround)
+- Created reviewer demo account (`reviewer@nagz.app`) with sample family + 5 nags
+- Created personal test account (`billtest@nagz.app`) with family + 4 nags
+- Configured **beta app review details** in App Store Connect via API (Admin key MN6H2P6385)
+
+### AI Chat Improvements (Build 78)
+- Added **InviteConnectionTool** — 7th chat tool enables "connect to email@example.com"
+- Added **first-time user guardrails** in prompt: no hallucinated data, welcoming suggestions instead
+- Fixed "something went wrong" when using chat to invite connections
+
+### UI Polish Sprint (Build 79)
+- **Accent color**: deep purple (light mode), systemOrange (dark mode)
+- **Chat overdue banner**: blue→purple gradient instead of solid red; urgency ratio controls purple intensity
+- **DayPlannerView**: tap empty slots to create nags, context menu to uncommit, fixed category colors (meds=pink, chores=brown), overdue=orange
+- **NagUpdate custom encoding**: explicit JSON null for `committedAt` via `clearCommittedAt` flag
+- **Settings page**: moved UUID to bottom footer alongside version/build
+- **People page**: fixed sent counter (was comparing against `conn.inviterId`, now uses `currentUserId`)
+- Chat error messages: red → purple
+
+---
+
 ## 2026-03-03 — Session 38: James Feedback Sprint, Builds 74–77
 
 ### Invite Flow + Stale Detection (Build 74)
