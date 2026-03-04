@@ -5,6 +5,32 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-04 — Session 40: Withdraw & Dismiss Nags, Build 80
+
+### Server (nagzerver) — 8 files changed
+- Added `withdrawn` to NagStatus enum
+- Added `recipient_dismissed_at` column to nags table
+- Created alembic migration for enum + column
+- Service functions: `withdraw_nag`, `dismiss_nag`, `undismiss_nag`
+- Router endpoints: POST withdraw/dismiss/undismiss
+- `GET /nags` now supports `exclude_dismissed` query param
+- Smart push: notifies recipient when nag withdrawn
+- NagResponse schema: added `recipient_dismissed_at` field
+- 9 new tests (273 total, all passing)
+
+### iOS (nagz-ios) — Build 80
+- `NagStatus.withdrawn` enum case with gray styling
+- `recipientDismissedAt` field on NagResponse
+- API endpoints: `withdrawNag`, `dismissNag`, `undismissNag`
+- NagDetailViewModel: `withdraw()`, `dismiss()`, `undismiss()` methods
+- Detail view: Withdraw button (creator), Dismiss/Undo (recipient)
+- Swipe actions on nag list rows (swipe-to-withdraw, swipe-to-dismiss)
+- Open tab excludes dismissed nags; All tab shows them with eye.slash icon
+- Withdrawn nags at 50% opacity
+- WebSocket handles `nag_withdrawn` events
+
+---
+
 ## 2026-03-04 — Session 39: App Store Prep + UI Polish, Builds 78–79
 
 ### App Store Connect Setup
