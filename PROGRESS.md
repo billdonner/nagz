@@ -5,6 +5,36 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-04 — Session 42: pressNag, rate limits, week-view create, Builds 84–92
+
+### Server (nagzerver)
+- Fixed alembic migration split-head (`down_revision` pointed at wrong parent); ran DDL manually as postgres superuser + stamped
+- Added `description` field to `NagUpdate` schema and service (`update_nag` accepts and applies it)
+- Raised rate limits: reads 120→300/min, writes 60→200/min, nag_status 30→60/min
+- Reset production DB connections to `trusted=false` (data bug: all had trusted=true from earlier testing)
+
+### iOS (nagz-ios)
+- **Build 84**: Added server URL to PreferencesView / ChildSettingsView (hidden too deep — moved)
+- **Build 85**: Server URL moved to main Settings tab version section (visible without deep nav)
+- **Build 86**: Added red/green ping indicator — pings `/metrics` on appear, URL tints green/red/grey
+- **Build 87**: `PressNagTool` — chat "tell X to hurry up" escalates EXISTING nag (updates description) instead of creating a new one; `createNag` description tightened; AI prompt updated with preference rules
+- **Build 88**: Fixed duplicate `loadNags()` calls (`.task` + `.onAppear` + `.onChange(scenePhase)` all fired simultaneously) with `guard !isLoading` guard
+- **Build 89**: Fixed all connections showing "Caregiver" badge; Family tab no-family state now clarifies family is optional with explanatory text
+- **Build 90/91**: (uploaded but superseded)
+- **Build 92**: Week view tap-to-create nag — tapping an empty hour slot opens CreateNagView with due date pre-filled; faint `+` shown on empty slots; long-press day chip to create nag for that day; `+` toolbar button clears date so it doesn't pre-fill
+
+### Key Files Changed
+- `DayPlannerView.swift`: `onCreateForDay` callback; `+` badge on selected day chip; visible empty-slot tap area
+- `NagListView.swift`: wires `onCreateAtTime`/`onCreateForDay` → `createNagDate` state; passes `preselectedDate` to CreateNagView
+- `CreateNagView.swift` / `CreateNagViewModel.swift`: `preselectedDate` param sets `dueAt` to noon of selected day
+- `NagModels.swift`: `NagUpdate.description` field added
+- `GlobalChatTools.swift`: `PressNagTool` added; `CreateNagTool` description updated
+- `GlobalChatViewModel.swift`: `PressNagTool` registered in session tools
+- `NagListViewModel.swift`: `guard !isLoading` prevents concurrent load calls
+- `AuthenticatedTabView.swift`: server URL with ping indicator in Settings; no-family clarification text
+
+---
+
 ## 2026-03-04 — Session 41: Rename Trusted → Caregiver, Build 83
 
 ### All Repos — trusted→caregiver rename (DB column unchanged)
