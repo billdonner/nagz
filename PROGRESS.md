@@ -5,6 +5,21 @@ Auto-updated by Claude Code sessions. Monitor remotely via GitHub:
 
 ---
 
+## 2026-03-06 — Session 43: Fix notification-tap navigation vaporizing, Builds 112–113
+
+### iOS (nagz-ios)
+- **Root cause**: Notification taps pushed a UUID onto `NavigationStack`'s `NavigationPath`, but SwiftUI spontaneously popped it when `navigationDestination` closures were re-evaluated during family data loading (isGuardian/currentUserId changing)
+- **Build 112**: Moved `nagNavigationPath` from `@State` in `AuthenticatedTabView` to `PushNotificationService` (`@Observable`) to survive view recreation — didn't fix the pop
+- **Build 113**: Switched notification-triggered navigation to `.fullScreenCover(item:)` instead of `NavigationPath` manipulation; modal presentation is immune to `NavigationStack` resets; added "Done" button to dismiss; removed debug prints
+- Added `notificationNagId: UUID?` to `PushNotificationService`; `pendingNagId` now sets `notificationNagId` which triggers the cover
+- APNs test workflow: extract key from Fly secrets → `/tmp/apns_key.p8`; send via `uv run python send_apns.py` from nagzerver env (KEY_ID=`6R7TUZN4U2`, sandbox endpoint)
+
+### Key Files Changed
+- `PushNotificationService.swift`: added `notificationNagId: UUID?`
+- `AuthenticatedTabView.swift`: fullScreenCover replaces NavigationPath nav; added `NotificationItem: Identifiable`
+
+---
+
 ## 2026-03-04 — Session 42: pressNag, rate limits, week-view create, Builds 84–92
 
 ### Server (nagzerver)
